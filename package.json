@@ -1,0 +1,30 @@
+{
+  "name": "visual-sdf-editor",
+  "version": "1.0.0",
+  "description": "A visual/graphical signed-distance field editor and renderer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-yam-jeremy/visual-sdf-editor.git"
+  },
+  "keywords": [
+    "sdf",
+    "3d",
+    "graphics",
+    "render",
+    "editor"
+  ],
+  "author": "Jeremy Berchtold",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/i-yam-jeremy/visual-sdf-editor/issues"
+  },
+  "homepage": "https://github.com/i-yam-jeremy/visual-sdf-editor#readme",
+  "devDependencies": {
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
+  }
+}
