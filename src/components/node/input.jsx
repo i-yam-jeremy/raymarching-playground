@@ -12,6 +12,8 @@ class PreClickDragInput extends React.Component {
       y: 0,
       connectedOutput: null
     }
+
+    this.props.parent.setInputComponent(this.props.inputName, this)
   }
 
   getTopOffset() {
@@ -36,7 +38,7 @@ class PreClickDragInput extends React.Component {
 
   updateLineConnectionPosition() {
     if (this.state.connectedOutput) {
-      let bounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
+      let bounds = ReactDOM.findDOMNode(this.state.connectedOutput).getBoundingClientRect()
       this.onConnectedOutputMoved(bounds.left, bounds.top)
     }
   }

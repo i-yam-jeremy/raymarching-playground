@@ -15,7 +15,7 @@ export default class Node extends React.Component {
       inputConnection: null
     }
 
-    this.inputComponents = []
+    this.inputComponents = {}
   }
 
   saveDimensions(node) {
@@ -39,10 +39,14 @@ export default class Node extends React.Component {
       this.state.inputConnection.onConnectedOutputMoved(bounds.left, bounds.top)
     }
 
-      //this.refs['input-' + inputName].updateLineConnectionPosition()
+    for (let input of this.props.inputs) {
+      this.inputComponents[input].updateLineConnectionPosition()
+    }
   }
 
-  // TODO pass parent prop into Input then get input call this.props.parent.setInput(inputName, this) in Input so it will set the input node so it can be accessed from Node
+  setInputComponent(inputName, node) {
+    this.inputComponents[inputName] = node
+  }
 
   render() {
     return (
@@ -54,7 +58,7 @@ export default class Node extends React.Component {
         <div ref={this.saveDimensions.bind(this)} style={{fontFamily: 'Arial, Helvetica, sans-serif', backgroundColor: '#555555', color: '#FFFFFF', width: '100px', height: (this.props.inputs.length*25 + 40) + 'px', borderRadius: '16px', border: '2px solid #777777', position: 'absolute', margin: '0px'}}>
           <div className="handle" style={{textAlign: 'center'}}>{this.props.title}</div>
           <div>
-            {this.props.inputs.map((inputName, i) => <Input key={'input-' + inputName} index={i} inputName={inputName} />)}
+            {this.props.inputs.map((inputName, i) => <Input parent={this} key={'input-' + inputName} index={i} inputName={inputName} />)}
           </div>
           <Output ref="output" parent={this} parentWidth={this.state.width} parentHeight={this.state.height} />
         </div>
