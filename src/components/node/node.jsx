@@ -40,7 +40,7 @@ export default class Node extends React.Component {
     }
 
     for (let input of this.props.inputs) {
-      this.inputComponents[input].updateLineConnectionPosition()
+      this.inputComponents[input].updateLineConnectionPosition(data.deltaX, data.deltaY)
     }
   }
 

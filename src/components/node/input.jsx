@@ -36,10 +36,12 @@ class PreClickDragInput extends React.Component {
     })
   }
 
-  updateLineConnectionPosition() {
+  updateLineConnectionPosition(deltaX, deltaY) {
     if (this.state.connectedOutput) {
-      let bounds = ReactDOM.findDOMNode(this.state.connectedOutput).getBoundingClientRect()
-      this.onConnectedOutputMoved(bounds.left, bounds.top)
+      this.setState({
+        x: this.state.x - deltaX,
+        y: this.state.y - deltaY
+      })
     }
   }
 
@@ -68,9 +70,6 @@ class PreClickDragInput extends React.Component {
     this.setState({
       connectedOutput: output
     })
-
-    console.log(output)
-    console.log('Connected')
   }
 
   render() {

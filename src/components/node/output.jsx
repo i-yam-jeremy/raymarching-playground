@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import LineManager from './line-manager.jsx'
 
-
 export default class Output extends React.Component {
 
   getLeftOffset() {
