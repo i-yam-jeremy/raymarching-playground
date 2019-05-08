@@ -17,8 +17,6 @@ export default class Output extends React.Component {
       let input = LineManager.getLineInProgressInput()
       input.onConnectWithOutput(this)
       this.props.parent.onOutputConnectedToInput(input)
-      let bounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
-      input.onConnectedOutputMoved(bounds.left, bounds.top)
       //LineManager.endLine()
     }
   }

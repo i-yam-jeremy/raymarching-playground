@@ -28,11 +28,10 @@ class PreClickDragInput extends React.Component {
     return Math.sqrt(this.state.x*this.state.x + this.state.y*this.state.y)
   }
 
-  onConnectedOutputMoved(x, y) {
-    let bounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
+  onConnectedOutputMoved(deltaX, deltaY) {
     this.setState({
-      x: x-bounds.left+8,
-      y: y-bounds.top-8
+      x: this.state.x + deltaX,
+      y: this.state.y + deltaY
     })
   }
 
@@ -67,7 +66,12 @@ class PreClickDragInput extends React.Component {
   }
 
   onConnectWithOutput(output) {
+    let outputBounds = ReactDOM.findDOMNode(output).getBoundingClientRect()
+    let thisBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
+    console.log(outputBounds.x - thisBounds.x + 8, outputBounds.y - thisBounds.y - 8)
     this.setState({
+      x: outputBounds.x - thisBounds.x + 8,
+      y: outputBounds.y - thisBounds.y - 8,
       connectedOutput: output
     })
   }

@@ -36,7 +36,7 @@ export default class Node extends React.Component {
   onDrag(e, data) {
     if (this.state.inputConnection) {
       let bounds = ReactDOM.findDOMNode(this.refs.output).getBoundingClientRect()
-      this.state.inputConnection.onConnectedOutputMoved(bounds.left, bounds.top)
+      this.state.inputConnection.onConnectedOutputMoved(data.deltaX, data.deltaY)
     }
 
     for (let input of this.props.inputs) {
