@@ -4,12 +4,10 @@ import LineManager from './line-manager.jsx'
 
 export default class Output extends React.Component {
 
-  getLeftOffset() {
-    return this.props.parentWidth - 25/2
-  }
+  constructor(props) {
+    super(props)
 
-  getTopOffset() {
-    return this.props.parentHeight/2 - 10
+    this.props.parent.setOutputComponent(this)
   }
 
   onMouseUp(e) {
@@ -23,7 +21,7 @@ export default class Output extends React.Component {
 
   render() {
     return (
-        <div onMouseUp={this.onMouseUp.bind(this)} style={{backgroundColor: '#555555', color: '#FFFFFF', width: '16px', height: '16px', borderRadius: '16px', border: '2px solid #FFA500', position: 'absolute', left: this.getLeftOffset() + 'px', top: this.getTopOffset() + 'px', margin: '0px', padding: '0px'}}>
+        <div onMouseUp={this.onMouseUp.bind(this)} style={{float: 'right', backgroundColor: '#555555', color: '#FFFFFF', width: '16px', height: '16px', borderRadius: '16px', border: '2px solid #FFA500', position: 'absolute', right: '-12px', top: '50%', margin: '0px', padding: '0px'}}>
         </div>
     )
   }
