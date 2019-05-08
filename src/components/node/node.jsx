@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Draggable from 'react-draggable'
-import Measure from 'react-measure'
+import ReactResizeDetector from 'react-resize-detector';
 import Input from './input.jsx'
 import Output from './output.jsx'
 
@@ -18,6 +18,8 @@ export default class Node extends React.Component {
 
     this.inputComponents = {}
     this.outputComponent = null
+    this.previousWidth = 0
+    this.previousHeight = 0
   }
 
   onOutputConnectedToInput(input) {
@@ -35,7 +37,6 @@ export default class Node extends React.Component {
     for (let input of this.props.inputs) {
       this.inputComponents[input].updateLineConnectionPosition(data.deltaX, data.deltaY)
     }
-
   }
 
   setInputComponent(inputName, node) {
@@ -44,6 +45,19 @@ export default class Node extends React.Component {
 
   setOutputComponent(outputComponent) {
     this.outputComponent = outputComponent
+  }
+
+  onResize(width, height) {
+    let deltaX = width - this.previousWidth
+    let deltaY = height - this.previousHeight
+
+    if (this.state.inputConnection) {
+      let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
+      this.state.inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
+    }
+
+    this.previousWidth = width
+    this.previousHeight = height
   }
 
   render() {
@@ -62,6 +76,7 @@ export default class Node extends React.Component {
           <div style={{float: 'left', display: 'inline'}}>
             <textarea rows="4" cols="50"></textarea>
           </div>
+          <ReactResizeDetector handleWidth handleHeight onResize={this.onResize.bind(this)} />
         </div>
       </Draggable>
     )
