@@ -5,6 +5,8 @@ import ReactResizeDetector from 'react-resize-detector';
 import Input from './input.jsx'
 import Output from './output.jsx'
 
+import '../../stylesheets/node.sass'
+
 export default class Node extends React.Component {
 
   constructor(props) {
@@ -67,7 +69,7 @@ export default class Node extends React.Component {
         defaultPosition={{x: 0, y: 0}}
         position={null}
         onDrag={this.onDrag.bind(this)}>
-        <div style={{float: 'left', display: 'inline-block', fontFamily: 'Arial, Helvetica, sans-serif', backgroundColor: '#555555', color: '#FFFFFF', borderRadius: '16px', border: '2px solid #777777', position: 'absolute', margin: '0px', padding: '10px'}}>
+        <div className="node">
           <div className="handle noselect" style={{textAlign: 'center'}}>{this.props.title}</div>
           <div>
             {this.props.inputs.map((inputName, i) => <Input parent={this} key={'input-' + inputName} index={i} inputName={inputName} />)}
