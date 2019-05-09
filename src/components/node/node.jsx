@@ -65,17 +65,17 @@ export default class Node extends React.Component {
   render() {
     return (
       <Draggable
-        handle=".handle"
+        handle=".node-handle"
         defaultPosition={{x: 0, y: 0}}
         position={null}
         onDrag={this.onDrag.bind(this)}>
         <div className="node">
-          <div className="handle noselect" style={{textAlign: 'center'}}>{this.props.title}</div>
+          <div className="node-handle noselect">{this.props.title}</div>
           <div>
             {this.props.inputs.map((inputName, i) => <Input parent={this} key={'input-' + inputName} index={i} inputName={inputName} />)}
           </div>
           <Output parent={this} />
-          <div style={{float: 'left', display: 'inline'}}>
+          <div className="node-content">
             <textarea rows="4" cols="50"></textarea>
           </div>
           <ReactResizeDetector handleWidth handleHeight onResize={this.onResize.bind(this)} />

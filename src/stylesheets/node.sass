@@ -9,3 +9,44 @@
   position: absolute
   margin: 0px
   padding: 10px
+
+.node-content
+  float: left
+  display: inline
+
+.node-handle
+  text-align: center
+
+%node-input-output-circle
+  background-color: #555555
+  color: #FFFFFF
+  width: 16px
+  height: 16px
+  border-radius: 16px
+  border: 2px solid #FFA500
+  position: absolute
+  margin: 0px
+  padding: 0px
+
+.node-input-circle
+  @extend %node-input-output-circle
+  left: -10px
+
+.node-output-circle
+  @extend %node-input-output-circle
+  float: right
+  right: -12px
+  top: 50%
+
+.node-input-label
+  position: absolute
+  left: 16px
+  margin: 0px
+  padding: 0px
+
+.node-connecting-line
+  border-top: 3px solid rgb(255, 165, 0)
+  position: absolute
+  left: 0px
+  z-index: -1
+  transform-origin: 0px 0px 0px

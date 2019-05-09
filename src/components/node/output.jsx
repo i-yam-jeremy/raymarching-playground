@@ -19,13 +19,9 @@ export default class Output extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    console.log("Hi")
-  }
-
   render() {
     return (
-        <div onMouseUp={this.onMouseUp.bind(this)} style={{float: 'right', backgroundColor: '#555555', color: '#FFFFFF', width: '16px', height: '16px', borderRadius: '16px', border: '2px solid #FFA500', position: 'absolute', right: '-12px', top: '50%', margin: '0px', padding: '0px'}}>
+        <div className="node-output-circle" onMouseUp={this.onMouseUp.bind(this)}>
         </div>
     )
   }
