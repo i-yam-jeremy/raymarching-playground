@@ -78,10 +78,7 @@ class PreClickDragInput extends React.Component {
   render() {
     return (
         <div className="noselect">
-          <div className="node-input-circle" style={{top: this.getTopOffset() + 'px'}}>
-          </div>
-          <div className="node-input-label" style={{top: this.getTopOffset() + 'px'}}>
-            {this.props.inputName}
+          <div className="node-input-circle" style={{/*top: this.getTopOffset() + 'px'*/}}>
           </div>
           <div className="node-connecting-line" style={{top: (this.getTopOffset()+25/2) + 'px', width: this.getLineLength() + 'px', transform: 'rotate(' + this.getLineRotation() + 'deg)'}}></div>
         </div>

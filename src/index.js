@@ -4,7 +4,7 @@ import Node from './components/node/node.jsx';
 
 ReactDOM.render(
   <div>
-    <Node title="Sphere" inputs={['radius', 'center']} />
+    <Node title="Sphere" inputs={['radius', 'center', 'input1', 'input2', 'input3']} />
     <Node title="Sphere" inputs={['radius', 'center']} />
   </div>
   , document.body);

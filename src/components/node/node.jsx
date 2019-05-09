@@ -71,13 +71,16 @@ export default class Node extends React.Component {
         onDrag={this.onDrag.bind(this)}>
         <div className="node">
           <div className="node-handle noselect">{this.props.title}</div>
-          <div>
-            {this.props.inputs.map((inputName, i) => <Input parent={this} key={'input-' + inputName} index={i} inputName={inputName} />)}
+          <div className="node-input-label-container">
+            {this.props.inputs.map((inputName, i) => <p key={'input-label-' + inputName} className="node-input-label">{inputName}</p>)}
           </div>
-          <Output parent={this} />
           <div className="node-content">
             <textarea rows="4" cols="50"></textarea>
           </div>
+          <div className="node-input-circle-container">
+            {this.props.inputs.map((inputName, i) => <Input parent={this} key={'input-circle-' + inputName} index={i} inputName={inputName} />)}
+          </div>
+          <Output parent={this} />
           <ReactResizeDetector handleWidth handleHeight onResize={this.onResize.bind(this)} />
         </div>
       </Draggable>
