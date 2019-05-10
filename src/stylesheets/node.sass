@@ -1,7 +1,8 @@
 @import noselect
 
-$base-color: #333333
-$border-color: #777777
+$bg-color: #111111
+$base-color: #222222
+$border-color: #5A5A5A
 $font-color: #BBBBBB
 $highlight-color: #FFA500
 $dim-highlight-color: darken($highlight-color, 20%)
@@ -20,7 +21,7 @@ textarea
     border-color: $dim-highlight-color
 
 body
-  background-color: #222222
+  background-color: $bg-color
 
 .node
   float: left
@@ -40,7 +41,12 @@ body
 
 .node-handle
   @extend  %noselect
+  font-weight: bold
+  color: #222222
   text-align: center
+  background-color: #5ea1b2
+  border-radius: 3px
+  padding: 3px
 
 .node-input-label-container
   display: inline-block
@@ -55,11 +61,11 @@ body
 
 %node-input-output-circle
   display: inline-block
-  background-color: $base-color
+  background-color: lighten($base-color, 5%)
   width: 16px
   height: 16px
   border-radius: 16px
-  border: 2px solid $border-color
+  border: 2px solid lighten($border-color, 5%)
 
 .node-input-circle
   @extend %node-input-output-circle
@@ -79,7 +85,7 @@ body
   padding: 6px
 
 .node-connecting-line
-  border-top: 3px solid $border-color
+  border-top: 3px solid lighten($border-color, 5%)
   position: absolute
   top: 12px
   left: 10px
