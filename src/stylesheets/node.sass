@@ -1,11 +1,35 @@
+@import noselect
+
+$base-color: #333333
+$border-color: #777777
+$font-color: #BBBBBB
+$highlight-color: #FFA500
+$dim-highlight-color: darken($highlight-color, 20%)
+
+$content-base-color: #3A3A3A
+$content-border-color: #999999
+
+textarea
+  background-color: $content-base-color
+  border: 2px solid $content-border-color
+  border-radius: 4px
+  color: $font-color
+  &::selection
+    background-color: $dim-highlight-color
+  &:focus
+    border-color: $dim-highlight-color
+
+body
+  background-color: #222222
+
 .node
   float: left
   display: inline-block
   font-family: Arial, Helvetica, sans-serif
-  background-color: #555555
-  color: #FFFFFF
+  background-color: $base-color
+  color: $font-color
   border-radius: 16px
-  border: 2px solid #777777
+  border: 2px solid $border-color
   position: absolute
   margin: 0px
   padding: 10px
@@ -15,6 +39,7 @@
   padding: 10px
 
 .node-handle
+  @extend  %noselect
   text-align: center
 
 .node-input-label-container
@@ -30,12 +55,11 @@
 
 %node-input-output-circle
   display: inline-block
-  background-color: #555555
-  color: #FFFFFF
+  background-color: $base-color
   width: 16px
   height: 16px
   border-radius: 16px
-  border: 2px solid #FFA500
+  border: 2px solid $border-color
 
 .node-input-circle
   @extend %node-input-output-circle
@@ -50,11 +74,12 @@
   top: 50%
 
 .node-input-label
+  @extend %noselect
   margin: 0px
   padding: 6px
 
 .node-connecting-line
-  border-top: 3px solid rgb(255, 165, 0)
+  border-top: 3px solid $border-color
   position: absolute
   top: 12px
   left: 10px

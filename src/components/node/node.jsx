@@ -70,7 +70,7 @@ export default class Node extends React.Component {
         position={null}
         onDrag={this.onDrag.bind(this)}>
         <div className="node">
-          <div className="node-handle noselect">{this.props.title}</div>
+          <div className="node-handle">{this.props.title}</div>
           <div className="node-input-label-container">
             {this.props.inputs.map((inputName, i) => <p key={'input-label-' + inputName} className="node-input-label">{inputName}</p>)}
           </div>
