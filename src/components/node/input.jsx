@@ -77,6 +77,7 @@ class PreClickDragInput extends React.Component {
     return (
         <div className="noselect">
           <div className={circleClassNames}>
+            <span className="tooltip">{this.props.inputType}</span>
             <div className="node-connecting-line" style={{width: this.getLineLength() + 'px', transform: 'rotate(' + this.getLineRotation() + 'deg)'}}></div>
           </div>
         </div>

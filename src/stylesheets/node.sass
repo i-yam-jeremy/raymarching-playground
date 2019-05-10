@@ -43,6 +43,7 @@ body
   border-radius: 3px
 
 .node-editor-contextmenu-item
+  @extend %noselect
   font-family: $font
   background-color: $base-color
   color: $font-color
@@ -53,8 +54,6 @@ body
   border-top: 2px solid $border-color
   &:hover
     background-color: lighten($base-color, 10%)
-
-  //TODO finish styling context menu
 
 .node
   float: left
@@ -100,6 +99,14 @@ body
   border-radius: 16px
   border-width: 2px
   border-style: solid
+  > .tooltip
+    @extend %noselect
+    background-color: lighten($base-color, 10%)
+    padding: 5px
+    border-radius: 3px
+    visibility: hidden
+  &:hover > .tooltip
+    visibility: visible
 
 .node-input-circle
   @extend %node-input-output-circle
