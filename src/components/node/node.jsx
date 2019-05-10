@@ -67,7 +67,7 @@ export default class Node extends React.Component {
     return (
       <Draggable
         handle=".node-handle"
-        defaultPosition={{x: 0, y: 0}}
+        defaultPosition={{x: this.props.initialX, y: this.props.initialY}}
         position={null}
         onDrag={this.onDrag.bind(this)}>
         <div className="node">
