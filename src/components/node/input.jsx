@@ -16,10 +16,6 @@ class PreClickDragInput extends React.Component {
     this.props.parent.setInputComponent(this.props.inputName, this)
   }
 
-  getTopOffset() {
-    return 25 + 25*this.props.index
-  }
-
   getLineRotation() {
     return (180/Math.PI) * Math.atan2(this.state.y, this.state.x)
   }
@@ -69,7 +65,7 @@ class PreClickDragInput extends React.Component {
     let outputBounds = ReactDOM.findDOMNode(output).getBoundingClientRect()
     let thisBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
     this.setState({
-      x: outputBounds.x - thisBounds.x + 18,
+      x: outputBounds.x - thisBounds.x,
       y: outputBounds.y - thisBounds.y,
       connectedOutput: output
     })
@@ -78,9 +74,9 @@ class PreClickDragInput extends React.Component {
   render() {
     return (
         <div className="noselect">
-          <div className="node-input-circle" style={{/*top: this.getTopOffset() + 'px'*/}}>
+          <div className="node-input-circle">
+            <div className="node-connecting-line" style={{width: this.getLineLength() + 'px', transform: 'rotate(' + this.getLineRotation() + 'deg)'}}></div>
           </div>
-          <div className="node-connecting-line" style={{top: (this.getTopOffset()+25/2) + 'px', width: this.getLineLength() + 'px', transform: 'rotate(' + this.getLineRotation() + 'deg)'}}></div>
         </div>
     )
   }
