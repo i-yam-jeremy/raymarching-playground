@@ -65,12 +65,19 @@ body
   width: 16px
   height: 16px
   border-radius: 16px
-  border: 2px solid lighten($border-color, 5%)
+  border-width: 2px
+  border-style: solid
 
 .node-input-circle
   @extend %node-input-output-circle
   position: relative
   margin: 5px
+
+.node-input-output-circle-float
+  border-color: #489E4F
+
+.node-input-output-circle-vec3
+  border-color: #BCB63E
 
 .node-output-circle
   @extend %node-input-output-circle

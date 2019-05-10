@@ -37,7 +37,7 @@ export default class Node extends React.Component {
     }
 
     for (let input of this.props.inputs) {
-      this.inputComponents[input].updateLineConnectionPosition(data.deltaX, data.deltaY)
+      this.inputComponents[input.name].updateLineConnectionPosition(data.deltaX, data.deltaY)
     }
   }
 
@@ -63,6 +63,7 @@ export default class Node extends React.Component {
   }
 
   render() {
+    const NodeContent = this.props.nodeContent
     return (
       <Draggable
         handle=".node-handle"
@@ -72,15 +73,15 @@ export default class Node extends React.Component {
         <div className="node">
           <div className="node-handle">{this.props.title}</div>
           <div className="node-input-label-container">
-            {this.props.inputs.map((inputName, i) => <p key={'input-label-' + inputName} className="node-input-label">{inputName}</p>)}
+            {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="node-input-label">{input.name}</p>)}
           </div>
           <div className="node-content">
-            <textarea rows="4" cols="50"></textarea>
+            <NodeContent />
           </div>
           <div className="node-input-circle-container">
-            {this.props.inputs.map((inputName, i) => <Input parent={this} key={'input-circle-' + inputName} index={i} inputName={inputName} />)}
+            {this.props.inputs.map((input, i) => <Input parent={this} key={'input-circle-' + input.name} index={i} inputName={input.name} inputType={input.type} />)}
           </div>
-          <Output parent={this} />
+          <Output parent={this} outputType={this.props.outputType} />
           <ReactResizeDetector handleWidth handleHeight onResize={this.onResize.bind(this)} />
         </div>
       </Draggable>

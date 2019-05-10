@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import classnames from 'classnames'
 import LineManager from './line-manager.jsx'
 
 export default class Output extends React.Component {
@@ -20,8 +20,9 @@ export default class Output extends React.Component {
   }
 
   render() {
+    const circleClassNames = classnames('node-output-circle', 'node-input-output-circle-' + this.props.outputType)
     return (
-        <div className="node-output-circle" onMouseUp={this.onMouseUp.bind(this)}>
+        <div className={circleClassNames} onMouseUp={this.onMouseUp.bind(this)}>
         </div>
     )
   }

@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Node from './components/node/node.jsx';
+import SphereNodeContent from './components/node/node-contents/sphere.jsx'
 
 ReactDOM.render(
   <div>
-    <Node title="Sphere" inputs={['radius', 'center', 'input1', 'input2', 'input3']} />
-    <Node title="Sphere" inputs={['radius', 'center']} />
+    <Node title="Sphere" inputs={SphereNodeContent.inputs} outputType={SphereNodeContent.outputType} nodeContent={SphereNodeContent} />
+    <Node title="Sphere" inputs={SphereNodeContent.inputs} outputType={SphereNodeContent.outputType} nodeContent={SphereNodeContent} />
   </div>
   , document.body);

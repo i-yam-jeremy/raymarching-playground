@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import clickDrag from 'react-clickdrag'
+import classnames from 'classnames'
 import LineManager from './line-manager.jsx'
 
 class PreClickDragInput extends React.Component {
@@ -72,9 +73,10 @@ class PreClickDragInput extends React.Component {
   }
 
   render() {
+    const circleClassNames = classnames('node-input-circle', 'node-input-output-circle-' + this.props.inputType)
     return (
         <div className="noselect">
-          <div className="node-input-circle">
+          <div className={circleClassNames}>
             <div className="node-connecting-line" style={{width: this.getLineLength() + 'px', transform: 'rotate(' + this.getLineRotation() + 'deg)'}}></div>
           </div>
         </div>
