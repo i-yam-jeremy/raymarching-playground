@@ -5,8 +5,6 @@ import ReactResizeDetector from 'react-resize-detector';
 import Input from './input.jsx'
 import Output from './output.jsx'
 
-import '../../stylesheets/node.sass'
-
 export default class Node extends React.Component {
 
   constructor(props) {

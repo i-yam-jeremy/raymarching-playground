@@ -5,7 +5,7 @@ class SphereNodeContent extends React.Component {
   compile(methodName) {
     return `
       float ${methodName}(float radius, vec3 p) {
-        return length(p) - radius
+        return length(p) - radius;
       }`
   }
 

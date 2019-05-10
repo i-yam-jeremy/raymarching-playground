@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import SphereNodeContent from './node-contents/sphere.jsx'
+import FloatConstant from './node-contents/float-constant.jsx'
 
 const NODE_TYPES = [
-  SphereNodeContent
+  SphereNodeContent,
+  FloatConstant
 ]
 
 export default class NodeEditorPanel extends React.Component {
@@ -47,11 +49,13 @@ export default class NodeEditorPanel extends React.Component {
         </ContextMenuTrigger>
 
         <ContextMenu id="node-editor-panel-contextmenu">
-          {NODE_TYPES.map(nodeType =>
-            <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
-              {nodeType.title}
-            </MenuItem>
-          )}
+          <div className="node-editor-contextmenu">
+            {NODE_TYPES.map(nodeType =>
+              <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
+                <div className="node-editor-contextmenu-item">{nodeType.title}</div>
+              </MenuItem>
+            )}
+          </div>
         </ContextMenu>
       </div>
     )

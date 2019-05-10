@@ -1,5 +1,6 @@
 @import noselect
 
+$font: Arial, Helvetica, sans-serif
 $bg-color: #111111
 $base-color: #222222
 $border-color: #5A5A5A
@@ -36,10 +37,29 @@ body
   background-image: linear-gradient(to right, $grid-color $grid-line-size, transparent $grid-line-size), linear-gradient(to bottom, $grid-color $grid-line-size, transparent $grid-line-size)
   background-color: $bg-color
 
+.node-editor-contextmenu
+  border: 2px solid $border-color
+  border-top: 0px
+  border-radius: 3px
+
+.node-editor-contextmenu-item
+  font-family: $font
+  background-color: $base-color
+  color: $font-color
+  padding: 2px
+  padding-left: 5px
+  padding-right: 40px
+  margin: 0px
+  border-top: 2px solid $border-color
+  &:hover
+    background-color: lighten($base-color, 10%)
+
+  //TODO finish styling context menu
+
 .node
   float: left
   display: inline-block
-  font-family: Arial, Helvetica, sans-serif
+  font-family: $font
   background-color: $base-color
   color: $font-color
   border-radius: 16px
