@@ -2,11 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
-import SphereNodeContent from './node-contents/sphere.jsx'
-import FloatConstant from './node-contents/float-constant.jsx'
+import Sphere from './node-types/sphere.jsx'
+import FloatConstant from './node-types/float-constant.jsx'
 
 const NODE_TYPES = [
-  SphereNodeContent,
+  Sphere,
   FloatConstant
 ]
 

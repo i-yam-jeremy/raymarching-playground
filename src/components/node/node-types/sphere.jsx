@@ -1,6 +1,6 @@
 import React from 'react'
 
-class SphereNodeContent extends React.Component {
+class Sphere extends React.Component {
 
   compile(methodName) {
     return `
@@ -17,13 +17,13 @@ class SphereNodeContent extends React.Component {
   }
 }
 
-SphereNodeContent.inputs = [
+Sphere.inputs = [
   {type: 'float', name: 'radius'},
   {type: 'vec3', name: 'p'}
 ]
 
-SphereNodeContent.outputType = 'float'
+Sphere.outputType = 'float'
 
-SphereNodeContent.title = 'Sphere'
+Sphere.title = 'Sphere'
 
-export default SphereNodeContent
+export default Sphere
