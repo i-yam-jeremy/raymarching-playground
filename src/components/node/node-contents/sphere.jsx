@@ -24,4 +24,6 @@ SphereNodeContent.inputs = [
 
 SphereNodeContent.outputType = 'float'
 
+SphereNodeContent.title = 'Sphere'
+
 export default SphereNodeContent
