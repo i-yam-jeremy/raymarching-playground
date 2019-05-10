@@ -12,7 +12,7 @@ class FloatConstant extends React.Component {
   render() {
     return (
         <div>
-          <input ref="value" type="number" />
+          <input ref="value" type="number" step="any" />
         </div>
     )
   }
