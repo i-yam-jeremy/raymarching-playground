@@ -12,10 +12,10 @@ export default class Node extends React.Component {
 
     this.state = {
       width: null,
-      height: null,
-      inputConnection: null
+      height: null
     }
 
+    this.inputConnection = null
     this.inputComponents = {}
     this.outputComponent = null
     this.previousWidth = 0
@@ -23,15 +23,13 @@ export default class Node extends React.Component {
   }
 
   onOutputConnectedToInput(input) {
-    this.setState({
-      inputConnection: input
-    })
+    this.inputConnection = input
   }
 
   onDrag(e, data) {
-    if (this.state.inputConnection) {
+    if (this.inputConnection) {
       let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
-      this.state.inputConnection.onConnectedOutputMoved(data.deltaX, data.deltaY)
+      this.inputConnection.onConnectedOutputMoved(data.deltaX, data.deltaY)
     }
 
     for (let input of this.props.inputs) {
@@ -51,9 +49,9 @@ export default class Node extends React.Component {
     let deltaX = width - this.previousWidth
     let deltaY = height - this.previousHeight
 
-    if (this.state.inputConnection) {
+    if (this.inputConnection) {
       let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
-      this.state.inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
+      this.inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
     }
 
     this.previousWidth = width

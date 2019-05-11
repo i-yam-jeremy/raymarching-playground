@@ -37,7 +37,8 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   compile() {
-    console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)))
+    console.log(this.nodeComponents)
+    //console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)))
   }
 
   render() {

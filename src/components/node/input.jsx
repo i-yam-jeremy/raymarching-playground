@@ -10,9 +10,10 @@ class PreClickDragInput extends React.Component {
 
     this.state = {
       x: 0,
-      y: 0,
-      connectedOutput: null
+      y: 0
     }
+
+    this.connectedOutput = null
 
     this.props.parent.setInputComponent(this.props.inputName, this)
   }
@@ -33,7 +34,7 @@ class PreClickDragInput extends React.Component {
   }
 
   updateLineConnectionPosition(deltaX, deltaY) {
-    if (this.state.connectedOutput) {
+    if (this.connectedOutput) {
       this.setState({
         x: this.state.x - deltaX,
         y: this.state.y - deltaY
@@ -44,6 +45,11 @@ class PreClickDragInput extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.dataDrag.isMouseDown) {
       if (!LineManager.isLineInProgress()) {
+        if (this.connectedOutput) {
+          console.log(this.connectedOutput.props.parent.inputConnection)
+          this.connectedOutput.props.parent.inputConnection = null
+          this.connectedOutput = null
+        }
         LineManager.startLine(this)
       }
       this.setState({
@@ -52,12 +58,12 @@ class PreClickDragInput extends React.Component {
       })
     }
     else {
-      if (!this.state.connectedOutput) {
+      if (!this.connectedOutput) {
         this.setState({
           x: 0,
           y: 0
         })
-        //LineManager.endLine()
+        LineManager.endLine()
       }
     }
   }
@@ -68,8 +74,8 @@ class PreClickDragInput extends React.Component {
     this.setState({
       x: outputBounds.x - thisBounds.x,
       y: outputBounds.y - thisBounds.y,
-      connectedOutput: output
     })
+    this.connectedOutput = output
   }
 
   render() {

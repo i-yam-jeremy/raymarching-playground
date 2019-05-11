@@ -15,7 +15,7 @@ export default class Output extends React.Component {
       let input = LineManager.getLineInProgressInput()
       input.onConnectWithOutput(this)
       this.props.parent.onOutputConnectedToInput(input)
-      //LineManager.endLine()
+      LineManager.endLine()
     }
   }
 
