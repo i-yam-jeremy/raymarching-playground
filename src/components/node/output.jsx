@@ -13,8 +13,10 @@ export default class Output extends React.Component {
   onMouseUp(e) {
     if (LineManager.isLineInProgress()) {
       let input = LineManager.getLineInProgressInput()
-      input.onConnectWithOutput(this)
-      this.props.parent.onOutputConnectedToInput(input)
+      if (input.props.inputType == this.props.outputType) {
+        input.onConnectWithOutput(this)
+        this.props.parent.onOutputConnectedToInput(input)
+      }
       LineManager.endLine()
     }
   }
