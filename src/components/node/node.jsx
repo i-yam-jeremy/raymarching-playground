@@ -74,7 +74,7 @@ export default class Node extends React.Component {
             {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="node-input-label">{input.name}</p>)}
           </div>
           <div className="node-content">
-            <NodeContent />
+            <NodeContent ref="content" />
           </div>
           <div className="node-input-circle-container">
             {this.props.inputs.map((input, i) => <Input parent={this} key={'input-circle-' + input.name} index={i} inputName={input.name} inputType={input.type} />)}

@@ -16,19 +16,16 @@ export default class NodeEditorPanel extends React.Component {
     super(props)
 
     this.state = {
-      nodes: []
+      nodeData: []
     }
+
+    this.nodeComponents = []
   }
 
-  createNode(nodeType, x, y) {
-    return <Node key={'node-' + this.state.nodes.length} title={nodeType.title} inputs={nodeType.inputs} outputType={nodeType.outputType} nodeContent={nodeType} initialX={x} initialY={y} />
-  }
-
-  addNode(nodeType, x, y) {
-    const newNode = this.createNode(nodeType, x, y)
-    this.setState({
-      nodes: this.state.nodes.concat([newNode])
-    })
+  addNode(node) {
+    if (node) {
+      this.nodeComponents.push(node)
+    }
   }
 
   contextMenuClick(e, data) {
@@ -36,15 +33,29 @@ export default class NodeEditorPanel extends React.Component {
     const nodeEditorPanelBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
     const x = menuBounds.left - nodeEditorPanelBounds.left
     const y = menuBounds.top - nodeEditorPanelBounds.top
-    this.addNode(data.nodeType, x, y)
+    this.setState({
+      nodeData: this.state.nodeData.concat([{
+        nodeType: data.nodeType,
+        x: x,
+        y: y
+      }])
+    })
+  }
+
+  compile() {
+    console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)))
   }
 
   render() {
+    this.nodeComponents = []
     return (
       <div>
+        <button className="node-editor-compile-button" onClick={this.compile.bind(this)}>Compile</button>
         <ContextMenuTrigger id="node-editor-panel-contextmenu">
           <div className="node-editor-panel">
-            {this.state.nodes}
+            {this.state.nodeData.map((nodeData, i) =>
+              <Node ref={nodeComponent => this.addNode(nodeComponent)} key={'node-' + i} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
+            )}
           </div>
         </ContextMenuTrigger>
 

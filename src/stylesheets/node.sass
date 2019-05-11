@@ -70,6 +70,25 @@ body
   &:hover
     background-color: lighten($base-color, 10%)
 
+.node-editor-compile-button
+  position: absolute
+  z-index: 2
+  float: right
+  top: 0px
+  right: 0px
+  font-family: $font
+  color: $font-color
+  font-size: 24px
+  font-weight: bold
+  background-color: lighten($base-color, 10%)
+  border-radius: 3px
+  border: 2px solid $border-color
+  margin: 10px
+  &:hover
+    background-color: lighten($base-color, 5%)
+  &:active
+    background-color: $base-color
+
 .node
   float: left
   display: inline-block
