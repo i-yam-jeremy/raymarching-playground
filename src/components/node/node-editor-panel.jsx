@@ -36,6 +36,13 @@ export default class NodeEditorPanel extends React.Component {
     })
   }
 
+  deleteNode(e, data) {
+    this.state.nodeData.splice(data.nodeIndex, 1)
+    this.setState({
+      nodeData: this.state.nodeData
+    })
+  }
+
   compile() {
     console.log(this.nodeComponents)
     //console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)))
@@ -49,7 +56,9 @@ export default class NodeEditorPanel extends React.Component {
         <ContextMenuTrigger id="node-editor-panel-contextmenu">
           <div className="node-editor-panel">
             {this.state.nodeData.map((nodeData, i) =>
-              <Node ref={nodeComponent => this.addNode(nodeComponent)} key={'node-' + i} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
+              <ContextMenuTrigger key={'contextmenu-trigger-node-' + i} id={'contextmenu-node-' + i}>
+                <Node ref={nodeComponent => this.addNode(nodeComponent)} key={'node-' + i} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
+              </ContextMenuTrigger>
             )}
           </div>
         </ContextMenuTrigger>
@@ -63,6 +72,16 @@ export default class NodeEditorPanel extends React.Component {
             )}
           </div>
         </ContextMenu>
+
+        {this.state.nodeData.map((nodeData, i) =>
+          <ContextMenu key={'contextmenu-node-delete-' + i} id={'contextmenu-node-' + i}>
+            <div className="node-editor-contextmenu">
+              <MenuItem data={{nodeIndex: i}} onClick={this.deleteNode.bind(this)}>
+                <div className="node-editor-contextmenu-item">Delete</div>
+              </MenuItem>
+            </div>
+          </ContextMenu>
+        )}
       </div>
     )
   }
