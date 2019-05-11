@@ -79,7 +79,7 @@ export default class Node extends React.Component {
           <div className="node-input-circle-container">
             {this.props.inputs.map((input, i) => <Input parent={this} key={'input-circle-' + input.name} index={i} inputName={input.name} inputType={input.type} />)}
           </div>
-          <Output parent={this} outputType={this.props.outputType} />
+          {this.props.outputType ? <Output parent={this} outputType={this.props.outputType} /> : ''}
           <ReactResizeDetector handleWidth handleHeight onResize={this.onResize.bind(this)} />
         </div>
       </Draggable>
