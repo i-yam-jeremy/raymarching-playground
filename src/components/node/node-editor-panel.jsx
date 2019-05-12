@@ -4,6 +4,16 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import NODE_TYPES from './node-types/index.jsx'
 
+const getNextNodeDataId = (() => {
+  let currentId = 0
+
+  function getNextNodeDataId() {
+    return currentId++
+  }
+
+  return getNextNodeDataId
+})()
+
 export default class NodeEditorPanel extends React.Component {
 
   constructor(props) {
@@ -31,19 +41,29 @@ export default class NodeEditorPanel extends React.Component {
       nodeData: this.state.nodeData.concat([{
         nodeType: data.nodeType,
         x: x,
-        y: y
+        y: y,
+        id: getNextNodeDataId()
       }])
     })
   }
 
   deleteNode(e, data) {
-    this.state.nodeData.splice(data.nodeIndex, 1)
-    this.setState({
-      nodeData: this.state.nodeData
+    let index = -1;
+    this.state.nodeData.forEach((nodeData, i) => {
+      if (nodeData.id == data.nodeId) {
+        index = i
+      }
     })
+    if (index != -1) {
+      this.state.nodeData.splice(index, 1)
+      this.setState({
+        nodeData: this.state.nodeData
+      })
+    }
   }
 
   compile() {
+    console.log(this.state.nodeData)
     console.log(this.nodeComponents)
     //console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)))
   }
@@ -55,9 +75,9 @@ export default class NodeEditorPanel extends React.Component {
         <button className="node-editor-compile-button" onClick={this.compile.bind(this)}>Compile</button>
         <ContextMenuTrigger id="node-editor-panel-contextmenu">
           <div className="node-editor-panel">
-            {this.state.nodeData.map((nodeData, i) =>
-              <ContextMenuTrigger key={'contextmenu-trigger-node-' + i} id={'contextmenu-node-' + i}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent)} key={'node-' + i} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
+            {this.state.nodeData.map(nodeData =>
+              <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + nodeData.id}>
+                <Node ref={nodeComponent => this.addNode(nodeComponent)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
               </ContextMenuTrigger>
             )}
           </div>
@@ -73,10 +93,10 @@ export default class NodeEditorPanel extends React.Component {
           </div>
         </ContextMenu>
 
-        {this.state.nodeData.map((nodeData, i) =>
-          <ContextMenu key={'contextmenu-node-delete-' + i} id={'contextmenu-node-' + i}>
+        {this.state.nodeData.map(nodeData =>
+          <ContextMenu key={'contextmenu-node-delete-' + nodeData.id} id={'contextmenu-node-' + nodeData.id}>
             <div className="node-editor-contextmenu">
-              <MenuItem data={{nodeIndex: i}} onClick={this.deleteNode.bind(this)}>
+              <MenuItem data={{nodeId: nodeData.id}} onClick={this.deleteNode.bind(this)}>
                 <div className="node-editor-contextmenu-item">Delete</div>
               </MenuItem>
             </div>
