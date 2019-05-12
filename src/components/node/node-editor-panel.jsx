@@ -26,8 +26,9 @@ export default class NodeEditorPanel extends React.Component {
     this.nodeComponents = []
   }
 
-  addNode(node) {
+  addNode(node, nodeData) {
     if (node) {
+      node.nodeData = nodeData
       this.nodeComponents.push(node)
     }
   }
@@ -55,6 +56,11 @@ export default class NodeEditorPanel extends React.Component {
       }
     })
     if (index != -1) {
+      this.nodeComponents.forEach(node => {
+        if (node.nodeData.id == data.nodeId) {
+          node.clearConnections()
+        }
+      })
       this.state.nodeData.splice(index, 1)
       this.setState({
         nodeData: this.state.nodeData
@@ -77,7 +83,7 @@ export default class NodeEditorPanel extends React.Component {
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + nodeData.id}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
+                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
               </ContextMenuTrigger>
             )}
           </div>

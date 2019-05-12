@@ -58,6 +58,22 @@ export default class Node extends React.Component {
     this.previousHeight = height
   }
 
+  clearConnections() {
+    if (this.inputConnection) {
+      let inputName = this.inputConnection.props.inputName
+      this.inputConnection.props.parent.inputComponents[inputName].connectedOutput = null
+      this.inputConnection = null
+    }
+
+    for (let input of this.props.inputs) {
+      let inputComponent = this.inputComponents[input.name]
+      if (inputComponent.connectedOutput) {
+        inputComponent.connectedOutput.props.parent.inputConnection = null
+        inputComponent.connectedOutput = null
+      }
+    }
+  }
+
   render() {
     const NodeContent = this.props.nodeContent
     return (
