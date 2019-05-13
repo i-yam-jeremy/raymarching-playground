@@ -26,13 +26,6 @@ export default class NodeEditorPanel extends React.Component {
     this.nodeComponents = []
   }
 
-  componentDidMount() {
-    let thisDomNode = ReactDOM.findDOMNode(this)
-    console.log(thisDomNode.scrollWidth, thisDomNode.scrollHeight)
-    thisDomNode.scrollTo(thisDomNode.scrollWidth/2, thisDomNode.scrollHeight/2)
-    console.log(thisDomNode.scrollTop, thisDomNode.scrollLeft)
-  }
-
   addNode(node, nodeData) {
     if (node) {
       node.nodeData = nodeData
