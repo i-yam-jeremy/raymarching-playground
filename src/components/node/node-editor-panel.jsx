@@ -26,6 +26,13 @@ export default class NodeEditorPanel extends React.Component {
     this.nodeComponents = []
   }
 
+  componentDidMount() {
+    let thisDomNode = ReactDOM.findDOMNode(this)
+    console.log(thisDomNode.scrollWidth, thisDomNode.scrollHeight)
+    thisDomNode.scrollTo(thisDomNode.scrollWidth/2, thisDomNode.scrollHeight/2)
+    console.log(thisDomNode.scrollTop, thisDomNode.scrollLeft)
+  }
+
   addNode(node, nodeData) {
     if (node) {
       node.nodeData = nodeData
@@ -69,9 +76,7 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   compile() {
-    console.log(this.state.nodeData)
-    console.log(this.nodeComponents)
-    //console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)))
+    console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)).join('\n'))
   }
 
   render() {
