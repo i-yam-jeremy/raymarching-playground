@@ -5,7 +5,7 @@ class FloatConstant extends React.Component {
   compile(methodName) {
     return `
       float ${methodName}() {
-        return ${this.refs.value.value};
+        return float(${this.refs.value.value});
       }`
   }
 

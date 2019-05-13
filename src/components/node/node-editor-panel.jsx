@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import NODE_TYPES from './node-types/index.jsx'
+import SDFOutput from './node-types/sdf-output.jsx'
+import compileNode from './compiler.js'
 
 const getNextNodeDataId = (() => {
   let currentId = 0
@@ -69,14 +71,27 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   compile() {
-    console.log(this.nodeComponents.map((node, i) => node.refs.content.compile('node_' + i)).join('\n'))
+    let outputNode = null
+    for (let node of this.nodeComponents) {
+      if (node.props.nodeContent == SDFOutput) {
+        if (outputNode != null) {
+          throw 'Multiple SDFOutput nodes'
+        }
+        outputNode = node
+      }
+    }
+
+    if (outputNode == null) {
+      throw 'No SDFOutput node'
+    }
+
+    return compileNode(outputNode)
   }
 
   render() {
     this.nodeComponents = []
     return (
       <div>
-        <button className="node-editor-compile-button" onClick={this.compile.bind(this)}>Compile</button>
         <ContextMenuTrigger id="node-editor-panel-contextmenu">
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>

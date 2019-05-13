@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Draggable from 'react-draggable'
-import ReactResizeDetector from 'react-resize-detector';
+import ReactResizeDetector from 'react-resize-detector'
 import Input from './input.jsx'
 import Output from './output.jsx'
 
