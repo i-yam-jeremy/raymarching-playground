@@ -75,14 +75,14 @@ export default class NodeEditorPanel extends React.Component {
     for (let node of this.nodeComponents) {
       if (node.props.nodeContent == SDFOutput) {
         if (outputNode != null) {
-          throw 'Multiple SDFOutput nodes'
+          throw 'Multiple SDFOutput nodes' // TODO better error messages (display to user)
         }
         outputNode = node
       }
     }
 
     if (outputNode == null) {
-      throw 'No SDFOutput node'
+      throw 'No SDFOutput node' // TODO better error messages (display to user)
     }
 
     return compileNode(outputNode)

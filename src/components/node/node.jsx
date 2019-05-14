@@ -20,6 +20,7 @@ export default class Node extends React.Component {
     this.outputComponent = null
     this.previousWidth = 0
     this.previousHeight = 0
+    this.nodeContent = null
   }
 
   onOutputConnectedToInput(input) {
@@ -74,6 +75,10 @@ export default class Node extends React.Component {
     }
   }
 
+  setNodeContent(nodeContent) {
+    this.nodeContent = nodeContent
+  }
+
   render() {
     const NodeContent = this.props.nodeContent
     return (
@@ -88,7 +93,7 @@ export default class Node extends React.Component {
             {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="node-input-label">{input.name}</p>)}
           </div>
           <div className="node-content">
-            <NodeContent ref="content" />
+            <NodeContent ref={this.setNodeContent.bind(this)} />
           </div>
           <div className="node-input-circle-container">
             {this.props.inputs.map((input, i) => <Input parent={this} key={'input-circle-' + input.name} index={i} inputName={input.name} inputType={input.type} />)}
