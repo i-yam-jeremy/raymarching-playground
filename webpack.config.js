@@ -1,6 +1,7 @@
-const path = require('path');
+const path = require('path')
+const GLSLBundlerPlugin = require('./webpack-glsl-bundler.js')
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: './index.html',
   filename: 'index.html',
@@ -33,5 +34,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [HtmlWebpackPluginConfig]
+  plugins: [HtmlWebpackPluginConfig, new GLSLBundlerPlugin()]
 }

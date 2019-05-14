@@ -8,6 +8,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
 
+    console.log(SDF_GLSL_BOILERPLATE_SOURCE)
+
     this.nodeEditor = null
   }
 

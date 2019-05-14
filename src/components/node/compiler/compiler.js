@@ -1,4 +1,4 @@
-import SDFOutput from './node-types/sdf-output.jsx'
+import SDFOutput from '../node-types/sdf-output.jsx'
 
 class CompiledNode {
 

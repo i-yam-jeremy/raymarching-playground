@@ -4,7 +4,7 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import NODE_TYPES from './node-types/index.jsx'
 import SDFOutput from './node-types/sdf-output.jsx'
-import compileNode from './compiler.js'
+import compileNode from './compiler/compiler.js'
 
 const getNextNodeDataId = (() => {
   let currentId = 0
