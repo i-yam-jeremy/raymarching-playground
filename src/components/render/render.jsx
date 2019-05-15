@@ -2,18 +2,6 @@ import React from 'react'
 import { Shaders, Node, GLSL } from 'gl-react'
 import { Surface } from 'gl-react-dom'
 
-const shaders = Shaders.create({
-  helloBlue: {
-    frag: GLSL`
-precision highp float;
-varying vec2 uv;
-uniform float blue;
-void main() {
-  gl_FragColor = vec4(uv.x, uv.y, blue, 1.0);
-}`
-  }
-});
-
 export default class Render extends React.Component {
 
   constructor(props) {
@@ -21,7 +9,13 @@ export default class Render extends React.Component {
 
     this.state = {
       width: window.innerWidth/2,
-      height: window.innerHeight
+      height: window.innerHeight,
+      shaderSource: `
+        precision highp float;
+        varying vec2 uv;
+        void main() {
+          gl_FragColor = vec4(uv.x, uv.y, 0.5, 1.0);
+        }`
     }
 
     window.addEventListener('resize', () => {
@@ -32,10 +26,21 @@ export default class Render extends React.Component {
     })
   }
 
+  setShaderSource(source) {
+    this.setState({
+      shaderSource: source
+    })
+  }
+
   render() {
+    const shaders = Shaders.create({
+      shader: {
+        frag: this.state.shaderSource
+      }
+    });
     return (
       <Surface width={this.state.width} height={this.state.height}>
-        <Node shader={shaders.helloBlue} uniforms={{ blue: 0.5 }} />
+        <Node shader={shaders.shader} uniforms={{}} />
       </Surface>
     )
   }

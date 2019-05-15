@@ -10,15 +10,21 @@ export default class App extends React.Component {
     super(props)
 
     this.nodeEditor = null
+    this.renderComponent = null
   }
 
   setNodeEditor(component) {
     this.nodeEditor = component
   }
 
+  setRenderComponent(component) {
+    this.renderComponent = component
+  }
+
   compile() {
-    if (this.nodeEditor) {
-      console.log(this.nodeEditor.compile())
+    if (this.nodeEditor && this.renderComponent) {
+      let source = this.nodeEditor.compile()
+      this.renderComponent.setShaderSource(source)
     }
   }
 
@@ -30,7 +36,7 @@ export default class App extends React.Component {
         </div>
         <div className="main-panel-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
             <button className="node-editor-compile-button" onClick={this.compile.bind(this)}>Compile</button>
-            <Render />
+            <Render ref={this.setRenderComponent.bind(this)} />
         </div>
       </div>
     )
