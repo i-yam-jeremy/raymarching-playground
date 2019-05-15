@@ -12,7 +12,10 @@ export default class Render extends React.Component {
       height: window.innerHeight,
       shaderSource: `
         precision highp float;
+
         varying vec2 uv;
+        uniform vec2 u_Resolution;
+
         void main() {
           gl_FragColor = vec4(uv.x, uv.y, 0.5, 1.0);
         }`
@@ -40,7 +43,7 @@ export default class Render extends React.Component {
     });
     return (
       <Surface width={this.state.width} height={this.state.height}>
-        <Node shader={shaders.shader} uniforms={{}} />
+        <Node shader={shaders.shader} uniforms={{u_Resolution: [this.state.width, this.state.height]}} />
       </Surface>
     )
   }

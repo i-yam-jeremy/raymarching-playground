@@ -1,6 +1,7 @@
 precision highp float;
 
 varying vec2 uv;
+uniform vec2 u_Resolution;
 
 $$NODE_FUNCTIONS$$
 
@@ -23,8 +24,10 @@ vec3 march(vec3 p, vec3 ray) {
 }
 
 void main() {
+  vec2 my_uv = uv - vec2(0.5, 0.5);
+  my_uv.x *= (u_Resolution.x/u_Resolution.y);
   vec3 camera = vec3(0, 0, -2);
-  vec3 p = vec3(uv, 0);
+  vec3 p = vec3(my_uv, 0);
   vec3 ray = normalize(p - camera);
   vec3 c = march(camera, ray);
 
