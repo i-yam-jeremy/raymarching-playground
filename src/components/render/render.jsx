@@ -16,9 +16,25 @@ void main() {
 
 export default class Render extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      width: window.innerWidth/2,
+      height: window.innerHeight
+    }
+
+    window.addEventListener('resize', () => {
+      this.setState({
+        width: window.innerWidth/2,
+        height: window.innerHeight
+      })
+    })
+  }
+
   render() {
     return (
-      <Surface width={300} height={300}>
+      <Surface width={this.state.width} height={this.state.height}>
         <Node shader={shaders.helloBlue} uniforms={{ blue: 0.5 }} />
       </Surface>
     )
