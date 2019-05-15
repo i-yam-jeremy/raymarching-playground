@@ -10,14 +10,17 @@ export default class Render extends React.Component {
     this.state = {
       width: window.innerWidth/2,
       height: window.innerHeight,
+      time: 0.0,
       shaderSource: `
         precision highp float;
 
         varying vec2 uv;
         uniform vec2 u_Resolution;
+        uniform float u_Time;
 
         void main() {
-          gl_FragColor = vec4(uv.x, uv.y, 0.5, 1.0);
+          float ignored = u_Time*u_Resolution.x > 0.0 ? 0.0 : 0.0; // just to not show warnings of unused uniforms
+          gl_FragColor = vec4(uv.x, uv.y, 0.5 + ignored, 1.0);
         }`
     }
 
@@ -27,6 +30,15 @@ export default class Render extends React.Component {
         height: window.innerHeight
       })
     })
+  }
+
+  componentDidMount() {
+    let interval = 1000 / 60
+    setInterval(() => {
+      this.setState({
+        time: this.state.time + interval/1000
+      })
+    }, interval)
   }
 
   setShaderSource(source) {
@@ -43,7 +55,7 @@ export default class Render extends React.Component {
     });
     return (
       <Surface width={this.state.width} height={this.state.height}>
-        <Node shader={shaders.shader} uniforms={{u_Resolution: [this.state.width, this.state.height]}} />
+        <Node shader={shaders.shader} uniforms={{u_Resolution: [this.state.width, this.state.height], u_Time: this.state.time}} />
       </Surface>
     )
   }
