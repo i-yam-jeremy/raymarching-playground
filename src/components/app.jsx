@@ -1,5 +1,6 @@
 import React from 'react'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
+import Render from './render/render.jsx'
 
 import '../stylesheets/node.sass'
 
@@ -7,8 +8,6 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props)
-
-    console.log(SDF_GLSL_BOILERPLATE_SOURCE)
 
     this.nodeEditor = null
   }
@@ -31,7 +30,7 @@ export default class App extends React.Component {
         </div>
         <div className="main-panel-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
             <button className="node-editor-compile-button" onClick={this.compile.bind(this)}>Compile</button>
-            <textarea style={{width: '90%', height: '90%'}}></textarea>
+            <Render />
         </div>
       </div>
     )

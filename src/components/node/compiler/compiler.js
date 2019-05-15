@@ -61,7 +61,9 @@ function combineCompiledNodes(compiledNodes) {
     mainFunctionBody += '\n'
   }
 
-  return nodeFunctions + '\n<TODO add boilerplate code>\n' + mainFunctionBody
+  return SDF_GLSL_BOILERPLATE_SOURCE
+    .replace("$$NODE_FUNCTIONS$$", nodeFunctions)
+    .replace("$$MODEL_SDF_FUNCTION_BODY$$", mainFunctionBody)
 }
 
 

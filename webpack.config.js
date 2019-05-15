@@ -16,7 +16,8 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.sass$/,
+      {
+        test: /\.sass$/,
         use: [
           { loader: "style-loader" },
           { loader: "css-loader" },
@@ -27,11 +28,13 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: "babel-loader"
-      }, {
+      },
+      {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: "babel-loader"
       }
+      // TODO make webpack recompile when *.glsl file is edited
     ]
   },
   plugins: [HtmlWebpackPluginConfig, new GLSLBundlerPlugin()]

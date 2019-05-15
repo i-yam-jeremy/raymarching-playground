@@ -2,7 +2,7 @@ const ConcatSource = require('webpack-sources/lib/ConcatSource')
 const CachedSource = require('webpack-sources/lib/CachedSource')
 const fs = require('fs')
 
-const GLSL_BOILERPLATE_SOURCE_FILE = './src/glsl/glsl-boilerplate.glsl'
+const GLSL_BOILERPLATE_SOURCE_FILE = './src/components/node/compiler/glsl-boilerplate.glsl'
 
 class GLSLBundlerPlugin {
 
