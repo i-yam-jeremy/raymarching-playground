@@ -1,5 +1,4 @@
 const path = require('path')
-const GLSLBundlerPlugin = require('./webpack-glsl-bundler.js')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
@@ -33,9 +32,12 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: "babel-loader"
+      },
+      {
+        test: /\.glsl$/i,
+        use: 'raw-loader',
       }
-      // TODO make webpack recompile when *.glsl file is edited
     ]
   },
-  plugins: [HtmlWebpackPluginConfig, new GLSLBundlerPlugin()]
+  plugins: [HtmlWebpackPluginConfig]
 }
