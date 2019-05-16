@@ -30,15 +30,28 @@ export default class Render extends React.Component {
         height: window.innerHeight
       })
     })
+
+    this.lastUpdateTime = Date.now()
+    this.loop = null
   }
 
   componentDidMount() {
-    let interval = 1000 / 60
-    setInterval(() => {
-      this.setState({
-        time: this.state.time + interval/1000
-      })
-    }, interval)
+    this.timeLoop()
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.loop)
+  }
+
+  timeLoop() {
+    let now = Date.now()
+    let deltaTime = (now - this.lastUpdateTime) / 1000
+    this.setState({
+      time: this.state.time + deltaTime
+    })
+    this.lastUpdateTime = now
+
+    this.loop = requestAnimationFrame(this.timeLoop.bind(this))
   }
 
   setShaderSource(source) {
