@@ -109,12 +109,11 @@ export default class App extends React.Component {
         >
           <button onClick={this.addTab.bind(this)}>+</button>
         </Tabs>
-        {this.state.tabs.map(tab => {
-          console.log(tab.active ? 'visible' : 'hidden')
+        {this.state.tabs.map(tab =>
           return (<div key={'tab-content-' + tab.id} style={{display: (tab.active ? 'inline': 'none'), height: '100%'}}>
             {tab.display}
           </div>)
-        })}
+        )}
       </div>
     )
   }
