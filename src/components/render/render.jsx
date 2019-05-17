@@ -2,6 +2,8 @@ import React from 'react'
 import { Shaders, Node, GLSL } from 'gl-react'
 import { Surface } from 'gl-react-dom'
 
+const TAB_HEIGHT = 39;
+
 export default class Render extends React.Component {
 
   constructor(props) {
@@ -9,7 +11,7 @@ export default class Render extends React.Component {
 
     this.state = {
       width: window.innerWidth,
-      height: window.innerHeight,
+      height: window.innerHeight-TAB_HEIGHT,
       time: 0.0,
       shaderSource: `
         precision highp float;
@@ -27,7 +29,7 @@ export default class Render extends React.Component {
     window.addEventListener('resize', () => {
       this.setState({
         width: window.innerWidth,
-        height: window.innerHeight-39
+        height: window.innerHeight-TAB_HEIGHT
       })
     })
 
