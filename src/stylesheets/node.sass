@@ -11,6 +11,8 @@ $dim-highlight-color: darken($highlight-color, 20%)
 $content-base-color: #3A3A3A
 $content-border-color: #999999
 
+$tab-height: 39px
+
 textarea
   background-color: $content-base-color
   border: 2px solid $content-border-color
@@ -44,11 +46,14 @@ body
   padding: 0px
   margin: 0px
 
+.react-tabs-container
+  height: $tab-height
+
 .main-panel-container
+  width: 100%
   position: absolute
-  display: inline-block
-  width: 50%
-  height: 100%
+  top: $tab-height
+  bottom: 0px
   overflow: scroll
   background-color: $bg-color
 
@@ -59,7 +64,7 @@ body
   margin: 0px
   padding: 0px
   width: 3000px
-  height: 1000px
+  height: 1500px
   background-size: $grid-square-size $grid-square-size
   background-image: linear-gradient(to right, $grid-color $grid-line-size, transparent $grid-line-size), linear-gradient(to bottom, $grid-color $grid-line-size, transparent $grid-line-size)
   background-color: $bg-color
