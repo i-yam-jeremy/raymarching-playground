@@ -27,7 +27,7 @@ export default class Render extends React.Component {
     window.addEventListener('resize', () => {
       this.setState({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight-39
       })
     })
 

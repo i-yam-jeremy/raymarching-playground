@@ -17,10 +17,8 @@ export default class App extends React.Component {
           content: "SDF",
           active: true,
           display: (
-            <div style={{overflow: 'hidden'}}>
-              <div className="main-panel-container">
-                <NodeEditorPanel ref={this.setNodeEditor.bind(this)} />
-              </div>
+            <div className="main-panel-container">
+              <NodeEditorPanel ref={this.setNodeEditor.bind(this)} />
             </div>
           )
         },
@@ -110,7 +108,7 @@ export default class App extends React.Component {
           <button onClick={this.addTab.bind(this)}>+</button>
         </Tabs>
         {this.state.tabs.map(tab =>
-          <div key={'tab-content-' + tab.id} style={{display: (tab.active ? 'inline': 'none'), height: '100%'}}>
+          <div key={'tab-content-' + tab.id} style={{display: (tab.active ? 'inline': 'none')}}>
             {tab.display}
           </div>
         )}
