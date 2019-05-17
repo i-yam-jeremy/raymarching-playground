@@ -4,4 +4,4 @@ import App from './components/app.jsx'
 
 ReactDOM.render(
   <App />
-  , document.body);
+  , document.getElementById('app-container'));
