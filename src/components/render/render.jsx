@@ -8,7 +8,7 @@ export default class Render extends React.Component {
     super(props)
 
     this.state = {
-      width: window.innerWidth/2,
+      width: window.innerWidth,
       height: window.innerHeight,
       time: 0.0,
       shaderSource: `
@@ -26,7 +26,7 @@ export default class Render extends React.Component {
 
     window.addEventListener('resize', () => {
       this.setState({
-        width: window.innerWidth/2,
+        width: window.innerWidth,
         height: window.innerHeight
       })
     })
