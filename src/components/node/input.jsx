@@ -71,10 +71,28 @@ class PreClickDragInput extends React.Component {
     let outputBounds = ReactDOM.findDOMNode(output).getBoundingClientRect()
     let thisBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
     this.setState({
-      x: outputBounds.x - thisBounds.x,
-      y: outputBounds.y - thisBounds.y,
+      x: outputBounds.x - thisBounds.x - 8,
+      y: outputBounds.y - thisBounds.y - 8,
     })
     this.connectedOutput = output
+  }
+
+  getConnectingLinePath() {
+    let startPoint, endPoint
+
+    if (Math.sign(this.state.x) == Math.sign(this.state.y)) {
+      startPoint = {x: 0, y: 0}
+      endPoint = {x: Math.abs(this.state.x), y: Math.abs(this.state.y)}
+    }
+    else {
+      startPoint = {x: 0, y: Math.abs(this.state.y)}
+      endPoint = {x: Math.abs(this.state.x), y: 0}
+    }
+
+    startPoint.y += 3
+    endPoint.y += 3
+
+    return `M${startPoint.x},${startPoint.y} C${endPoint.x},${startPoint.y} ${startPoint.x},${endPoint.y} ${endPoint.x},${endPoint.y}`
   }
 
   render() {
@@ -83,7 +101,11 @@ class PreClickDragInput extends React.Component {
         <div className="noselect">
           <div className={circleClassNames}>
             <span className="tooltip">{this.props.inputType}</span>
-            <div className="node-connecting-line" style={{width: this.getLineLength() + 'px', transform: 'rotate(' + this.getLineRotation() + 'deg)'}}></div>
+            <div className="svg-connecting-line-container" style={{top: (Math.min(0, this.state.y) + 8) + 'px', left: (Math.min(0, this.state.x) + 8) + 'px'}}>
+              <svg xmlns="http://www.w3.org/2000/svg" width={Math.abs(this.state.x)+6} height={Math.abs(this.state.y)+6} preserveAspectRatio="xMidYMid meet">
+                <path d={this.getConnectingLinePath()} stroke="#666666" strokeWidth={3} fill="none"/>
+              </svg>
+            </div>
           </div>
         </div>
     )
