@@ -25,7 +25,7 @@ Vec3Constant.inputs = []
 
 Vec3Constant.outputType = 'vec3'
 
-Vec3Constant.title = 'Vec3'
+Vec3Constant.title = 'Vec3 Constant'
 
 Vec3Constant.editorTypes = [NodeEditorType.SDF, NodeEditorType.SHADER]
 

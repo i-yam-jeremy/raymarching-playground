@@ -8,6 +8,11 @@ import LightDir from './light-dir.jsx'
 import SDFOutput from './sdf-output.jsx'
 import ShaderOutput from './shader-output.jsx'
 import Diffuse from './diffuse.jsx'
+import Translation from './translation.jsx'
+import X from './x.jsx'
+import Y from './y.jsx'
+import Z from './z.jsx'
+import Vec3 from './vec3.jsx'
 
 const NODE_TYPES = [
   Sphere,
@@ -19,7 +24,10 @@ const NODE_TYPES = [
   LightDir,
   SDFOutput,
   ShaderOutput,
-  Diffuse
+  Diffuse,
+  Translation,
+  X, Y, Z,
+  Vec3
 ]
 
 export default function getNodeTypes(editorType) {
