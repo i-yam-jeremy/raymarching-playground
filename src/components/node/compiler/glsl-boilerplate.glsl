@@ -4,12 +4,14 @@ varying vec2 uv;
 uniform vec2 u_Resolution;
 uniform float u_Time;
 
-$$NODE_FUNCTIONS$$
+$$SDF_NODE_FUNCTIONS$$
+
+$$SHADER_NODE_FUNCTIONS$$
 
 float scene_sdf(vec3 p) {
   vec3 center = vec3(0.5*cos(u_Time), 0.5*sin(u_Time), 0);
   p -= center;
-  $$MODEL_SDF_FUNCTION_BODY$$
+  $$SDF_MAIN_FUNCTION_BODY$$
 }
 
 vec3 scene_normal(vec3 p) {
@@ -22,16 +24,19 @@ vec3 scene_normal(vec3 p) {
   ));
 }
 
+vec3 shade(vec3 p, vec3 lightDir, vec3 normal) {
+  $$SHADER_MAIN_FUNCTION_BODY$$
+}
+
 vec3 march(vec3 p, vec3 ray) {
   float epsilon = 0.01;
 
   for (int i = 0; i < 64; i++) {
     float d = scene_sdf(p);
     if (d < epsilon) {
-      vec3 L = normalize(vec3(1, 1, -1));
-      vec3 N = scene_normal(p);
-      vec3 color = vec3(0, 1, 0);
-      return 0.8*dot(N, L)*color + 0.2*color;
+      vec3 lightDir = normalize(vec3(1, 1, -1));
+      vec3 normal = scene_normal(p);
+      return shade(p, lightDir, normal);
     }
     p += ray*d;
   }

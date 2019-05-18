@@ -5,7 +5,7 @@ class ShaderOutput extends React.Component {
 
   compile(methodName) {
     return `
-      float ${methodName}(vec3 color) {
+      vec3 ${methodName}(vec3 color) {
         return color;
       }`
   }

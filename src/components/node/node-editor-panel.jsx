@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
-import SDFOutput from './node-types/sdf-output.jsx'
-import compileNode from './compiler/compiler.js'
 
 const getNextNodeDataId = (() => {
   let currentId = 0
@@ -70,22 +68,22 @@ export default class NodeEditorPanel extends React.Component {
     }
   }
 
-  compile() {
+  getOutputNode() {
     let outputNode = null
     for (let node of this.nodeComponents) {
-      if (node.props.nodeContent == SDFOutput) {
+      if (node.props.nodeContent.outputType == null) {
         if (outputNode != null) {
-          throw 'Multiple SDFOutput nodes' // TODO better error messages (display to user)
+          throw 'Multiple output nodes' // TODO better error messages (display to user)
         }
         outputNode = node
       }
     }
 
     if (outputNode == null) {
-      throw 'No SDFOutput node' // TODO better error messages (display to user)
+      throw 'No output node' // TODO better error messages (display to user)
     }
 
-    return compileNode(outputNode)
+    return outputNode
   }
 
   render() {
