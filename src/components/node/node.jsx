@@ -89,11 +89,18 @@ export default class Node extends React.Component {
         inputs[input] = null
       }
     }
+
+    let transformStr = ReactDOM.findDOMNode(this).style.transform
+    let transformStrSplit = transformStr.split('px, ')
+    let x = parseFloat(transformStrSplit[0].split('(')[1])
+    let y = parseFloat(transformStrSplit[1].split('px')[0])
     return {
       id: this.props.nodeId,
+      x: x,
+      y: y,
       output: (this.inputConnection ? this.inputConnection.props.parent.props.nodeId : null),
       inputs: inputs
-      // TODO store node x,y coordinate
+      // TODO include node content
     }
   }
 
