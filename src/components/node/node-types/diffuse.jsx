@@ -5,7 +5,7 @@ class Diffuse extends React.Component {
 
   compile(methodName) {
     return `
-      float ${methodName}(vec3 color, vec3 lightDir, vec3 normal) {
+      vec3 ${methodName}(vec3 color, vec3 lightDir, vec3 normal) {
         return length(p) - radius;
       }`
   }
