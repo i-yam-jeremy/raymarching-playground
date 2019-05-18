@@ -1,5 +1,6 @@
 import React from 'react'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
+import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
 import Tabs from 'react-draggable-tabs'
 
@@ -18,12 +19,22 @@ export default class App extends React.Component {
           active: true,
           display: (
             <div className="tab-content-container">
-              <NodeEditorPanel ref={this.setNodeEditor.bind(this)} />
+              <NodeEditorPanel ref={this.setSDFNodeEditor.bind(this)} type={NodeEditorType.SDF} editorId="SDF-1" />
             </div>
           )
         },
         {
           id: 2,
+          content: "Shader",
+          active: false,
+          display: (
+            <div className="tab-content-container">
+              <NodeEditorPanel ref={this.setShaderNodeEditor.bind(this)} type={NodeEditorType.SHADER} editorId="SHADER-1" />
+            </div>
+          )
+        },
+        {
+          id: 3,
           content: "Render",
           active: false,
           display: (
@@ -36,12 +47,17 @@ export default class App extends React.Component {
       ]
     }
 
-    this.nodeEditor = null
+    this.sdfNodeEditor = null
+    this.shaderNodeEditor = null
     this.renderComponent = null
   }
 
-  setNodeEditor(component) {
-    this.nodeEditor = component
+  setSDFNodeEditor(component) {
+    this.sdfNodeEditor = component
+  }
+
+  setShaderNodeEditor(component) {
+    this.shaderNodeEditor = component
   }
 
   setRenderComponent(component) {
@@ -49,8 +65,8 @@ export default class App extends React.Component {
   }
 
   compile() {
-    if (this.nodeEditor && this.renderComponent) {
-      let source = this.nodeEditor.compile()
+    if (this.sdfNodeEditor && this.renderComponent) {
+      let source = this.sdfNodeEditor.compile()
       this.renderComponent.setShaderSource(source)
     }
   }

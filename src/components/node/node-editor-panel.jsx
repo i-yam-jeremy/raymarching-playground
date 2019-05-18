@@ -92,17 +92,17 @@ export default class NodeEditorPanel extends React.Component {
     this.nodeComponents = []
     return (
       <div>
-        <ContextMenuTrigger id="node-editor-panel-contextmenu">
+        <ContextMenuTrigger id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
-              <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + nodeData.id}>
+              <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
                 <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
               </ContextMenuTrigger>
             )}
           </div>
         </ContextMenuTrigger>
 
-        <ContextMenu id="node-editor-panel-contextmenu">
+        <ContextMenu id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-contextmenu">
             {NODE_TYPES.map(nodeType =>
               <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
@@ -113,7 +113,7 @@ export default class NodeEditorPanel extends React.Component {
         </ContextMenu>
 
         {this.state.nodeData.map(nodeData =>
-          <ContextMenu key={'contextmenu-node-delete-' + nodeData.id} id={'contextmenu-node-' + nodeData.id}>
+          <ContextMenu key={'contextmenu-node-delete-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
             <div className="node-editor-contextmenu">
               <MenuItem data={{nodeId: nodeData.id}} onClick={this.deleteNode.bind(this)}>
                 <div className="node-editor-contextmenu-item">Delete</div>
