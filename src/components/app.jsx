@@ -1,8 +1,9 @@
 import React from 'react'
+import Tabs from 'react-draggable-tabs'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
-import Tabs from 'react-draggable-tabs'
+import compile from './node/compiler/compiler.js'
 
 import '../stylesheets/main.sass'
 
@@ -65,8 +66,9 @@ export default class App extends React.Component {
   }
 
   compile() {
-    if (this.sdfNodeEditor && this.renderComponent) {
-      let source = this.sdfNodeEditor.compile()
+    if (this.sdfNodeEditor && this.shaderNodeEditor && this.renderComponent) {
+      let source = compile(this.sdfNodeEditor.getOutputNode(), this.shaderNodeEditor.getOutputNode())
+      console.log(source)
       this.renderComponent.setShaderSource(source)
     }
   }
