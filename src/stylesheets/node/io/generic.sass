@@ -1,0 +1,22 @@
+%node-input-output-circle
+  display: inline-block
+  background-color: lighten($base-color, 5%)
+  width: 16px
+  height: 16px
+  border-radius: 16px
+  border-width: 2px
+  border-style: solid
+  > .tooltip
+    @extend %noselect
+    background-color: lighten($base-color, 10%)
+    padding: 5px
+    border-radius: 3px
+    visibility: hidden
+  &:hover > .tooltip
+    visibility: visible
+
+.node-input-output-circle-float
+  border-color: #489E4F
+
+.node-input-output-circle-vec3
+  border-color: #BCB63E

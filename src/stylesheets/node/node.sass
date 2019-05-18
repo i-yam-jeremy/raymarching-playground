@@ -1,0 +1,23 @@
+@import theme
+@import noselect
+
+.node
+  float: left
+  display: inline-block
+  font-family: $font
+  background-color: $base-color
+  color: $font-color
+  border-radius: 16px
+  border: 2px solid $border-color
+  position: absolute
+  margin: 0px
+  padding: 10px
+
+.node-handle
+  @extend  %noselect
+  font-weight: bold
+  color: #222222
+  text-align: center
+  background-color: $highlight-color
+  border-radius: 3px
+  padding: 3px

@@ -101,7 +101,7 @@ class PreClickDragInput extends React.Component {
         <div className="noselect">
           <div className={circleClassNames}>
             <span className="tooltip">{this.props.inputType}</span>
-            <div className="svg-connecting-line-container" style={{top: (Math.min(0, this.state.y) + 8) + 'px', left: (Math.min(0, this.state.x) + 8) + 'px'}}>
+            <div className="svg-connecting-curve-container" style={{top: (Math.min(0, this.state.y) + 8) + 'px', left: (Math.min(0, this.state.x) + 8) + 'px'}}>
               <svg xmlns="http://www.w3.org/2000/svg" width={Math.abs(this.state.x)+6} height={Math.abs(this.state.y)+6} preserveAspectRatio="xMidYMid meet">
                 <path d={this.getConnectingLinePath()} stroke="#666666" strokeWidth={3} fill="none"/>
               </svg>

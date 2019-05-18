@@ -3,7 +3,7 @@ import NodeEditorPanel from './node/node-editor-panel.jsx'
 import Render from './render/render.jsx'
 import Tabs from 'react-draggable-tabs'
 
-import '../stylesheets/node.sass'
+import '../stylesheets/main.sass'
 
 export default class App extends React.Component {
 
@@ -17,7 +17,7 @@ export default class App extends React.Component {
           content: "SDF",
           active: true,
           display: (
-            <div className="main-panel-container">
+            <div className="tab-content-container">
               <NodeEditorPanel ref={this.setNodeEditor.bind(this)} />
             </div>
           )
@@ -27,7 +27,7 @@ export default class App extends React.Component {
           content: "Render",
           active: false,
           display: (
-            <div className="main-panel-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
+            <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
                 <button className="node-editor-compile-button" onClick={this.compile.bind(this)}>Compile</button>
                 <Render ref={this.setRenderComponent.bind(this)} />
             </div>
