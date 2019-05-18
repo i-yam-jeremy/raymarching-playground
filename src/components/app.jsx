@@ -66,10 +66,23 @@ export default class App extends React.Component {
   }
 
   compile() {
-    if (this.sdfNodeEditor && this.shaderNodeEditor && this.renderComponent) {
+    this.save()
+    /*if (this.sdfNodeEditor && this.shaderNodeEditor && this.renderComponent) {
       let source = compile(this.sdfNodeEditor.getOutputNode(), this.shaderNodeEditor.getOutputNode())
-      console.log(source)
       this.renderComponent.setShaderSource(source)
+    }*/
+  }
+
+  save() {
+    console.log(this.getSaveState())
+    localStorage.savedState = this.getSaveState()
+  }
+
+  getSaveState() {
+    return {
+      tabs: this.state.tabs,
+      sdfEditor: this.sdfNodeEditor.getSaveState(),
+      shaderEditor: this.shaderNodeEditor.getSaveState()
     }
   }
 

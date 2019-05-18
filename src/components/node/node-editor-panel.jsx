@@ -86,6 +86,12 @@ export default class NodeEditorPanel extends React.Component {
     return outputNode
   }
 
+  getSaveState() {
+    return {
+      nodes: this.nodeComponents.map(nodeComponent => nodeComponent.getSaveState())
+    }
+  }
+
   render() {
     this.nodeComponents = []
     return (
@@ -94,7 +100,7 @@ export default class NodeEditorPanel extends React.Component {
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
+                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={this.props.editorType + '-' + nodeData.id} />
               </ContextMenuTrigger>
             )}
           </div>

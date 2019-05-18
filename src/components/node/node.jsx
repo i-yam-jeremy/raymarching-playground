@@ -79,6 +79,24 @@ export default class Node extends React.Component {
     this.nodeContent = nodeContent
   }
 
+  getSaveState() {
+    let inputs = {}
+    for (let input in this.inputComponents) {
+      if (this.inputComponents[input].connectedOutput) {
+        inputs[input] = this.inputComponents[input].connectedOutput.props.parent.props.nodeId
+      }
+      else {
+        inputs[input] = null
+      }
+    }
+    return {
+      id: this.props.nodeId,
+      output: (this.inputConnection ? this.inputConnection.props.parent.props.nodeId : null),
+      inputs: inputs
+      // TODO store node x,y coordinate
+    }
+  }
+
   render() {
     const NodeContent = this.props.nodeContent
     return (
