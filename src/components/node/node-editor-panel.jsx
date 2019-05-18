@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
-import NODE_TYPES from './node-types/index.jsx'
+import getNodeTypes from './node-types/index.jsx'
 import SDFOutput from './node-types/sdf-output.jsx'
 import compileNode from './compiler/compiler.js'
 
@@ -104,7 +104,7 @@ export default class NodeEditorPanel extends React.Component {
 
         <ContextMenu id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-contextmenu">
-            {NODE_TYPES.map(nodeType =>
+            {getNodeTypes(this.props.editorType).map(nodeType =>
               <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
                 <div className="node-editor-contextmenu-item">{nodeType.title}</div>
               </MenuItem>

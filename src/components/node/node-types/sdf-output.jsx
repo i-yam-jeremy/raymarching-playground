@@ -1,4 +1,5 @@
 import React from 'react'
+import NodeEditorType from '../node-editor-type.js'
 
 class SDFOutput extends React.Component {
 
@@ -23,5 +24,7 @@ SDFOutput.inputs = [{type: 'float', name: 'distance'}]
 SDFOutput.outputType = null
 
 SDFOutput.title = 'SDF Output'
+
+SDFOutput.editorTypes = [NodeEditorType.SDF]
 
 export default SDFOutput

@@ -19,7 +19,7 @@ export default class App extends React.Component {
           active: true,
           display: (
             <div className="tab-content-container">
-              <NodeEditorPanel ref={this.setSDFNodeEditor.bind(this)} type={NodeEditorType.SDF} editorId="SDF-1" />
+              <NodeEditorPanel ref={this.setSDFNodeEditor.bind(this)} editorType={NodeEditorType.SDF} editorId="SDF-1" />
             </div>
           )
         },
@@ -29,7 +29,7 @@ export default class App extends React.Component {
           active: false,
           display: (
             <div className="tab-content-container">
-              <NodeEditorPanel ref={this.setShaderNodeEditor.bind(this)} type={NodeEditorType.SHADER} editorId="SHADER-1" />
+              <NodeEditorPanel ref={this.setShaderNodeEditor.bind(this)} editorType={NodeEditorType.SHADER} editorId="SHADER-1" />
             </div>
           )
         },

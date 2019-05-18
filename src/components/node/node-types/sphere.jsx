@@ -1,4 +1,5 @@
 import React from 'react'
+import NodeEditorType from '../node-editor-type.js'
 
 class Sphere extends React.Component {
 
@@ -25,5 +26,7 @@ Sphere.inputs = [
 Sphere.outputType = 'float'
 
 Sphere.title = 'Sphere'
+
+Sphere.editorTypes = [NodeEditorType.SDF]
 
 export default Sphere

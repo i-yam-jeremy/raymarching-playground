@@ -1,4 +1,5 @@
 import React from 'react'
+import NodeEditorType from '../node-editor-type.js'
 
 class FloatConstant extends React.Component {
 
@@ -23,5 +24,7 @@ FloatConstant.inputs = []
 FloatConstant.outputType = 'float'
 
 FloatConstant.title = 'Float'
+
+FloatConstant.editorTypes = [NodeEditorType.SDF, NodeEditorType.SHADER]
 
 export default FloatConstant
