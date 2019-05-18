@@ -99,7 +99,8 @@ export default class Node extends React.Component {
       x: x,
       y: y,
       output: (this.inputConnection ? this.inputConnection.props.parent.props.nodeId : null),
-      inputs: inputs
+      inputs: inputs,
+      type: this.props.nodeContent.name
       // TODO include node content
     }
   }

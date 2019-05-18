@@ -53,6 +53,12 @@ export default class App extends React.Component {
     this.renderComponent = null
   }
 
+  componentDidMount() {
+    console.log(this.sdfNodeEditor)
+
+    this.load()
+  }
+
   setSDFNodeEditor(component) {
     this.sdfNodeEditor = component
   }
@@ -67,23 +73,34 @@ export default class App extends React.Component {
 
   compile() {
     this.save()
-    /*if (this.sdfNodeEditor && this.shaderNodeEditor && this.renderComponent) {
+    if (this.sdfNodeEditor && this.shaderNodeEditor && this.renderComponent) {
       let source = compile(this.sdfNodeEditor.getOutputNode(), this.shaderNodeEditor.getOutputNode())
       this.renderComponent.setShaderSource(source)
-    }*/
+    }
   }
 
   save() {
-    console.log(this.getSaveState())
-    localStorage.savedState = this.getSaveState()
+    localStorage.savedState = JSON.stringify(this.getSaveState())
+    console.log(localStorage.savedState)
+  }
+
+  load() {
+    if (localStorage.savedState) {
+      this.loadState(JSON.parse(localStorage.savedState))
+    }
   }
 
   getSaveState() {
     return {
-      tabs: this.state.tabs,
+    //  tabs: this.state.tabs,
       sdfEditor: this.sdfNodeEditor.getSaveState(),
       shaderEditor: this.shaderNodeEditor.getSaveState()
     }
+  }
+
+  loadState(state) {
+    this.sdfNodeEditor.loadState(state.sdfEditor)
+    this.shaderNodeEditor.loadState(state.shaderEditor)
   }
 
   // From react-draggable-tabs documentation example

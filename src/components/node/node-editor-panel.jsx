@@ -92,6 +92,20 @@ export default class NodeEditorPanel extends React.Component {
     }
   }
 
+  loadState(state) {
+    let nodeData = state.nodes.map(node => {
+      return {
+        nodeType: getNodeTypes(this.props.editorType).filter(type => type.name == node.type)[0],
+        x: node.x,
+        y: node.y,
+        id: getNextNodeDataId()
+      }
+    })
+    this.setState({
+      nodeData: nodeData
+    }) // TODO add callback to update nodeComponents after React state changes
+  }
+
   render() {
     this.nodeComponents = []
     return (
@@ -100,7 +114,7 @@ export default class NodeEditorPanel extends React.Component {
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={this.props.editorType + '-' + nodeData.id} />
+                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} />
               </ContextMenuTrigger>
             )}
           </div>
