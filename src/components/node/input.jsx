@@ -71,8 +71,8 @@ class PreClickDragInput extends React.Component {
     let outputBounds = ReactDOM.findDOMNode(output).getBoundingClientRect()
     let thisBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
     this.setState({
-      x: outputBounds.x - thisBounds.x - 8,
-      y: outputBounds.y - thisBounds.y - 8,
+      x: outputBounds.x - thisBounds.x,
+      y: outputBounds.y - thisBounds.y,
     })
     this.connectedOutput = output
   }
@@ -98,7 +98,7 @@ class PreClickDragInput extends React.Component {
   render() {
     const circleClassNames = classnames('node-input-circle', 'node-input-output-circle-' + this.props.inputType)
     return (
-        <div className="noselect">
+        <div className="noselect" style={{position: 'relative'}}>
           <div className={circleClassNames}>
             <span className="tooltip">{this.props.inputType}</span>
           </div>
