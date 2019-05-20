@@ -15,7 +15,7 @@ export default class Node extends React.Component {
       height: null
     }
 
-    this.inputConnection = null
+    this.inputConnections = []
     this.inputComponents = {}
     this.outputComponent = null
     this.previousWidth = 0
@@ -24,13 +24,13 @@ export default class Node extends React.Component {
   }
 
   onOutputConnectedToInput(input) {
-    this.inputConnection = input
+    this.inputConnections.push(input)
   }
 
   onDrag(e, data) {
-    if (this.inputConnection) {
+    for (let inputConnection of this.inputConnections) {
       let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
-      this.inputConnection.onConnectedOutputMoved(data.deltaX, data.deltaY)
+      inputConnection.onConnectedOutputMoved(data.deltaX, data.deltaY)
     }
 
     for (let input of this.props.inputs) {
@@ -50,9 +50,9 @@ export default class Node extends React.Component {
     let deltaX = width - this.previousWidth
     let deltaY = height - this.previousHeight
 
-    if (this.inputConnection) {
+    for (let inputConnection of this.inputConnections) {
       let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
-      this.inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
+      inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
     }
 
     this.previousWidth = width
@@ -60,16 +60,18 @@ export default class Node extends React.Component {
   }
 
   clearConnections() {
-    if (this.inputConnection) {
-      let inputName = this.inputConnection.props.inputName
-      this.inputConnection.props.parent.inputComponents[inputName].connectedOutput = null
-      this.inputConnection = null
+    for (let inputConnection of this.inputConnections) {
+      let inputName = inputConnection.props.inputName
+      inputConnection.props.parent.inputComponents[inputName].connectedOutput = null
     }
+    this.inputConnections = []
 
     for (let input of this.props.inputs) {
       let inputComponent = this.inputComponents[input.name]
       if (inputComponent.connectedOutput) {
-        inputComponent.connectedOutput.props.parent.inputConnection = null
+        let inputConns = inputComponent.connectedOutput.props.parent.inputConnections
+        console.log(inputConns, inputConns.indexOf(inputComponent))
+        inputConns.splice(inputConns.indexOf(inputComponent), 1)
         inputComponent.connectedOutput = null
       }
     }
@@ -102,7 +104,6 @@ export default class Node extends React.Component {
       id: this.props.nodeId,
       x: x,
       y: y,
-      output: (this.inputConnection ? this.inputConnection.props.parent.props.nodeId : null),
       inputs: inputs,
       type: this.props.nodeContent.name,
       content: (typeof this.nodeContent.getSaveState == 'function' ? this.nodeContent.getSaveState() : null)
