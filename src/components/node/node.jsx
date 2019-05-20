@@ -83,7 +83,11 @@ export default class Node extends React.Component {
     let inputs = {}
     for (let input in this.inputComponents) {
       if (this.inputComponents[input].connectedOutput) {
-        inputs[input] = this.inputComponents[input].connectedOutput.props.parent.props.nodeId
+        inputs[input] = {
+          id: this.inputComponents[input].connectedOutput.props.parent.props.nodeId,
+          x: this.inputComponents[input].state.x,
+          y: this.inputComponents[input].state.y
+        }
       }
       else {
         inputs[input] = null
@@ -105,10 +109,11 @@ export default class Node extends React.Component {
     }
   }
 
-  connectInput(inputName, nodeComponent) {
+  connectInput(inputName, nodeComponent, x, y) {
     let inputComponent = this.inputComponents[inputName]
     inputComponent.onConnectWithOutput(nodeComponent.outputComponent)
     nodeComponent.onOutputConnectedToInput(inputComponent)
+    inputComponent.setState({x, y})
   }
 
   render() {
