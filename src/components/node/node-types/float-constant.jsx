@@ -17,6 +17,16 @@ class FloatConstant extends React.Component {
         </div>
     )
   }
+
+  getSaveState() {
+    return {
+      value: this.refs.value.value
+    }
+  }
+
+  loadState(state) {
+    this.refs.value.value = state.value
+  }
 }
 
 FloatConstant.inputs = []

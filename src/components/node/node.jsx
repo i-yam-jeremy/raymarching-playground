@@ -100,15 +100,13 @@ export default class Node extends React.Component {
       y: y,
       output: (this.inputConnection ? this.inputConnection.props.parent.props.nodeId : null),
       inputs: inputs,
-      type: this.props.nodeContent.name
-      // TODO include node content
+      type: this.props.nodeContent.name,
+      content: (typeof this.nodeContent.getSaveState == 'function' ? this.nodeContent.getSaveState() : null)
     }
   }
 
   connectInput(inputName, nodeComponent) {
     let inputComponent = this.inputComponents[inputName]
-    console.log(this.inputComponents, inputName)
-    console.log(this.nodeContent.constructor)
     inputComponent.onConnectWithOutput(nodeComponent.outputComponent)
     nodeComponent.onOutputConnectedToInput(inputComponent)
   }

@@ -108,6 +108,9 @@ export default class NodeEditorPanel extends React.Component {
       }
 
       for (let node of state.nodes) {
+        if (node.content) {
+          nodeComponentMap[node.id].nodeContent.loadState(node.content)
+        }
         for (let input in node.inputs) {
           let otherNodeId = node.inputs[input]
           if (otherNodeId != null) {
