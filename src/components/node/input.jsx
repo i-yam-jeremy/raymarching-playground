@@ -46,7 +46,7 @@ class PreClickDragInput extends React.Component {
     if (nextProps.dataDrag.isMouseDown) {
       if (!LineManager.isLineInProgress()) {
         if (this.connectedOutput) {
-          this.connectedOutput.props.parent.inputConnection = null
+          //this.connectedOutput.props.parent.inputConnections = null
           this.connectedOutput = null
         }
         LineManager.startLine(this)

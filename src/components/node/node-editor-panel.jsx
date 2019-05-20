@@ -96,7 +96,9 @@ export default class NodeEditorPanel extends React.Component {
         id: node.id
       }
     })
-    let maxNodeId = state.nodes.length > 0 ? state.nodes.reduce((a, b) => Math.max(a.id, b.id)) : 0
+    let maxNodeId = state.nodes
+      .map(node => node.id)
+      .reduce((a, b) => Math.max(a, b), 0)
     this.currentNodeDataId = maxNodeId+1
     this.setState({
       nodeData: nodeData
