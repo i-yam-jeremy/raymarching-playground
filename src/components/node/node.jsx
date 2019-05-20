@@ -120,7 +120,7 @@ export default class Node extends React.Component {
         position={null}
         onDrag={this.onDrag.bind(this)}>
         <div className="node">
-          <div className="node-handle">{this.props.title + ' - ' + this.props.nodeId}</div>
+          <div className="node-handle">{this.props.title}</div>
           <div className="node-input-label-container">
             {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="node-input-label">{input.name}</p>)}
           </div>

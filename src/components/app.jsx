@@ -79,7 +79,6 @@ export default class App extends React.Component {
 
   save() {
     localStorage.savedState = JSON.stringify(this.getSaveState())
-    console.log(localStorage.savedState)
   }
 
   load() {
