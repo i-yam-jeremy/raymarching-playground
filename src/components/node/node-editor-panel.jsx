@@ -101,7 +101,6 @@ export default class NodeEditorPanel extends React.Component {
     this.setState({
       nodeData: nodeData
     }, () => {
-      console.log(state.nodes) // THERE ARE DUPLICATE IDs IN SAVE STATE (which is why it is erroring)
       let nodeComponentMap = {}
       for (let component of this.nodeComponents) {
         nodeComponentMap[component.props.nodeId] = component
