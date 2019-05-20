@@ -1,0 +1,59 @@
+@import theme
+
+/*
+  Based on react-contextmenu example
+  https://github.com/vkbansal/react-contextmenu/blob/master/examples/react-contextmenu.css
+ */
+
+.react-contextmenu
+  border: 2px solid $border-color
+  border-radius: 3px
+  background-color: $base-color
+  background-clip: padding-box
+  border-radius: .25rem
+  color: $font-color
+  font-family: $font
+  font-size: 16px
+  margin: 2px 0 0
+  min-width: 160px
+  outline: none
+  opacity: 0
+  padding: 5px 0
+  pointer-events: none
+  text-align: left
+  transition: opacity 250ms ease !important
+
+
+.react-contextmenu.react-contextmenu--visible
+    opacity: 1
+    pointer-events: auto
+    z-index: 9999
+
+
+.react-contextmenu-item
+    background: 0 0
+    border: 0
+    color: $font-color
+    font-weight: 500
+    cursor: pointer
+    padding: 3px 20px
+    text-align: inherit
+    white-space: nowrap
+
+
+.react-contextmenu-item.react-contextmenu-item--active,
+.react-contextmenu-item.react-contextmenu-item--selected
+    color: #222222
+    background-color: $highlight-color
+    border-color: $highlight-color
+    text-decoration: none
+
+
+.react-contextmenu-item.react-contextmenu-submenu
+	padding: 0
+
+.react-contextmenu-item.react-contextmenu-submenu > .react-contextmenu-item:after
+    content: "▶"
+    display: inline-block
+    position: absolute
+    right: 7px

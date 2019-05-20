@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
+import { ContextMenu, SubMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
 
@@ -89,8 +89,17 @@ export default class NodeEditorPanel extends React.Component {
 
   loadState(state) {
     let nodeData = state.nodes.map(node => {
+      let nodeType
+      let nodeTypes = getNodeTypes(this.props.editorType)
+      for (let category in nodeTypes) {
+        for (let type of nodeTypes[category]) {
+          if (type.name == node.type) {
+            nodeType = type
+          }
+        }
+      }
       return {
-        nodeType: getNodeTypes(this.props.editorType).filter(type => type.name == node.type)[0],
+        nodeType: nodeType,
         x: node.x,
         y: node.y,
         id: node.id
@@ -137,21 +146,25 @@ export default class NodeEditorPanel extends React.Component {
           </div>
         </ContextMenuTrigger>
 
-        <ContextMenu id={'node-editor-panel-contextmenu-' + this.props.editorId}>
-          <div className="node-editor-contextmenu">
-            {getNodeTypes(this.props.editorType).map(nodeType =>
-              <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
-                <div className="node-editor-contextmenu-item">{nodeType.title}</div>
-              </MenuItem>
+        <ContextMenu id={'node-editor-panel-contextmenu-' + this.props.editorId} ltr>
+          <div>
+            {Object.keys(getNodeTypes(this.props.editorType)).map(category =>
+              <SubMenu key={'contextmenu-' + category} title={category} ltr>
+               {getNodeTypes(this.props.editorType)[category].map(nodeType =>
+                  <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
+                    <div>{nodeType.title}</div>
+                  </MenuItem>
+                )}
+              </SubMenu>
             )}
           </div>
         </ContextMenu>
 
         {this.state.nodeData.map(nodeData =>
           <ContextMenu key={'contextmenu-node-delete-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
-            <div className="node-editor-contextmenu">
+            <div>
               <MenuItem data={{nodeId: nodeData.id}} onClick={this.deleteNode.bind(this)}>
-                <div className="node-editor-contextmenu-item">Delete</div>
+                <div>Delete</div>
               </MenuItem>
             </div>
           </ContextMenu>

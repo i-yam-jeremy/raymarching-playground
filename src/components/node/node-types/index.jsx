@@ -14,22 +14,22 @@ import Y from './y.jsx'
 import Z from './z.jsx'
 import Vec3 from './vec3.jsx'
 
-const NODE_TYPES = [
-  Sphere,
-  FloatConstant,
-  Vec3Constant,
-  Time,
-  P,
-  Normal,
-  LightDir,
-  SDFOutput,
-  ShaderOutput,
-  Diffuse,
-  Translation,
-  X, Y, Z,
-  Vec3
-]
+const NODE_TYPES = {
+  Primitives: [Sphere],
+  Shading: [Diffuse],
+  Vector: [Translation, Vec3, X, Y, Z],
+  Constants: [FloatConstant, Vec3Constant],
+  Special: [Time, P, Normal, LightDir],
+  Output: [SDFOutput, ShaderOutput]
+}
 
 export default function getNodeTypes(editorType) {
-  return NODE_TYPES.filter(type => type.editorTypes.indexOf(editorType) != -1)
+  let obj = {}
+  for (let category in NODE_TYPES) {
+    let filteredTypes = NODE_TYPES[category].filter(type => type.editorTypes.indexOf(editorType) != -1)
+    if (filteredTypes.length > 0) {
+      obj[category] = filteredTypes
+    }
+  }
+  return obj
 }
