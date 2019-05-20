@@ -4,16 +4,6 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
 
-const getNextNodeDataId = (() => {
-  let currentId = 0
-
-  function getNextNodeDataId() {
-    return currentId++
-  }
-
-  return getNextNodeDataId
-})()
-
 export default class NodeEditorPanel extends React.Component {
 
   constructor(props) {
@@ -24,6 +14,11 @@ export default class NodeEditorPanel extends React.Component {
     }
 
     this.nodeComponents = []
+    this.currentNodeDataId = 0
+  }
+
+  getNextNodeDataId() {
+    return this.currentNodeDataId++
   }
 
   addNode(node, nodeData) {
@@ -43,7 +38,7 @@ export default class NodeEditorPanel extends React.Component {
         nodeType: data.nodeType,
         x: x,
         y: y,
-        id: getNextNodeDataId()
+        id: this.getNextNodeDataId()
       }])
     })
   }
@@ -98,12 +93,29 @@ export default class NodeEditorPanel extends React.Component {
         nodeType: getNodeTypes(this.props.editorType).filter(type => type.name == node.type)[0],
         x: node.x,
         y: node.y,
-        id: getNextNodeDataId()
+        id: node.id
       }
     })
+    let maxNodeId = state.nodes.length > 0 ? state.nodes.reduce((a, b) => Math.max(a.id, b.id)) : 0
+    this.currentNodeDataId = maxNodeId+1
     this.setState({
       nodeData: nodeData
-    }) // TODO add callback to update nodeComponents after React state changes
+    }, () => {
+      console.log(state.nodes) // THERE ARE DUPLICATE IDs IN SAVE STATE (which is why it is erroring)
+      let nodeComponentMap = {}
+      for (let component of this.nodeComponents) {
+        nodeComponentMap[component.props.nodeId] = component
+      }
+
+      for (let node of state.nodes) {
+        for (let input in node.inputs) {
+          let otherNodeId = node.inputs[input]
+          if (otherNodeId != null) {
+            nodeComponentMap[node.id].connectInput(input, nodeComponentMap[otherNodeId])
+          }
+        }
+      }
+    })
   }
 
   render() {

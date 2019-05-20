@@ -54,8 +54,6 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.sdfNodeEditor)
-
     this.load()
   }
 

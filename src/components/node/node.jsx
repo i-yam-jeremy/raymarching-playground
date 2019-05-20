@@ -105,6 +105,14 @@ export default class Node extends React.Component {
     }
   }
 
+  connectInput(inputName, nodeComponent) {
+    let inputComponent = this.inputComponents[inputName]
+    console.log(this.inputComponents, inputName)
+    console.log(this.nodeContent.constructor)
+    inputComponent.onConnectWithOutput(nodeComponent.outputComponent)
+    nodeComponent.onOutputConnectedToInput(inputComponent)
+  }
+
   render() {
     const NodeContent = this.props.nodeContent
     return (
@@ -114,7 +122,7 @@ export default class Node extends React.Component {
         position={null}
         onDrag={this.onDrag.bind(this)}>
         <div className="node">
-          <div className="node-handle">{this.props.title}</div>
+          <div className="node-handle">{this.props.title + ' - ' + this.props.nodeId}</div>
           <div className="node-input-label-container">
             {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="node-input-label">{input.name}</p>)}
           </div>
