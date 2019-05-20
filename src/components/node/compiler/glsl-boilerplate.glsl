@@ -9,8 +9,6 @@ $$SDF_NODE_FUNCTIONS$$
 $$SHADER_NODE_FUNCTIONS$$
 
 float scene_sdf(vec3 p) {
-  vec3 center = vec3(0.5*cos(u_Time), 0.5*sin(u_Time), 0);
-  p -= center;
   $$SDF_MAIN_FUNCTION_BODY$$
 }
 
