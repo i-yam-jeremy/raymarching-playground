@@ -4,16 +4,6 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
 
-const getNextNodeDataId = (() => {
-  let currentId = 0
-
-  function getNextNodeDataId() {
-    return currentId++
-  }
-
-  return getNextNodeDataId
-})()
-
 export default class NodeEditorPanel extends React.Component {
 
   constructor(props) {
@@ -24,6 +14,11 @@ export default class NodeEditorPanel extends React.Component {
     }
 
     this.nodeComponents = []
+    this.currentNodeDataId = 0
+  }
+
+  getNextNodeDataId() {
+    return this.currentNodeDataId++
   }
 
   addNode(node, nodeData) {
@@ -43,7 +38,7 @@ export default class NodeEditorPanel extends React.Component {
         nodeType: data.nodeType,
         x: x,
         y: y,
-        id: getNextNodeDataId()
+        id: this.getNextNodeDataId()
       }])
     })
   }
@@ -86,6 +81,46 @@ export default class NodeEditorPanel extends React.Component {
     return outputNode
   }
 
+  getSaveState() {
+    return {
+      nodes: this.nodeComponents.map(nodeComponent => nodeComponent.getSaveState())
+    }
+  }
+
+  loadState(state) {
+    let nodeData = state.nodes.map(node => {
+      return {
+        nodeType: getNodeTypes(this.props.editorType).filter(type => type.name == node.type)[0],
+        x: node.x,
+        y: node.y,
+        id: node.id
+      }
+    })
+    let maxNodeId = state.nodes.length > 0 ? state.nodes.reduce((a, b) => Math.max(a.id, b.id)) : 0
+    this.currentNodeDataId = maxNodeId+1
+    this.setState({
+      nodeData: nodeData
+    }, () => {
+      let nodeComponentMap = {}
+      for (let component of this.nodeComponents) {
+        nodeComponentMap[component.props.nodeId] = component
+      }
+
+      for (let node of state.nodes) {
+        if (node.content) {
+          nodeComponentMap[node.id].nodeContent.loadState(node.content)
+        }
+        for (let input in node.inputs) {
+          let inputData = node.inputs[input]
+          if (inputData) {
+            let otherNodeId = inputData.id
+            nodeComponentMap[node.id].connectInput(input, nodeComponentMap[otherNodeId], inputData.x, inputData.y)
+          }
+        }
+      }
+    })
+  }
+
   render() {
     this.nodeComponents = []
     return (
@@ -94,7 +129,7 @@ export default class NodeEditorPanel extends React.Component {
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} />
+                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} />
               </ContextMenuTrigger>
             )}
           </div>

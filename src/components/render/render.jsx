@@ -4,6 +4,18 @@ import { Surface } from 'gl-react-dom'
 
 const TAB_HEIGHT = 39;
 
+const DEFAULT_SHADER_SOURCE = `
+  precision highp float;
+
+  varying vec2 uv;
+  uniform vec2 u_Resolution;
+  uniform float u_Time;
+
+  void main() {
+    float ignored = u_Time*u_Resolution.x > 0.0 ? 0.0 : 0.0; // just to not show warnings of unused uniforms
+    gl_FragColor = vec4(uv.x, uv.y, 0.5 + ignored, 1.0);
+  }`
+
 export default class Render extends React.Component {
 
   constructor(props) {
@@ -13,17 +25,7 @@ export default class Render extends React.Component {
       width: window.innerWidth,
       height: window.innerHeight-TAB_HEIGHT,
       time: 0.0,
-      shaderSource: `
-        precision highp float;
-
-        varying vec2 uv;
-        uniform vec2 u_Resolution;
-        uniform float u_Time;
-
-        void main() {
-          float ignored = u_Time*u_Resolution.x > 0.0 ? 0.0 : 0.0; // just to not show warnings of unused uniforms
-          gl_FragColor = vec4(uv.x, uv.y, 0.5 + ignored, 1.0);
-        }`
+      shader: Shaders.create({shader: {frag: DEFAULT_SHADER_SOURCE}}).shader
     }
 
     window.addEventListener('resize', () => {
@@ -57,20 +59,20 @@ export default class Render extends React.Component {
   }
 
   setShaderSource(source) {
+    const shaders = Shaders.create({
+      shader: {
+        frag: source
+      }
+    })
     this.setState({
-      shaderSource: source
+      shader: shaders.shader
     })
   }
 
   render() {
-    const shaders = Shaders.create({
-      shader: {
-        frag: this.state.shaderSource
-      }
-    });
     return (
       <Surface width={this.state.width} height={this.state.height}>
-        <Node shader={shaders.shader} uniforms={{u_Resolution: [this.state.width, this.state.height], u_Time: this.state.time}} />
+        <Node shader={this.state.shader} uniforms={{u_Resolution: [this.state.width, this.state.height], u_Time: this.state.time}} />
       </Surface>
     )
   }

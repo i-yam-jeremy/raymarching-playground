@@ -79,6 +79,43 @@ export default class Node extends React.Component {
     this.nodeContent = nodeContent
   }
 
+  getSaveState() {
+    let inputs = {}
+    for (let input in this.inputComponents) {
+      if (this.inputComponents[input].connectedOutput) {
+        inputs[input] = {
+          id: this.inputComponents[input].connectedOutput.props.parent.props.nodeId,
+          x: this.inputComponents[input].state.x,
+          y: this.inputComponents[input].state.y
+        }
+      }
+      else {
+        inputs[input] = null
+      }
+    }
+
+    let transformStr = ReactDOM.findDOMNode(this).style.transform
+    let transformStrSplit = transformStr.split('px, ')
+    let x = parseFloat(transformStrSplit[0].split('(')[1])
+    let y = parseFloat(transformStrSplit[1].split('px')[0])
+    return {
+      id: this.props.nodeId,
+      x: x,
+      y: y,
+      output: (this.inputConnection ? this.inputConnection.props.parent.props.nodeId : null),
+      inputs: inputs,
+      type: this.props.nodeContent.name,
+      content: (typeof this.nodeContent.getSaveState == 'function' ? this.nodeContent.getSaveState() : null)
+    }
+  }
+
+  connectInput(inputName, nodeComponent, x, y) {
+    let inputComponent = this.inputComponents[inputName]
+    inputComponent.onConnectWithOutput(nodeComponent.outputComponent)
+    nodeComponent.onOutputConnectedToInput(inputComponent)
+    inputComponent.setState({x, y})
+  }
+
   render() {
     const NodeContent = this.props.nodeContent
     return (

@@ -19,6 +19,20 @@ class Vec3Constant extends React.Component {
         </div>
     )
   }
+
+  getSaveState() {
+    return {
+      x: this.refs.x.value,
+      y: this.refs.y.value,
+      z: this.refs.z.value
+    }
+  }
+
+  loadState(state) {
+    this.refs.x.value = state.x
+    this.refs.y.value = state.y
+    this.refs.z.value = state.z
+  }
 }
 
 Vec3Constant.inputs = []
