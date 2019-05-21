@@ -6,6 +6,12 @@ uniform float u_Time;
 uniform float u_CameraDistance;
 uniform vec2 u_CameraRotation;
 uniform float u_MaxRenderDistance;
+uniform int u_RenderMode;
+uniform int u_MaxSteps;
+
+#define RENDER_STANDARD 0
+#define RENDER_NORMALS 1
+#define RENDER_STEPS 2
 
 vec3 rotate(vec3 p, vec3 r) {
   mat3 xAxis = mat3(
@@ -75,7 +81,12 @@ vec3 march(vec3 p, vec3 ray) {
   float t = 0.0;
 
   int missedGridLine = 0;
-  for (int i = 0; i < 64; i++) {
+  int stepCount = 0;
+  for (int i = 0; i < 2147000000; i++) {
+    stepCount++;
+    if (i >= u_MaxSteps) {
+      break;
+    }
     if (t > u_MaxRenderDistance) {
       break;
     }
@@ -95,7 +106,15 @@ vec3 march(vec3 p, vec3 ray) {
       if (modelId == 0) {
         vec3 lightDir = normalize(vec3(1, 1, -1));
         vec3 normal = scene_normal(p);
-        return shade(p, lightDir, normal, ray);
+        if (u_RenderMode == RENDER_STANDARD) {
+          return shade(p, lightDir, normal, ray);
+        }
+        else if (u_RenderMode == RENDER_NORMALS) {
+          return normal;
+        }
+        else if (u_RenderMode == RENDER_STEPS) {
+          return vec3(float(i)/float(u_MaxSteps));
+        }
       }
       else {
         float gridSize = 1.0;
@@ -114,7 +133,15 @@ vec3 march(vec3 p, vec3 ray) {
     p += ray*d;
   }
 
-  return vec3(0, 0, 0);
+  if (u_RenderMode == RENDER_STANDARD) {
+    return vec3(0, 0, 0);
+  }
+  else if (u_RenderMode == RENDER_NORMALS) {
+    return vec3(0, 0, 0);
+  }
+  else if (u_RenderMode == RENDER_STEPS) {
+    return vec3(float(stepCount)/float(u_MaxSteps));
+  }
 }
 
 void main() {
