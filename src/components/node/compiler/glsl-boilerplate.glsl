@@ -66,8 +66,8 @@ vec3 march(vec3 p, vec3 ray) {
 void main() {
   vec2 my_uv = uv - vec2(0.5, 0.5);
   my_uv.x *= (u_Resolution.x/u_Resolution.y);
-  vec3 camera = vec3(0, 0, -u_Camera_Distance);
-  vec3 p = vec3(my_uv, 0);
+  vec3 camera = vec3(0, 0, -2.0 - u_Camera_Distance);
+  vec3 p = vec3(my_uv, -u_Camera_Distance);
   vec3 rotation = vec3(-u_Camera_Rotation.y, 0, -u_Camera_Rotation.x);
   p = rotate(p, rotation);
   camera = rotate(camera, rotation);

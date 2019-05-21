@@ -1,9 +1,11 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Shaders, Node, GLSL } from 'gl-react'
 import { Surface } from 'gl-react-dom'
 
 const TAB_HEIGHT = 39;
 const CAMERA_SPEED = 4; // radians/second
+const ZOOM_SPEED = 1/100; // scroll units / scene unit
 
 const DEFAULT_SHADER_SOURCE = `
   precision highp float;
@@ -53,6 +55,11 @@ export default class Render extends React.Component {
   }
 
   componentDidMount() {
+    ReactDOM.findDOMNode(this).addEventListener('wheel', (e) => {
+      this.setState({
+        cameraDistance: this.state.cameraDistance + e.deltaY*ZOOM_SPEED
+      })
+    })
     this.timeLoop()
   }
 
