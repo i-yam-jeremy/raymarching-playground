@@ -2,15 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Shaders, Node, GLSL } from 'gl-react'
 import { Surface } from 'gl-react-dom'
+import RenderModes from './render-modes.js'
+import RenderHUD from './render-hud.jsx'
 
 const TAB_HEIGHT = 39
 const CAMERA_SPEED = 4 // radians/second
 const ZOOM_SPEED = 1/100 // scroll units / scene unit
 const MAX_RENDER_DISTANCE = 75
-
-const RENDER_STANDARD = 0
-const RENDER_NORMALS = 1
-const RENDER_STEPS = 2
 
 const DEFAULT_SHADER_SOURCE = `
   precision highp float;
@@ -37,6 +35,7 @@ export default class Render extends React.Component {
       time: 0.0,
       cameraDistance: 2,
       cameraRotation: [0, -Math.PI/4],
+      renderMode: RenderModes.STANDARD,
       shader: Shaders.create({shader: {frag: DEFAULT_SHADER_SOURCE}}).shader
     }
 
@@ -116,6 +115,13 @@ export default class Render extends React.Component {
     })
   }
 
+  onModeChange(e) {
+    let renderModeValue = parseInt(e.target.value)
+    this.setState({
+      renderMode: renderModeValue
+    })
+  }
+
   render() {
     let uniforms = {
       u_Resolution: [this.state.width, this.state.height],
@@ -123,13 +129,16 @@ export default class Render extends React.Component {
       u_CameraDistance: this.state.cameraDistance,
       u_CameraRotation: this.state.cameraRotation,
       u_MaxRenderDistance: MAX_RENDER_DISTANCE,
-      u_RenderMode: RENDER_STEPS,
+      u_RenderMode: this.state.renderMode,
       u_MaxSteps: 64
     }
     return (
-      <Surface width={this.state.width} height={this.state.height}>
-        <Node shader={this.state.shader} uniforms={uniforms} />
-      </Surface>
+      <div>
+        <RenderHUD onModeChange={this.onModeChange.bind(this)} />
+        <Surface width={this.state.width} height={this.state.height}>
+          <Node shader={this.state.shader} uniforms={uniforms} />
+        </Surface>
+      </div>
     )
   }
 

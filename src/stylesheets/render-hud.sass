@@ -1,0 +1,20 @@
+@import theme
+@import noselect
+
+.render-hud
+  @extend  %noselect
+  position: absolute
+  z-index: 2
+  float: right
+  top: 0px
+  right: 120px
+  font-family: $font
+  color: $font-color
+  font-size: 16px
+  font-weight: bold
+  background-color: lighten($base-color, 10%)
+  border-radius: 3px
+  border: 2px solid $border-color
+  margin: 10px
+  padding-left: 10px
+  padding-right: 10px
