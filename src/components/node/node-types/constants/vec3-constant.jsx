@@ -13,9 +13,9 @@ class Vec3Constant extends React.Component {
   render() {
     return (
         <div>
-          <p>X: <input ref="x" type="number" step="any" /></p>
-          <p>Y: <input ref="y" type="number" step="any" /></p>
-          <p>Z: <input ref="z" type="number" step="any" /></p>
+          <p>X: <input ref="x" type="number" step="any" className="node-content-field" /></p>
+          <p>Y: <input ref="y" type="number" step="any" className="node-content-field" /></p>
+          <p>Z: <input ref="z" type="number" step="any" className="node-content-field" /></p>
         </div>
     )
   }

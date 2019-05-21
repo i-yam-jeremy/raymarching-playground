@@ -13,7 +13,7 @@ class FloatConstant extends React.Component {
   render() {
     return (
         <div>
-          <input ref="value" type="number" step="any" />
+          <input ref="value" type="number" step="any" className="node-content-field" />
         </div>
     )
   }
