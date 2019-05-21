@@ -10,17 +10,28 @@ export default class RenderHUD extends React.Component {
 
   render() {
     return (
-      <div className="render-hud">
-        <h4>Render Options</h4>
-        Mode:
-          <form>
-            {Object.keys(RenderModes).map(mode =>
-              <div key={mode}>
-                <input name="render-mode" type="radio" id={'render-mode-' + mode} value={RenderModes[mode]} onChange={this.props.onModeChange} />
-                <label htmlFor={'render-mode-' + mode}>{capitalize(mode)}</label>
-              </div>
-            )}
-          </form>
+      <div>
+        <div className="render-hud">
+          <h4>Render Options</h4>
+          Mode:
+            <form>
+              {Object.keys(RenderModes).map(mode =>
+                <div key={mode}>
+                  <input name="render-mode" type="radio" id={'render-mode-' + mode} value={RenderModes[mode]} onChange={this.props.onModeChange} />
+                  <label htmlFor={'render-mode-' + mode}>{capitalize(mode)}</label>
+                </div>
+              )}
+            </form>
+        </div>
+        {this.props.mode == RenderModes.STEPS ? (
+          <div className="render-hud-step-gradient-container">
+            <div className="render-hud-step-gradient">
+              <div className="render-hud-step-gradient-number-left">0</div>
+              <div className="render-hud-step-gradient-number-middle">{this.props.maxSteps/2}</div>
+              <div className="render-hud-step-gradient-number-right">{this.props.maxSteps}</div>
+            </div>
+          </div>
+        ) : null}
       </div>
     )
   }

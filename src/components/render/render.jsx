@@ -135,16 +135,7 @@ export default class Render extends React.Component {
     }
     return (
       <div>
-        <RenderHUD onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode} />
-        {this.state.renderMode == RenderModes.STEPS ? (
-          <div className="render-hud-step-gradient-container">
-            <div className="render-hud-step-gradient">
-              <div className="render-hud-step-gradient-number-left">0</div>
-              <div className="render-hud-step-gradient-number-middle">{this.state.maxSteps/2}</div>
-              <div className="render-hud-step-gradient-number-right">{this.state.maxSteps}</div>
-            </div>
-          </div>
-        ) : null}
+        <RenderHUD onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode} maxSteps={this.state.maxSteps} />
         <Surface width={this.state.width} height={this.state.height}>
           <Node shader={this.state.shader} uniforms={uniforms} />
         </Surface>
