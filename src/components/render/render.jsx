@@ -6,6 +6,7 @@ import { Surface } from 'gl-react-dom'
 const TAB_HEIGHT = 39;
 const CAMERA_SPEED = 4; // radians/second
 const ZOOM_SPEED = 1/100; // scroll units / scene unit
+const MAX_RENDER_DISTANCE = 75;
 
 const DEFAULT_SHADER_SOURCE = `
   precision highp float;
@@ -115,8 +116,9 @@ export default class Render extends React.Component {
     let uniforms = {
       u_Resolution: [this.state.width, this.state.height],
       u_Time: this.state.time,
-      u_Camera_Distance: this.state.cameraDistance,
-      u_Camera_Rotation: this.state.cameraRotation
+      u_CameraDistance: this.state.cameraDistance,
+      u_CameraRotation: this.state.cameraRotation,
+      u_MaxRenderDistance: MAX_RENDER_DISTANCE
     }
     return (
       <Surface width={this.state.width} height={this.state.height}>

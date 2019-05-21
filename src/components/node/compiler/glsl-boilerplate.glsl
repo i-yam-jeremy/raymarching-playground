@@ -3,8 +3,9 @@ precision highp float;
 varying vec2 uv;
 uniform vec2 u_Resolution;
 uniform float u_Time;
-uniform float u_Camera_Distance;
-uniform vec2 u_Camera_Rotation;
+uniform float u_CameraDistance;
+uniform vec2 u_CameraRotation;
+uniform float u_MaxRenderDistance;
 
 vec3 rotate(vec3 p, vec3 r) {
   mat3 xAxis = mat3(
@@ -71,9 +72,14 @@ vec3 shade(vec3 p, vec3 lightDir, vec3 normal) {
 
 vec3 march(vec3 p, vec3 ray) {
   float epsilon = 0.01;
+  float t = 0.0;
 
   int missedGridLine = 0;
   for (int i = 0; i < 64; i++) {
+    if (t > u_MaxRenderDistance) {
+      break;
+    }
+
     float d;
     int modelId;
     if (missedGridLine == 0) {
@@ -104,6 +110,7 @@ vec3 march(vec3 p, vec3 ray) {
         }
       }
     }
+    t += d;
     p += ray*d;
   }
 
@@ -113,9 +120,9 @@ vec3 march(vec3 p, vec3 ray) {
 void main() {
   vec2 my_uv = uv - vec2(0.5, 0.5);
   my_uv.x *= (u_Resolution.x/u_Resolution.y);
-  vec3 camera = vec3(0, 0, -2.0 - u_Camera_Distance);
-  vec3 p = vec3(my_uv, -u_Camera_Distance);
-  vec3 rotation = vec3(-u_Camera_Rotation.y, 0, -u_Camera_Rotation.x);
+  vec3 camera = vec3(0, 0, -2.0 - u_CameraDistance);
+  vec3 p = vec3(my_uv, -u_CameraDistance);
+  vec3 rotation = vec3(-u_CameraRotation.y, 0, -u_CameraRotation.x);
   p = rotate(p, rotation);
   camera = rotate(camera, rotation);
   vec3 ray = normalize(p - camera);
