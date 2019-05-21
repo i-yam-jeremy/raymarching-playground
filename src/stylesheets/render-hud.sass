@@ -9,7 +9,7 @@ $render-hud-step-gradient-width: 150px
   z-index: 2
   float: right
   top: 0px
-  right: 120px
+  right: 20px
   font-family: $font
   color: $font-color
   font-size: 16px
@@ -32,24 +32,34 @@ $render-hud-step-gradient-width: 150px
     -moz-appearance: radio
     appearance: radio
 
-.render-hud-step-gradient
+.render-hud-step-gradient-container
+  @extend  %noselect
   position: absolute
   float: right
   right: 0px
   bottom: 0px
   margin: 20px
+  z-index: 2
+  font-family: $font
+  color: $font-color
+  font-size: 16px
+  font-weight: bold
+  background-color: rgba(0,0,0,0.8)
+  padding: 28px
+  width: 150px
+  border: 1px solid #555555
+
+.render-hud-step-gradient
+  position: absolute
   background-image: linear-gradient(to right, #000000,#FFFFFF)
   width: $render-hud-step-gradient-width
   height: 20px
-  //border: 2px solid #333333
-  z-index: 5
+  border: 2px solid #333333
 
 %render-hud-step-gradient-number
   @extend %noselect
   position: absolute
   top: -16px
-  font-family: $font
-  color: #000000
   font-size: 14px
   font-weight: bold
 
