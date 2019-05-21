@@ -10,6 +10,8 @@ const DEFAULT_SHADER_SOURCE = `
   varying vec2 uv;
   uniform vec2 u_Resolution;
   uniform float u_Time;
+  uniform float u_Camera_Distance;
+  uniform vec2 u_Camera_Rotation;
 
   void main() {
     float ignored = u_Time*u_Resolution.x > 0.0 ? 0.0 : 0.0; // just to not show warnings of unused uniforms
@@ -70,9 +72,15 @@ export default class Render extends React.Component {
   }
 
   render() {
+    let uniforms = {
+      u_Resolution: [this.state.width, this.state.height],
+      u_Time: this.state.time,
+      u_Camera_Distance: 2,
+      u_Camera_Rotation: [this.state.time/2, -0.5]
+    }
     return (
       <Surface width={this.state.width} height={this.state.height}>
-        <Node shader={this.state.shader} uniforms={{u_Resolution: [this.state.width, this.state.height], u_Time: this.state.time}} />
+        <Node shader={this.state.shader} uniforms={uniforms} />
       </Surface>
     )
   }
