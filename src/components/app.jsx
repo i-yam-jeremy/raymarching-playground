@@ -40,7 +40,6 @@ export default class App extends React.Component {
           active: false,
           display: (
             <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
-                <button className="node-editor-compile-button" onClick={this.compile.bind(this)}>Compile</button>
                 <Render ref={this.setRenderComponent.bind(this)} />
             </div>
           )
@@ -118,6 +117,14 @@ export default class App extends React.Component {
         active: tab.id === selectedID
       }));
       return { tabs: newTabs };
+    }, () => {
+      for (let tab of this.state.tabs) {
+        if (tab.id == selectedID) {
+          if (tab.content == "Render") {
+            this.compile()
+          }
+        }
+      }
     });
   }
 
