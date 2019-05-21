@@ -66,7 +66,7 @@ vec2 sdf(vec3 p) {
   }
 }
 
-vec3 shade(vec3 p, vec3 lightDir, vec3 normal) {
+vec3 shade(vec3 p, vec3 lightDir, vec3 normal, vec3 rayDir) {
   $$SHADER_MAIN_FUNCTION_BODY$$
 }
 
@@ -95,7 +95,7 @@ vec3 march(vec3 p, vec3 ray) {
       if (modelId == 0) {
         vec3 lightDir = normalize(vec3(1, 1, -1));
         vec3 normal = scene_normal(p);
-        return shade(p, lightDir, normal);
+        return shade(p, lightDir, normal, ray);
       }
       else {
         float gridSize = 1.0;
