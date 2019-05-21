@@ -71,7 +71,7 @@ vec3 shade(vec3 p, vec3 lightDir, vec3 normal) {
 }
 
 vec3 march(vec3 p, vec3 ray) {
-  float epsilon = 0.01;
+  float epsilon = 0.001;
   float t = 0.0;
 
   int missedGridLine = 0;
