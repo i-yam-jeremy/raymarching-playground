@@ -31,7 +31,7 @@ export default class Render extends React.Component {
       height: window.innerHeight-TAB_HEIGHT,
       time: 0.0,
       cameraDistance: 2,
-      cameraRotation: [0, 0],
+      cameraRotation: [0, -Math.PI/4],
       shader: Shaders.create({shader: {frag: DEFAULT_SHADER_SOURCE}}).shader
     }
 

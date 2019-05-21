@@ -43,6 +43,28 @@ vec3 scene_normal(vec3 p) {
   ));
 }
 
+float sdBox( vec3 p, vec3 b )
+{
+  vec3 d = abs(p) - b;
+  return length(max(d,0.0))
+         + min(max(d.x,max(d.y,d.z)),0.0); // remove this line for an only partially signed sdf
+}
+
+vec2 sdf(vec3 p) {
+  float scene_d = scene_sdf(p);
+
+  vec3 c = vec3(1, 1, 0);
+  p = mod(p,c)-0.5*c;
+  float plane_d = sdBox(p, vec3(1.0, 1.0, 0.001));
+
+  if (scene_d < plane_d) {
+    return vec2(scene_d, 0);
+  }
+  else {
+    return vec2(plane_d, 1);
+  }
+}
+
 vec3 shade(vec3 p, vec3 lightDir, vec3 normal) {
   $$SHADER_MAIN_FUNCTION_BODY$$
 }
@@ -50,17 +72,42 @@ vec3 shade(vec3 p, vec3 lightDir, vec3 normal) {
 vec3 march(vec3 p, vec3 ray) {
   float epsilon = 0.01;
 
+  int missedGridLine = 0;
   for (int i = 0; i < 64; i++) {
-    float d = scene_sdf(p);
+    float d;
+    int modelId;
+    if (missedGridLine == 0) {
+      vec2 d_data = sdf(p);
+      d = d_data.x;
+      modelId = int(d_data.y);
+    }
+    else {
+      d = scene_sdf(p);
+      modelId = 0;
+    }
     if (d < epsilon) {
-      vec3 lightDir = normalize(vec3(1, 1, -1));
-      vec3 normal = scene_normal(p);
-      return shade(p, lightDir, normal);
+      if (modelId == 0) {
+        vec3 lightDir = normalize(vec3(1, 1, -1));
+        vec3 normal = scene_normal(p);
+        return shade(p, lightDir, normal);
+      }
+      else {
+        float gridSize = 1.0;
+        float modX = mod(p.x, gridSize) / gridSize;
+        float modY = mod(p.y, gridSize) / gridSize;
+        float lineWidth = 1.0/(30.0+length(p));
+        if (max(modX, modY) > (1.0-lineWidth)) {
+          return vec3(0.4*(1.0/(1.0+0.05*length(p))));
+        }
+        else {
+          missedGridLine = 1;
+        }
+      }
     }
     p += ray*d;
   }
 
-  return vec3(0, 0, 1);
+  return vec3(0, 0, 0);
 }
 
 void main() {
