@@ -3,6 +3,7 @@ import { Shaders, Node, GLSL } from 'gl-react'
 import { Surface } from 'gl-react-dom'
 
 const TAB_HEIGHT = 39;
+const CAMERA_SPEED = 4; // radians/second
 
 const DEFAULT_SHADER_SOURCE = `
   precision highp float;
@@ -27,6 +28,8 @@ export default class Render extends React.Component {
       width: window.innerWidth,
       height: window.innerHeight-TAB_HEIGHT,
       time: 0.0,
+      cameraDistance: 2,
+      cameraRotation: [0, 0],
       shader: Shaders.create({shader: {frag: DEFAULT_SHADER_SOURCE}}).shader
     }
 
@@ -35,6 +38,14 @@ export default class Render extends React.Component {
         width: window.innerWidth,
         height: window.innerHeight-TAB_HEIGHT
       })
+    })
+
+    this.keysDown = {}
+    window.addEventListener('keydown', (e) => {
+      this.keysDown[e.keyCode] = true
+    })
+    window.addEventListener('keyup', (e) => {
+      this.keysDown[e.keyCode] = false
     })
 
     this.lastUpdateTime = Date.now()
@@ -49,14 +60,36 @@ export default class Render extends React.Component {
     cancelAnimationFrame(this.loop)
   }
 
+  getNewCameraPos(cameraRotation, keysDown, deltaTime) {
+    let deltaTheta = CAMERA_SPEED*deltaTime
+    if (keysDown[37]) {
+      cameraRotation[0] -= deltaTheta
+    }
+    if (keysDown[39]) {
+      cameraRotation[0] += deltaTheta
+    }
+    if (keysDown[38]) {
+      cameraRotation[1] += deltaTheta
+    }
+    if (keysDown[40]) {
+      cameraRotation[1] -= deltaTheta
+    }
+
+    return cameraRotation
+  }
+
   timeLoop() {
     let now = Date.now()
-    let deltaTime = (now - this.lastUpdateTime) / 1000
-    this.setState({
-      time: this.state.time + deltaTime
-    })
-    this.lastUpdateTime = now
 
+
+    let deltaTime = (now - this.lastUpdateTime) / 1000
+    let cameraRotation = this.getNewCameraPos(this.state.cameraRotation, this.keysDown, deltaTime)
+    this.setState({
+      time: this.state.time + deltaTime,
+      cameraRotation: cameraRotation
+    })
+
+    this.lastUpdateTime = now
     this.loop = requestAnimationFrame(this.timeLoop.bind(this))
   }
 
@@ -75,8 +108,8 @@ export default class Render extends React.Component {
     let uniforms = {
       u_Resolution: [this.state.width, this.state.height],
       u_Time: this.state.time,
-      u_Camera_Distance: 2,
-      u_Camera_Rotation: [this.state.time/2, -0.5]
+      u_Camera_Distance: this.state.cameraDistance,
+      u_Camera_Rotation: this.state.cameraRotation
     }
     return (
       <Surface width={this.state.width} height={this.state.height}>
