@@ -25,7 +25,7 @@ export default class RenderHUD extends React.Component {
                 </div>
               )}
             </form>
-          <p>Time: {numberToTwoDecimalPlacesString(this.props.time)}</p>
+          <p>Time: <span onClick={this.props.toggleTimePlaying} style={{fontWeight: '900'}}>{this.props.timePlaying ? '||' : '▶'}</span>{numberToTwoDecimalPlacesString(this.props.time)}</p>
         </div>
         {this.props.mode == RenderModes.STEPS ? (
           <div className="render-hud-step-gradient-container">

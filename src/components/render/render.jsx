@@ -37,6 +37,7 @@ export default class Render extends React.Component {
       cameraRotation: [0, -Math.PI/4],
       renderMode: RenderModes.STANDARD,
       maxSteps: 64,
+      timePlaying: true,
       shader: Shaders.create({shader: {frag: DEFAULT_SHADER_SOURCE}}).shader
     }
 
@@ -97,7 +98,7 @@ export default class Render extends React.Component {
     let deltaTime = (now - this.lastUpdateTime) / 1000
     let cameraRotation = this.getNewCameraPos(this.state.cameraRotation, this.keysDown, deltaTime)
     this.setState({
-      time: this.state.time + deltaTime,
+      time: this.state.time + (this.state.timePlaying ? deltaTime : 0),
       cameraRotation: cameraRotation
     })
 
@@ -123,6 +124,12 @@ export default class Render extends React.Component {
     })
   }
 
+  toggleTimePlaying() {
+    this.setState({
+      timePlaying: !this.state.timePlaying
+    })
+  }
+
   render() {
     let uniforms = {
       u_Resolution: [this.state.width, this.state.height],
@@ -135,7 +142,10 @@ export default class Render extends React.Component {
     }
     return (
       <div>
-        <RenderHUD onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode} maxSteps={this.state.maxSteps} time={this.state.time} />
+        <RenderHUD
+          onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode}
+          maxSteps={this.state.maxSteps}
+          time={this.state.time} timePlaying={this.state.timePlaying} toggleTimePlaying={this.toggleTimePlaying.bind(this)} />
         <Surface width={this.state.width} height={this.state.height}>
           <Node shader={this.state.shader} uniforms={uniforms} />
         </Surface>
