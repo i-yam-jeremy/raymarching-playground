@@ -13,9 +13,16 @@ import X from './x.jsx'
 import Y from './y.jsx'
 import Z from './z.jsx'
 import Vec3 from './vec3.jsx'
+import Union from './union.jsx'
+import Subtraction from './subtraction.jsx'
+import Intersection from './intersection.jsx'
+import SmoothUnion from './smooth-union.jsx'
+import SmoothSubtraction from './smooth-subtraction.jsx'
+import SmoothIntersection from './smooth-intersection.jsx'
 
 const NODE_TYPES = {
   Primitives: [Sphere],
+  Operations: [Union, SmoothUnion, Subtraction, SmoothSubtraction, Intersection, SmoothIntersection],
   Shading: [Diffuse],
   Vector: [Translation, Vec3, X, Y, Z],
   Constants: [FloatConstant, Vec3Constant],
