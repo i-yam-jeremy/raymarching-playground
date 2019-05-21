@@ -12,13 +12,16 @@ export default class RenderHUD extends React.Component {
     return (
       <div className="render-hud">
         <h4>Render Options</h4>
-        <p>Mode:
-          <select className="node-content-field" onChange={this.props.onModeChange}>
+        Mode:
+          <form>
             {Object.keys(RenderModes).map(mode =>
-              <option key={mode} value={RenderModes[mode]}>{capitalize(mode)}</option>
+              <div key={mode}>
+                <input name="render-mode" type="radio" id={'render-mode-' + mode} value={RenderModes[mode]} onChange={this.props.onModeChange} />
+                <label htmlFor={'render-mode-' + mode}>{capitalize(mode)}</label>
+              </div>
             )}
-          </select>
-        </p>
+          </form>
+
       </div>
     )
   }
