@@ -1,33 +1,19 @@
-import Sphere from './sphere.jsx'
-import FloatConstant from './float-constant.jsx'
-import Vec3Constant from './vec3-constant.jsx'
-import Time from './time.jsx'
-import P from './p.jsx'
-import Normal from './normal.jsx'
-import LightDir from './light-dir.jsx'
-import SDFOutput from './sdf-output.jsx'
-import ShaderOutput from './shader-output.jsx'
-import Diffuse from './diffuse.jsx'
-import Translation from './translation.jsx'
-import X from './x.jsx'
-import Y from './y.jsx'
-import Z from './z.jsx'
-import Vec3 from './vec3.jsx'
-import Union from './union.jsx'
-import Subtraction from './subtraction.jsx'
-import Intersection from './intersection.jsx'
-import SmoothUnion from './smooth-union.jsx'
-import SmoothSubtraction from './smooth-subtraction.jsx'
-import SmoothIntersection from './smooth-intersection.jsx'
+import PRIMITIVES from './primitives'
+import OPERATIONS from './operations'
+import SHADING from './shading'
+import VECTOR from './vector'
+import CONSTANTS from './constants'
+import SPECIAL from './special'
+import OUTPUT from './output'
 
 const NODE_TYPES = {
-  Primitives: [Sphere],
-  Operations: [Union, SmoothUnion, Subtraction, SmoothSubtraction, Intersection, SmoothIntersection],
-  Shading: [Diffuse],
-  Vector: [Translation, Vec3, X, Y, Z],
-  Constants: [FloatConstant, Vec3Constant],
-  Special: [Time, P, Normal, LightDir],
-  Output: [SDFOutput, ShaderOutput]
+  Primitives: PRIMITIVES,
+  Operations: OPERATIONS,
+  Shading: SHADING,
+  Vector: VECTOR,
+  Constants: CONSTANTS,
+  Special: SPECIAL,
+  Output: OUTPUT
 }
 
 export default function getNodeTypes(editorType) {

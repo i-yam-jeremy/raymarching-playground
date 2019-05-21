@@ -1,15 +1,15 @@
 import React from 'react'
-import NodeEditorType from '../node-editor-type.js'
+import NodeEditorType from '../../node-editor-type.js'
 
 /*
   Implemented from https://iquilezles.org/www/articles/distfunctions/distfunctions.htm
 */
-class Subtraction extends React.Component {
+class Intersection extends React.Component {
 
   compile(methodName) {
     return `
       float ${methodName}(float d1, float d2) {
-        return max(-d1, d2);
+        return max(d1, d2);
       }`
   }
 
@@ -21,15 +21,15 @@ class Subtraction extends React.Component {
   }
 }
 
-Subtraction.inputs = [
+Intersection.inputs = [
   {type: 'float', name: 'd1'},
   {type: 'float', name: 'd2'}
 ]
 
-Subtraction.outputType = 'float'
+Intersection.outputType = 'float'
 
-Subtraction.title = 'Subtraction'
+Intersection.title = 'Intersection'
 
-Subtraction.editorTypes = [NodeEditorType.SDF]
+Intersection.editorTypes = [NodeEditorType.SDF]
 
-export default Subtraction
+export default Intersection

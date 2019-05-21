@@ -1,5 +1,5 @@
 import React from 'react'
-import NodeEditorType from '../node-editor-type.js'
+import NodeEditorType from '../../node-editor-type.js'
 
 class Time extends React.Component {
 
