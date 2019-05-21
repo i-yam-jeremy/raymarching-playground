@@ -38,6 +38,7 @@ export default class Render extends React.Component {
       renderMode: RenderModes.STANDARD,
       maxSteps: 64,
       timePlaying: true,
+      fps: 60,
       shader: Shaders.create({shader: {frag: DEFAULT_SHADER_SOURCE}}).shader
     }
 
@@ -58,6 +59,7 @@ export default class Render extends React.Component {
 
     this.lastUpdateTime = Date.now()
     this.loop = null
+    this.fpsTimeAccumulator = 0
   }
 
   componentDidMount() {
@@ -91,15 +93,31 @@ export default class Render extends React.Component {
     return cameraRotation
   }
 
+  getUpdatedFPS(deltaTime) {
+    this.fpsTimeAccumulator += deltaTime
+    this.fpsFrameAccumulator++
+    if (this.fpsTimeAccumulator > 1) {
+      let fps = this.fpsFrameAccumulator / this.fpsTimeAccumulator
+      this.fpsFrameAccumulator = 0
+      this.fpsTimeAccumulator = 0
+      return fps
+    }
+    else {
+      return this.state.fps
+    }
+  }
+
   timeLoop() {
     let now = Date.now()
 
 
     let deltaTime = (now - this.lastUpdateTime) / 1000
+    let updatedFPS = this.getUpdatedFPS(deltaTime)
     let cameraRotation = this.getNewCameraPos(this.state.cameraRotation, this.keysDown, deltaTime)
     this.setState({
       time: this.state.time + (this.state.timePlaying ? deltaTime : 0),
-      cameraRotation: cameraRotation
+      cameraRotation: cameraRotation,
+      fps: updatedFPS
     })
 
     this.lastUpdateTime = now
@@ -154,7 +172,9 @@ export default class Render extends React.Component {
         <RenderHUD
           onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode}
           maxSteps={this.state.maxSteps} setMaxSteps={this.setMaxSteps.bind(this)}
-          time={this.state.time} timePlaying={this.state.timePlaying} toggleTimePlaying={this.toggleTimePlaying.bind(this)} />
+          time={this.state.time} timePlaying={this.state.timePlaying} toggleTimePlaying={this.toggleTimePlaying.bind(this)}
+          fps={this.state.fps}
+          />
       </div>
     )
   }

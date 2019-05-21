@@ -8,8 +8,9 @@ function capitalize(str) {
   return str[0].toUpperCase() + str.substring(1).toLowerCase()
 }
 
-function numberToTwoDecimalPlacesString(n) {
-  return parseFloat(Math.round(n*10)/10).toFixed(1);
+function roundNumber(n, decimalPlaces) {
+  let m = Math.pow(10,decimalPlaces)
+  return parseFloat(Math.round(n*m)/m).toFixed(decimalPlaces);
 }
 
 export default class RenderHUD extends React.Component {
@@ -44,7 +45,7 @@ export default class RenderHUD extends React.Component {
                 </div>
               )}
             </form>
-          <p>Time: <span onClick={this.props.toggleTimePlaying} style={{fontWeight: '900'}}>{this.props.timePlaying ? '||' : '▶'}</span>{numberToTwoDecimalPlacesString(this.props.time)}</p>
+          <p>Time: <span onClick={this.props.toggleTimePlaying} style={{fontWeight: '900'}}>{this.props.timePlaying ? '||' : '▶'}</span>{roundNumber(this.props.time, 1)}</p>
           <div style={{height: '40px'}}>
             <Slider ref="maxStepsSlider" onAfterChange={() => this.props.setMaxSteps(Math.pow(2,this.refs.maxStepsSlider.state.value))}
               min={0} max={12} defaultValue={6} handle={handle}
@@ -60,6 +61,7 @@ export default class RenderHUD extends React.Component {
               railStyle={{ backgroundColor: '#333333', height: 5 }}
             />
           </div>
+          <p>FPS: {Math.round(this.props.fps)}</p>
         </div>
         {this.props.mode == RenderModes.STEPS ? (
           <div className="render-hud-step-gradient-container">

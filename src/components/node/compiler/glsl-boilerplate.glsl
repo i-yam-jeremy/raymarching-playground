@@ -140,7 +140,12 @@ vec3 march(vec3 p, vec3 ray) {
     return vec3(0, 0, 0);
   }
   else if (u_RenderMode == RENDER_STEPS) {
-    return vec3(float(stepCount)/float(u_MaxSteps));
+    if (stepCount >= u_MaxSteps) {
+      return vec3(1, 0, 1);
+    }
+    else {
+      return vec3(float(stepCount)/float(u_MaxSteps));
+    }
   }
 }
 
