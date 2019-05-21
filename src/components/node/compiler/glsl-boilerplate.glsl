@@ -120,10 +120,6 @@ void main() {
   camera = rotate(camera, rotation);
   vec3 ray = normalize(p - camera);
   vec3 c = march(camera, ray);
-<<<<<<< HEAD
   c = pow(max(c, vec3(0)), vec3(0.4545)); // gamma correction
-=======
-  c = pow(col, vec3(0.4545)); // gamma correction
->>>>>>> 61e0a87dd1745adf694f59f5b6cbda9b9d0a422d
   gl_FragColor = vec4(c, 1.0);
 }
