@@ -135,7 +135,7 @@ export default class Render extends React.Component {
     }
     return (
       <div>
-        <RenderHUD onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode} maxSteps={this.state.maxSteps} />
+        <RenderHUD onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode} maxSteps={this.state.maxSteps} time={this.state.time} />
         <Surface width={this.state.width} height={this.state.height}>
           <Node shader={this.state.shader} uniforms={uniforms} />
         </Surface>

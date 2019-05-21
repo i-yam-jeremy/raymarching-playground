@@ -5,6 +5,9 @@ function capitalize(str) {
   return str[0].toUpperCase() + str.substring(1).toLowerCase()
 }
 
+function numberToTwoDecimalPlacesString(n) {
+  return parseFloat(Math.round(n*10)/10).toFixed(1);
+}
 
 export default class RenderHUD extends React.Component {
 
@@ -22,6 +25,7 @@ export default class RenderHUD extends React.Component {
                 </div>
               )}
             </form>
+          <p>Time: {numberToTwoDecimalPlacesString(this.props.time)}</p>
         </div>
         {this.props.mode == RenderModes.STEPS ? (
           <div className="render-hud-step-gradient-container">
