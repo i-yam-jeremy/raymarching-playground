@@ -148,6 +148,12 @@ export default class Render extends React.Component {
     })
   }
 
+  restartTime() {
+    this.setState({
+      time: 0
+    })
+  }
+
   setMaxSteps(newMaxSteps) {
     this.setState({
       maxSteps: newMaxSteps
@@ -172,7 +178,7 @@ export default class Render extends React.Component {
         <RenderHUD
           onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode}
           maxSteps={this.state.maxSteps} setMaxSteps={this.setMaxSteps.bind(this)}
-          time={this.state.time} timePlaying={this.state.timePlaying} toggleTimePlaying={this.toggleTimePlaying.bind(this)}
+          time={this.state.time} timePlaying={this.state.timePlaying} toggleTimePlaying={this.toggleTimePlaying.bind(this)} restartTime={this.restartTime.bind(this)}
           fps={this.state.fps}
           />
       </div>

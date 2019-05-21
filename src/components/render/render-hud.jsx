@@ -45,7 +45,7 @@ export default class RenderHUD extends React.Component {
                 </div>
               )}
             </form>
-          <p>Time: <span onClick={this.props.toggleTimePlaying} style={{fontWeight: '900'}}>{this.props.timePlaying ? '||' : '▶'}</span>{roundNumber(this.props.time, 1)}</p>
+          <p>Time: <span onClick={this.props.restartTime}>◀</span><span onClick={this.props.toggleTimePlaying} style={{fontWeight: '900'}}>{this.props.timePlaying ? '||' : '▶'}</span>{roundNumber(this.props.time, 1)}</p>
           <div style={{height: '40px'}}>
             <Slider ref="maxStepsSlider" onAfterChange={() => this.props.setMaxSteps(Math.pow(2,this.refs.maxStepsSlider.state.value))}
               min={0} max={12} defaultValue={6} handle={handle}
