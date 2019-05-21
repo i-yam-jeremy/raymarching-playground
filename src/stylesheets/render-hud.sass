@@ -1,6 +1,8 @@
 @import theme
 @import noselect
 
+$render-hud-step-gradient-width: 150px
+
 .render-hud
   @extend  %noselect
   position: absolute
@@ -29,3 +31,36 @@
     color: $font-color
     -moz-appearance: radio
     appearance: radio
+
+.render-hud-step-gradient
+  position: absolute
+  float: right
+  right: 0px
+  bottom: 0px
+  margin: 20px
+  background-image: linear-gradient(to right, #000000,#FFFFFF)
+  width: $render-hud-step-gradient-width
+  height: 20px
+  //border: 2px solid #333333
+  z-index: 5
+
+%render-hud-step-gradient-number
+  @extend %noselect
+  position: absolute
+  top: -16px
+  font-family: $font
+  color: #000000
+  font-size: 14px
+  font-weight: bold
+
+.render-hud-step-gradient-number-left
+  @extend %render-hud-step-gradient-number
+  left: -10px
+
+.render-hud-step-gradient-number-middle
+  @extend %render-hud-step-gradient-number
+  left: ($render-hud-step-gradient-width/2) - 10px
+
+.render-hud-step-gradient-number-right
+  @extend %render-hud-step-gradient-number
+  left: ($render-hud-step-gradient-width) - 8px

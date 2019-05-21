@@ -154,6 +154,8 @@ void main() {
   camera = rotate(camera, rotation);
   vec3 ray = normalize(p - camera);
   vec3 c = march(camera, ray);
-  c = pow(max(c, vec3(0)), vec3(0.4545)); // gamma correction
+  if (u_RenderMode == RENDER_STANDARD) {
+    c = pow(max(c, vec3(0)), vec3(0.4545)); // gamma correction
+  }
   gl_FragColor = vec4(c, 1.0);
 }

@@ -21,7 +21,6 @@ export default class RenderHUD extends React.Component {
               </div>
             )}
           </form>
-
       </div>
     )
   }

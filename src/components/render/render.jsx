@@ -36,6 +36,7 @@ export default class Render extends React.Component {
       cameraDistance: 2,
       cameraRotation: [0, -Math.PI/4],
       renderMode: RenderModes.STANDARD,
+      maxSteps: 64,
       shader: Shaders.create({shader: {frag: DEFAULT_SHADER_SOURCE}}).shader
     }
 
@@ -130,11 +131,18 @@ export default class Render extends React.Component {
       u_CameraRotation: this.state.cameraRotation,
       u_MaxRenderDistance: MAX_RENDER_DISTANCE,
       u_RenderMode: this.state.renderMode,
-      u_MaxSteps: 64
+      u_MaxSteps: this.state.maxSteps
     }
     return (
       <div>
-        <RenderHUD onModeChange={this.onModeChange.bind(this)} />
+        <RenderHUD onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode} />
+        {this.state.renderMode == RenderModes.STEPS ? (
+          <div className="render-hud-step-gradient">
+            <div className="render-hud-step-gradient-number-left">0</div>
+            <div className="render-hud-step-gradient-number-middle">{this.state.maxSteps/2}</div>
+            <div className="render-hud-step-gradient-number-right">{this.state.maxSteps}</div>
+          </div>
+        ) : null}
         <Surface width={this.state.width} height={this.state.height}>
           <Node shader={this.state.shader} uniforms={uniforms} />
         </Surface>
