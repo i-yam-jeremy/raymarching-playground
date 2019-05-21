@@ -130,6 +130,12 @@ export default class Render extends React.Component {
     })
   }
 
+  setMaxSteps(newMaxSteps) {
+    this.setState({
+      maxSteps: newMaxSteps
+    })
+  }
+
   render() {
     let uniforms = {
       u_Resolution: [this.state.width, this.state.height],
@@ -142,13 +148,13 @@ export default class Render extends React.Component {
     }
     return (
       <div>
-        <RenderHUD
-          onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode}
-          maxSteps={this.state.maxSteps}
-          time={this.state.time} timePlaying={this.state.timePlaying} toggleTimePlaying={this.toggleTimePlaying.bind(this)} />
         <Surface width={this.state.width} height={this.state.height}>
           <Node shader={this.state.shader} uniforms={uniforms} />
         </Surface>
+        <RenderHUD
+          onModeChange={this.onModeChange.bind(this)} mode={this.state.renderMode}
+          maxSteps={this.state.maxSteps} setMaxSteps={this.setMaxSteps.bind(this)}
+          time={this.state.time} timePlaying={this.state.timePlaying} toggleTimePlaying={this.toggleTimePlaying.bind(this)} />
       </div>
     )
   }
