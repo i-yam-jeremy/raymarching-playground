@@ -1,4 +1,3 @@
-import SDFOutput from '../node-types/sdf-output.jsx'
 import GLSL_BOILERPLATE_SOURCE from './glsl-boilerplate.glsl'
 
 class CompiledNode {
