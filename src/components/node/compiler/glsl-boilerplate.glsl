@@ -77,10 +77,10 @@ vec3 shade(vec3 p, vec3 lightDir, vec3 normal, vec3 rayDir) {
 }
 
 vec3 march(vec3 p, vec3 ray) {
+  vec3 initialP = p;
   float epsilon = 0.001;
   float t = 0.0;
 
-  int missedGridLine = 0;
   int stepCount = 0;
   for (int i = 0; i < 2147000000; i++) {
     stepCount++;
@@ -91,42 +91,18 @@ vec3 march(vec3 p, vec3 ray) {
       break;
     }
 
-    float d;
-    int modelId;
-    if (missedGridLine == 0) {
-      vec2 d_data = sdf(p);
-      d = d_data.x;
-      modelId = int(d_data.y);
-    }
-    else {
-      d = scene_sdf(p);
-      modelId = 0;
-    }
+    float d = scene_sdf(p);
     if (d < epsilon) {
-      if (modelId == 0) {
-        vec3 lightDir = normalize(vec3(1, 1, -1));
-        vec3 normal = scene_normal(p);
-        if (u_RenderMode == RENDER_STANDARD) {
-          return shade(p, lightDir, normal, ray);
-        }
-        else if (u_RenderMode == RENDER_NORMALS) {
-          return normal;
-        }
-        else if (u_RenderMode == RENDER_STEPS) {
-          return vec3(float(i)/float(u_MaxSteps));
-        }
+      vec3 lightDir = normalize(vec3(1, 1, -1));
+      vec3 normal = scene_normal(p);
+      if (u_RenderMode == RENDER_STANDARD) {
+        return shade(p, lightDir, normal, ray);
       }
-      else {
-        float gridSize = 1.0;
-        float modX = mod(p.x, gridSize) / gridSize;
-        float modY = mod(p.y, gridSize) / gridSize;
-        float lineWidth = 1.0/(30.0+length(p));
-        if (max(modX, modY) > (1.0-lineWidth)) {
-          return vec3(0.4*(1.0/(1.0+0.05*length(p))));
-        }
-        else {
-          missedGridLine = 1;
-        }
+      else if (u_RenderMode == RENDER_NORMALS) {
+        return normal;
+      }
+      else if (u_RenderMode == RENDER_STEPS) {
+        return vec3(float(i)/float(u_MaxSteps));
       }
     }
     t += d;
@@ -134,7 +110,16 @@ vec3 march(vec3 p, vec3 ray) {
   }
 
   if (u_RenderMode == RENDER_STANDARD) {
-    return vec3(0, 0, 0);
+    float planeIntersection_t = -initialP.z / ray.z;
+    if (planeIntersection_t > 0.0) {
+      vec3 planeIntersection = initialP + planeIntersection_t*ray;
+      float gridSize = 1.0;
+      float gridMod = max(mod(planeIntersection.x, gridSize), mod(planeIntersection.y, gridSize)) / gridSize;
+      return vec3((gridMod > 0.95) ? 0.4*(1.0/(1.0+planeIntersection_t)) : 0.0);
+    }
+    else {
+      return vec3(0, 0, 0);
+    }
   }
   else if (u_RenderMode == RENDER_NORMALS) {
     return vec3(0, 0, 0);
