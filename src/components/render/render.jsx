@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Shaders, Node, GLSL } from 'gl-react'
 import { Surface } from 'gl-react-dom'
 import RenderModes from './render-modes.js'
-import RenderHUD from './render-hud.jsx'
+import RenderHUD from './render-hud'
 
 const TAB_HEIGHT = 39
 const CAMERA_SPEED = 4 // radians/second
