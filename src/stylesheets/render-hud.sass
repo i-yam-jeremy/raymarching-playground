@@ -72,3 +72,37 @@ $render-hud-step-gradient-width: 150px
 .render-hud-step-gradient-number-right
   @extend %render-hud-step-gradient-number
   left: ($render-hud-step-gradient-width) - 8px
+
+.render-hud-mode-option-container
+  position: relative
+  padding: 10px
+
+.render-hud-mode-option
+  position: relative
+  padding: 10px
+
+.render-hud-mode-option-label
+  position: absolute
+  left: 33px
+
+%render-hud-mode-option-radio
+  position: relative
+  top: 10px
+  left: 0px
+  $size: 12px
+  width: $size
+  height: $size
+  border-radius: $size
+  background-color: rgba(0,0,0,0)
+
+.render-hud-mode-option-radio-unselected
+  @extend %render-hud-mode-option-radio
+  border: 3px solid #666666
+  &:hover
+    border: 3px solid darken($highlight-color, 20%)
+
+.render-hud-mode-option-radio-selected
+  @extend %render-hud-mode-option-radio
+  border: 3px solid $highlight-color
+  &:hover
+    border: 3px solid darken($highlight-color, 20%)

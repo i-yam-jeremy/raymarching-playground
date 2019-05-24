@@ -13,7 +13,7 @@ export default class RenderHUD extends React.Component {
       <div>
         <div className="render-hud">
           <h4>Render Options</h4>
-          <Mode onModeChange={this.props.onModeChange} />
+          <Mode mode={this.props.mode} onModeChange={this.props.onModeChange} />
           <Time time={this.props.time} timePlaying={this.props.timePlaying} toggleTimePlaying={this.props.toggleTimePlaying} restartTime={this.props.restartTime} />
           <MaxStepSlider setMaxSteps={this.props.setMaxSteps} currentMaxSteps={this.props.maxSteps} />
           <FPS fps={this.props.fps} />

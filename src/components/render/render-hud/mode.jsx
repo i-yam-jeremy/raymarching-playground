@@ -7,18 +7,31 @@ function capitalize(str) {
 
 export default class Mode extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      selectedMode: this.props.mode
+    }
+  }
+
+  setMode(modeKey) {
+    this.setState({
+      selectedMode: RenderModes[modeKey]
+    })
+    this.props.onModeChange(RenderModes[modeKey])
+  }
+
   render() {
     return (
-      <div>
+      <div className="render-hud-mode-option-container">
           Mode:
-          <form>
-            {Object.keys(RenderModes).map(mode =>
-              <div key={mode}>
-                <input name="render-mode" type="radio" id={'render-mode-' + mode} value={RenderModes[mode]} onChange={this.props.onModeChange} />
-                <label htmlFor={'render-mode-' + mode}>{capitalize(mode)}</label>
-              </div>
-            )}
-          </form>
+          {Object.keys(RenderModes).map(mode =>
+            <div key={mode} className="render-hud-mode-option" onClick={() => this.setMode(mode)}>
+              <div className={'render-hud-mode-option-radio-' + (this.state.selectedMode == RenderModes[mode] ? 'selected' : 'unselected')} />
+              <div className="render-hud-mode-option-label">{capitalize(mode)}</div>
+            </div>
+          )}
       </div>
     )
   }

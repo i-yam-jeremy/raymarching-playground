@@ -135,10 +135,9 @@ export default class Render extends React.Component {
     })
   }
 
-  onModeChange(e) {
-    let renderModeValue = parseInt(e.target.value)
+  onModeChange(newMode) {
     this.setState({
-      renderMode: renderModeValue
+      renderMode: newMode
     })
   }
 
