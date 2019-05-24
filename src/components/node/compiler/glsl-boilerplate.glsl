@@ -99,7 +99,7 @@ vec3 march(vec3 p, vec3 ray) {
         return shade(p, lightDir, normal, ray);
       }
       else if (u_RenderMode == RENDER_NORMALS) {
-        return normal;
+        return 0.5*normal + 0.5;
       }
       else if (u_RenderMode == RENDER_STEPS) {
         return vec3(float(i)/float(u_MaxSteps));
