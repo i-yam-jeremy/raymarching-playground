@@ -25,7 +25,6 @@ export default class Mode extends React.Component {
   render() {
     return (
       <div className="render-hud-mode-option-container">
-          Mode:
           {Object.keys(RenderModes).map(mode =>
             <div key={mode} className="render-hud-mode-option" onClick={() => this.setMode(mode)}>
               <div className={'render-hud-mode-option-radio-' + (this.state.selectedMode == RenderModes[mode] ? 'selected' : 'unselected')} />

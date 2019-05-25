@@ -12,7 +12,7 @@ $render-hud-step-gradient-width: 150px
   font-family: $font
   color: $font-color
   font-size: 16px
-  font-weight: bold
+  font-weight: lighter
   background-color: rgba(0,0,0,0.8)
   border: 1px solid #555555
   margin: 10px
@@ -20,16 +20,14 @@ $render-hud-step-gradient-width: 150px
   padding-right: 10px
   line-height: 0.2
 
-  input
-    background-color: rgba(0.2, 0.2, 0.2, 0.8)
-    margin: 4px
-    border: 2px solid $content-border-color
-    border-radius: 4px
-    font-size: 12px
-    font-weight: 400
-    color: $font-color
-    -moz-appearance: radio
-    appearance: radio
+.render-hud-titlebar
+  border: 1px solid #555555
+  text-align: center
+  position: relative
+  left: -1px
+  top: -1px
+  height: 20px
+  width: 100%
 
 .render-hud-step-gradient-container
   @extend  %noselect
@@ -79,15 +77,16 @@ $render-hud-step-gradient-width: 150px
 
 .render-hud-mode-option
   position: relative
-  padding: 10px
+  margin: 3px
 
 .render-hud-mode-option-label
-  position: absolute
-  left: 33px
+  position: relative
+  left: 28px
+  top: -10px
 
 %render-hud-mode-option-radio
   position: relative
-  top: 10px
+  top: 0px
   left: 0px
   $size: 12px
   width: $size
@@ -116,6 +115,8 @@ $render-hud-step-gradient-width: 150px
 .render-hud-time-control
   display: inline-block
   transform: scale(0.5)
+  &:hover
+    transform: scale(0.6)
 
 .render-hud-time-number
   position: relative
@@ -132,6 +133,8 @@ $render-hud-step-gradient-width: 150px
   width: 16px
   height: 16px
   transform: scale(0.5)
+  &:hover
+    transform: scale(0.6)
 
 .render-hud-max-step-input-value
   display: inline-block
