@@ -47,16 +47,18 @@ export default class Node extends React.Component {
   }
 
   onResize(width, height) {
-    let deltaX = width - this.previousWidth
-    let deltaY = height - this.previousHeight
+    if (width != 0 && this.previousWidth != 0) {
+      let deltaX = width - this.previousWidth
+      let deltaY = height - this.previousHeight
 
-    for (let inputConnection of this.inputConnections) {
-      let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
-      inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
+      for (let inputConnection of this.inputConnections) {
+        let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
+        inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
+      }
+
+      this.previousWidth = width
+      this.previousHeight = height
     }
-
-    this.previousWidth = width
-    this.previousHeight = height
   }
 
   clearConnections() {
@@ -70,7 +72,6 @@ export default class Node extends React.Component {
       let inputComponent = this.inputComponents[input.name]
       if (inputComponent.connectedOutput) {
         let inputConns = inputComponent.connectedOutput.props.parent.inputConnections
-        console.log(inputConns, inputConns.indexOf(inputComponent))
         inputConns.splice(inputConns.indexOf(inputComponent), 1)
         inputComponent.connectedOutput = null
       }
@@ -112,9 +113,12 @@ export default class Node extends React.Component {
 
   connectInput(inputName, nodeComponent, x, y) {
     let inputComponent = this.inputComponents[inputName]
-    inputComponent.onConnectWithOutput(nodeComponent.outputComponent)
+    inputComponent.connectedOutput = nodeComponent.outputComponent
     nodeComponent.onOutputConnectedToInput(inputComponent)
-    inputComponent.setState({x, y})
+    inputComponent.setState({
+      x: x,
+      y: y
+    })
   }
 
   render() {
