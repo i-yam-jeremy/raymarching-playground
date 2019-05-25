@@ -77,7 +77,6 @@ vec3 shade(vec3 p, vec3 lightDir, vec3 normal, vec3 rayDir) {
 }
 
 vec3 march(vec3 p, vec3 ray) {
-  vec3 initialP = p;
   float epsilon = 0.001;
   float t = 0.0;
 
@@ -110,16 +109,7 @@ vec3 march(vec3 p, vec3 ray) {
   }
 
   if (u_RenderMode == RENDER_STANDARD) {
-    float planeIntersection_t = -initialP.z / ray.z;
-    if (planeIntersection_t > 0.0) {
-      vec3 planeIntersection = initialP + planeIntersection_t*ray;
-      float gridSize = 1.0;
-      float gridMod = max(mod(planeIntersection.x, gridSize), mod(planeIntersection.y, gridSize)) / gridSize;
-      return vec3((gridMod > 0.95) ? 0.4*(1.0/(1.0+planeIntersection_t)) : 0.0);
-    }
-    else {
-      return vec3(0, 0, 0);
-    }
+    return vec3(0, 0, 0);
   }
   else if (u_RenderMode == RENDER_NORMALS) {
     return vec3(0, 0, 0);
