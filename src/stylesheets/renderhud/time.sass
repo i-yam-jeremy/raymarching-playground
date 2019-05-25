@@ -1,0 +1,20 @@
+@import ../noselect
+
+.render-hud-time-container
+  @extend %noselect
+  border: 2px solid #888888
+  border-radius: 8px
+  margin-top: 10px
+  margin-bottom: 10px
+
+.render-hud-time-control
+  display: inline-block
+  transform: scale(0.5)
+  &:hover
+    transform: scale(0.6)
+
+.render-hud-time-number
+  position: relative
+  top: 14px
+  float: right
+  right: 8px

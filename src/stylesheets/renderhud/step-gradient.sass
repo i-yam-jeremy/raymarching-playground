@@ -1,0 +1,46 @@
+@import ../theme
+@import ../noselect
+
+$render-hud-step-gradient-width: 150px
+
+.render-hud-step-gradient-container
+  @extend  %noselect
+  position: absolute
+  float: right
+  right: 0px
+  bottom: 0px
+  margin: 20px
+  font-family: $font
+  color: $font-color
+  font-size: 16px
+  font-weight: bold
+  background-color: rgba(0,0,0,0.8)
+  padding: 28px
+  width: 150px
+  border: 1px solid #555555
+
+.render-hud-step-gradient
+  position: absolute
+  background-image: linear-gradient(to right, #000000,#FFFFFF)
+  width: $render-hud-step-gradient-width
+  height: 20px
+  border: 2px solid #333333
+
+%render-hud-step-gradient-number
+  @extend %noselect
+  position: absolute
+  top: -16px
+  font-size: 14px
+  font-weight: bold
+
+.render-hud-step-gradient-number-left
+  @extend %render-hud-step-gradient-number
+  left: -10px
+
+.render-hud-step-gradient-number-middle
+  @extend %render-hud-step-gradient-number
+  left: ($render-hud-step-gradient-width/2) - 10px
+
+.render-hud-step-gradient-number-right
+  @extend %render-hud-step-gradient-number
+  left: ($render-hud-step-gradient-width) - 8px
