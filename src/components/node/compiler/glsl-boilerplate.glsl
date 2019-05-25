@@ -6,6 +6,12 @@ uniform float u_Time;
 uniform float u_CameraDistance;
 uniform vec2 u_CameraRotation;
 uniform float u_MaxRenderDistance;
+uniform int u_RenderMode;
+uniform int u_MaxSteps;
+
+#define RENDER_STANDARD 0
+#define RENDER_NORMALS 1
+#define RENDER_STEPS 2
 
 vec3 rotate(vec3 p, vec3 r) {
   mat3 xAxis = mat3(
@@ -74,47 +80,48 @@ vec3 march(vec3 p, vec3 ray) {
   float epsilon = 0.001;
   float t = 0.0;
 
-  int missedGridLine = 0;
-  for (int i = 0; i < 64; i++) {
+  int stepCount = 0;
+  for (int i = 0; i < 2147000000; i++) {
+    stepCount++;
+    if (i >= u_MaxSteps) {
+      break;
+    }
     if (t > u_MaxRenderDistance) {
       break;
     }
 
-    float d;
-    int modelId;
-    if (missedGridLine == 0) {
-      vec2 d_data = sdf(p);
-      d = d_data.x;
-      modelId = int(d_data.y);
-    }
-    else {
-      d = scene_sdf(p);
-      modelId = 0;
-    }
+    float d = scene_sdf(p);
     if (d < epsilon) {
-      if (modelId == 0) {
-        vec3 lightDir = normalize(vec3(1, 1, -1));
-        vec3 normal = scene_normal(p);
+      vec3 lightDir = normalize(vec3(1, 1, -1));
+      vec3 normal = scene_normal(p);
+      if (u_RenderMode == RENDER_STANDARD) {
         return shade(p, lightDir, normal, ray);
       }
-      else {
-        float gridSize = 1.0;
-        float modX = mod(p.x, gridSize) / gridSize;
-        float modY = mod(p.y, gridSize) / gridSize;
-        float lineWidth = 1.0/(30.0+length(p));
-        if (max(modX, modY) > (1.0-lineWidth)) {
-          return vec3(0.4*(1.0/(1.0+0.05*length(p))));
-        }
-        else {
-          missedGridLine = 1;
-        }
+      else if (u_RenderMode == RENDER_NORMALS) {
+        return 0.5*normal + 0.5;
+      }
+      else if (u_RenderMode == RENDER_STEPS) {
+        return vec3(float(i)/float(u_MaxSteps));
       }
     }
     t += d;
     p += ray*d;
   }
 
-  return vec3(0, 0, 0);
+  if (u_RenderMode == RENDER_STANDARD) {
+    return vec3(0, 0, 0);
+  }
+  else if (u_RenderMode == RENDER_NORMALS) {
+    return vec3(0, 0, 0);
+  }
+  else if (u_RenderMode == RENDER_STEPS) {
+    if (stepCount >= u_MaxSteps) {
+      return vec3(1, 0, 1);
+    }
+    else {
+      return vec3(float(stepCount)/float(u_MaxSteps));
+    }
+  }
 }
 
 void main() {
@@ -127,6 +134,8 @@ void main() {
   camera = rotate(camera, rotation);
   vec3 ray = normalize(p - camera);
   vec3 c = march(camera, ray);
-  c = pow(max(c, vec3(0)), vec3(0.4545)); // gamma correction
+  if (u_RenderMode == RENDER_STANDARD) {
+    c = pow(max(c, vec3(0)), vec3(0.4545)); // gamma correction
+  }
   gl_FragColor = vec4(c, 1.0);
 }

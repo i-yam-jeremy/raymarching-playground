@@ -1,0 +1,28 @@
+@import ../theme
+@import ../noselect
+
+.render-hud
+  @extend  %noselect
+  position: absolute
+  float: right
+  top: 0px
+  right: 20px
+  font-family: $font
+  color: $font-color
+  font-size: 16px
+  font-weight: lighter
+  background-color: rgba(0,0,0,0.8)
+  border: 1px solid #555555
+  margin: 10px
+  padding-left: 10px
+  padding-right: 10px
+  line-height: 0.2
+
+.render-hud-titlebar
+  border: 1px solid #555555
+  text-align: center
+  position: relative
+  left: -1px
+  top: -1px
+  height: 20px
+  width: 100%
