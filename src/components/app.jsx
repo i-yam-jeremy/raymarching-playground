@@ -4,6 +4,7 @@ import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
 import compile from './node/compiler/compiler.js'
+import FileChooser from './file-manager/file-chooser.jsx'
 
 import '../stylesheets/main.sass'
 
@@ -14,7 +15,7 @@ export default class App extends React.Component {
 
     this.state = {
       tabs: [
-        {
+        /*{
           id: 1,
           content: "SDF",
           active: true,
@@ -43,7 +44,7 @@ export default class App extends React.Component {
                 <Render ref={this.setRenderComponent.bind(this)} />
             </div>
           )
-        }
+        }*/
       ]
     }
 
@@ -53,7 +54,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    this.load()
+    //this.load()
   }
 
   setSDFNodeEditor(component) {
@@ -145,7 +146,7 @@ export default class App extends React.Component {
   }
 
   addTab() {
-    alert("ERROR not implemented")
+
   }
 
   render() {
@@ -157,7 +158,7 @@ export default class App extends React.Component {
           closeTab={this.closedTab.bind(this)}
           tabs={this.state.tabs}
         >
-          <button onClick={this.addTab.bind(this)}>+</button>
+          <FileChooser trigger={<button onClick={this.addTab.bind(this)}>+</button>}/>
         </Tabs>
         {this.state.tabs.map(tab =>
           <div key={'tab-content-' + tab.id} style={{display: (tab.active ? 'inline': 'none')}}>
