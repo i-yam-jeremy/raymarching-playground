@@ -46,7 +46,7 @@ export default class FileChooser extends React.Component {
           <div className="file-chooser-title">Select a File</div>
           <div className="file-list-container">
             {FILES.map(file => (
-              <div className="file-list-element">
+              <div key={file.name} className="file-list-element">
                 <div className="file-list-element-icon">{this.getFileTypeIcon(file.type)}</div>
                 <div className="file-list-element-filename">{file.name}</div>
               </div>
