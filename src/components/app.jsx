@@ -5,6 +5,7 @@ import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
 import compile from './node/compiler/compiler.js'
 import FileChooser from './file-manager/file-chooser.jsx'
+import FileManager from './file-manager/file-manager.js'
 
 import '../stylesheets/main.sass'
 
@@ -87,6 +88,22 @@ export default class App extends React.Component {
     }
   }
 
+  openFile(filename, editorType) {
+    let editorState = FileManager.loadFileState(filename)
+
+    let editor = null
+
+    this.addTab({
+      content: filename,
+      active: false,
+      display: (
+        <div className="tab-content-container">
+          <NodeEditorPanel ref={() => editor = this} editorType={editorType} editorId={filename.replace('.','_')} />
+        </div>
+      )
+    })
+  }
+
   getSaveState() {
     return {
     //  tabs: this.state.tabs,
@@ -98,6 +115,17 @@ export default class App extends React.Component {
   loadState(state) {
     this.sdfNodeEditor.loadState(state.sdfEditor)
     this.shaderNodeEditor.loadState(state.shaderEditor)
+  }
+
+  addTab(tab) {
+    let maxTabId = this.state.tabs
+                              .map(tab => tab.id)
+                              .reduce(Math.max, 0)
+    console.log(maxTabId)
+    tab.id = maxTabId
+    this.setState({
+      tabs: this.state.tabs.concat([tab])
+    })
   }
 
   // From react-draggable-tabs documentation example
@@ -145,10 +173,6 @@ export default class App extends React.Component {
     });
   }
 
-  addTab() {
-
-  }
-
   render() {
     return (
       <div style={{overflow: 'hidden'}}>
@@ -158,7 +182,7 @@ export default class App extends React.Component {
           closeTab={this.closedTab.bind(this)}
           tabs={this.state.tabs}
         >
-          <FileChooser trigger={<button onClick={this.addTab.bind(this)}>+</button>}/>
+          <FileChooser app={this} trigger={<button>+</button>}/>
         </Tabs>
         {this.state.tabs.map(tab =>
           <div key={'tab-content-' + tab.id} style={{display: (tab.active ? 'inline': 'none')}}>
