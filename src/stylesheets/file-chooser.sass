@@ -1,0 +1,33 @@
+@import tabs
+@import noselect
+
+.file-chooser-container
+  @extend %noselect
+  color: $tab-font-color
+  background-color: $tab-bg-color
+
+.file-chooser-title
+  font-size: 24px
+  font-weight: bold
+  text-align: center
+  padding: 10px
+
+.file-list-container
+  margin: 10px
+  border: 2px solid $tab-highlight-color
+
+.file-list-element
+  background-color: $tab-bg-color
+  &:hover
+    background-color: $tab-highlight-color
+
+.file-list-element-icon
+  display: inline-block
+  vertical-align: middle
+
+.file-list-element-filename
+  display: inline-block
+  text-align: right
+  vertical-align: middle
+  margin-left: 8px
+  font-size: 14px
