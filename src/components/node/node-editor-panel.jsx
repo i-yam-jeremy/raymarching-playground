@@ -15,6 +15,7 @@ export default class NodeEditorPanel extends React.Component {
 
     this.nodeComponents = []
     this.currentNodeDataId = 0
+    this.changesSaved = true
   }
 
   getNextNodeDataId() {
@@ -28,7 +29,16 @@ export default class NodeEditorPanel extends React.Component {
     }
   }
 
+  onContentChanged() {
+    this.changesSaved = false
+  }
+
+  setSaved() {
+    this.changesSaved = true
+  }
+
   contextMenuClick(e, data) {
+    this.onContentChanged()
     const menuBounds = e.target.getBoundingClientRect()
     const nodeEditorPanelBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
     const x = menuBounds.left - nodeEditorPanelBounds.left
@@ -44,6 +54,7 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   deleteNode(e, data) {
+    this.onContentChanged()
     let index = -1;
     this.state.nodeData.forEach((nodeData, i) => {
       if (nodeData.id == data.nodeId) {
@@ -140,7 +151,7 @@ export default class NodeEditorPanel extends React.Component {
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} />
+                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} />
               </ContextMenuTrigger>
             )}
           </div>

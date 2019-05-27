@@ -81,6 +81,7 @@ export default class App extends React.Component {
     // Save all files open
     for (let filename in this.editors) {
       FileManager.saveFileState(filename, this.editors[filename].getSaveState())
+      this.editors[filename].setSaved()
     }
   }
 
