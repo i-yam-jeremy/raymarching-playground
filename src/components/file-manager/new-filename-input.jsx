@@ -20,6 +20,10 @@ export default class NewFilenameInput extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.refs.value.focus()
+  }
+
   componentWillReceiveProps(newProps) {
     this.updateValidity(newProps)
   }
