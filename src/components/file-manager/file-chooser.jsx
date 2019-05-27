@@ -45,10 +45,10 @@ export default class FileChooser extends React.Component {
     })
   }
 
-  createNewFile(filename, closePopup) {
+  createNewFile(filename, filetype, closePopup) {
     closePopup()
-    console.log(filename)
-    // TODO create file and open it
+    FileManager.saveFileState(filename, {nodes: []})
+    this.props.app.openFile(filename, filetype)
   }
 
   getContent(contentType, close) {
@@ -73,7 +73,7 @@ export default class FileChooser extends React.Component {
           <div className="file-chooser-container">
             <div className="file-chooser-title">New File</div>
             <div className="new-file-input-container">
-              <NewFilenameInput type={this.state.newFileType} onEnter={(filename) => this.createNewFile(filename, close)} />
+              <NewFilenameInput type={this.state.newFileType} onEnter={(filename) => this.createNewFile(filename, this.state.newFileType, close)} />
             </div>
             <div className="new-file-file-type-container">
               <FileTypePicker type={this.state.newFileType} onChange={(newType) => this.setState({newFileType: newType})}/>
