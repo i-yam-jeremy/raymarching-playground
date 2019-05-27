@@ -44,8 +44,14 @@ function getFileList() {
   }))
 }
 
+function fileExists(filename) {
+  let files = JSON.parse(localStorage.savedFiles)
+  return (filename in files)
+}
+
 export default {
   loadFileState,
   saveFileState,
   getFileList,
+  fileExists
 }

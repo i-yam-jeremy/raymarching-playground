@@ -21,11 +21,14 @@ export default class FileTypePicker extends React.Component {
     this.setState({
       selectedType: type,
       dropdownOpen: false
+    }, () => {
+      if (typeof this.props.onChange == 'function') {
+        this.props.onChange(type)
+      }
     })
   }
 
   openDropdown() {
-    console.log("Hi")
     this.setState({
       dropdownOpen: true
     })
