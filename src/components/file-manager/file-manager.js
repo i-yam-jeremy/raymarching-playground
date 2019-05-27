@@ -1,3 +1,5 @@
+import NodeEditorType from '../node/node-editor-type.js'
+
 if (!localStorage.savedFiles) {
   let savedFiles = {}
   savedFiles['main.sdf'] = {nodes: []}
@@ -23,7 +25,27 @@ function saveFileState(filename, state) {
   localStorage.savedFiles = JSON.stringify(files)
 }
 
+function getFileTypeFromFilename(filename) {
+  if (filename.endsWith('.sdf')) {
+    return NodeEditorType.SDF
+  }
+  else if (filename.endsWith('.shader')) {
+    return NodeEditorType.SHADER
+  }
+
+  throw 'Invalid file type extension: ' + filename
+}
+
+function getFileList() {
+  let files = JSON.parse(localStorage.savedFiles)
+  return Object.keys(files).map(filename => ({
+    name: filename,
+    type: getFileTypeFromFilename(filename)
+  }))
+}
+
 export default {
   loadFileState,
-  saveFileState
+  saveFileState,
+  getFileList,
 }

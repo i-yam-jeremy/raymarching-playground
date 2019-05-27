@@ -1,8 +1,8 @@
 import React from 'react'
 import Popup from 'reactjs-popup'
 import NodeEditorType from '../node/node-editor-type.js'
+import FileManager from './file-manager.js'
 
-const FILES = [{name: 'main.sdf', type: NodeEditorType.SDF}, {name: 'main.shader', type: NodeEditorType.SHADER}]
 const FILE_TYPE_ICONS = {
   SDF: (
     <div style={{width: '32px', height: '32px'}}>
@@ -51,7 +51,7 @@ export default class FileChooser extends React.Component {
           <div className="file-chooser-container">
             <div className="file-chooser-title">Select a File</div>
             <div className="file-list-container">
-              {FILES.map(file => (
+              {FileManager.getFileList().map(file => (
                 <div key={file.name} className="file-list-element" onClick={() => this.openFile(file, close)}>
                   <div className="file-list-element-icon">{this.getFileTypeIcon(file.type)}</div>
                   <div className="file-list-element-filename">{file.name}</div>
