@@ -3,6 +3,7 @@ import Popup from 'reactjs-popup'
 import NodeEditorType from '../node/node-editor-type.js'
 import FileManager from './file-manager.js'
 import FILE_TYPE_ICONS from './file-type-icons.jsx'
+import FileTypePicker from './file-type-picker.jsx'
 
 const STYLES = {
   overlay: {
@@ -29,17 +30,15 @@ export default class FileChooser extends React.Component {
     }
   }
 
-  getFileTypeIcon(editorType) {
-    return FILE_TYPE_ICONS[editorType]
-  }
-
   openFile(file, closePopup) {
     this.props.app.openFile(file.name, file.type)
     closePopup()
   }
 
   newFile() {
-    this.setState({contentType: NEW_FILE})
+    this.setState({
+      contentType: NEW_FILE
+    })
   }
 
   getContent(contentType, close) {
@@ -52,7 +51,7 @@ export default class FileChooser extends React.Component {
             <div className="file-list-container">
               {FileManager.getFileList().map(file => (
                 <div key={file.name} className="file-list-element" onClick={() => this.openFile(file, close)}>
-                  <div className="file-list-element-icon">{this.getFileTypeIcon(file.type)}</div>
+                  <div className="file-list-element-icon">{FILE_TYPE_ICONS[file.type]}</div>
                   <div className="file-list-element-filename">{file.name}</div>
                 </div>
               ))}
@@ -63,7 +62,7 @@ export default class FileChooser extends React.Component {
         return (
           <div className="file-chooser-container">
             <div className="file-chooser-title">New File</div>
-            Hi
+            <FileTypePicker />
           </div>
         )
     }
