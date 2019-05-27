@@ -78,7 +78,10 @@ export default class App extends React.Component {
   }
 
   save() {
-    console.log(this.editors)
+    // Save all files open
+    for (let filename in this.editors) {
+      FileManager.saveFileState(filename, this.editors[filename].getSaveState())
+    }
   }
 
   load() {
@@ -108,8 +111,10 @@ export default class App extends React.Component {
   }
 
   setEditor(filename, editor, editorState) {
-    this.editors[filename] = editor
-    editor.loadState(editorState)
+    if (editor) {
+      this.editors[filename] = editor
+      editor.loadState(editorState)
+    }
   }
 
   findTabByFilename(filename) {
