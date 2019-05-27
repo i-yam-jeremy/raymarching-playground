@@ -89,18 +89,43 @@ export default class App extends React.Component {
   }
 
   openFile(filename, editorType) {
-    let editorState = FileManager.loadFileState(filename)
+    let openTab = this.findTabByFilename(filename)
 
-    let editor = null
+    if (openTab) {
+      this.setTabActive(openTab.id)
+    }
+    else {
+      let editorState = FileManager.loadFileState(filename)
 
-    this.addTab({
-      content: filename,
-      active: false,
-      display: (
-        <div className="tab-content-container">
-          <NodeEditorPanel ref={() => editor = this} editorType={editorType} editorId={filename.replace('.','_')} />
-        </div>
-      )
+      let editor = null
+
+      this.addTab({
+        content: filename,
+        active: true,
+        display: (
+          <div className="tab-content-container">
+            <NodeEditorPanel ref={() => editor = this} editorType={editorType} editorId={filename.replace('.','_')} />
+          </div>
+        )
+      })
+    }
+  }
+
+  findTabByFilename(filename) {
+    for (let tab of this.state.tabs) {
+      if (tab.content == filename) {
+        return tab
+      }
+    }
+    return null
+  }
+
+  setTabActive(tabId) {
+    this.setState({
+      tabs: this.state.tabs.map(tab => ({
+        ...tab,
+        active: tab.id == tabId
+      }))
     })
   }
 
@@ -120,11 +145,14 @@ export default class App extends React.Component {
   addTab(tab) {
     let maxTabId = this.state.tabs
                               .map(tab => tab.id)
-                              .reduce(Math.max, 0)
-    console.log(maxTabId)
-    tab.id = maxTabId
+                              .reduce((a,b) => Math.max(a,b), 0)
+    tab.id = maxTabId+1
     this.setState({
       tabs: this.state.tabs.concat([tab])
+    }, () => {
+      if (tab.active) {
+        this.setTabActive(tab.id)
+      }
     })
   }
 
