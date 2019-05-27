@@ -1,6 +1,5 @@
 import React from 'react'
 import Tabs from 'react-draggable-tabs'
-import Modifier from 'modifier-keys'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
@@ -21,13 +20,6 @@ export default class App extends React.Component {
 
     this.editors = {} // editors by filename
     this.renderComponent = null
-
-    window.addEventListener('keydown', Modifier((e) => {
-      if (e.primaryKey && e.key == 's') {
-        e.preventDefault()
-        this.save()
-      }
-    }))
   }
 
   setRenderComponent(component) {
