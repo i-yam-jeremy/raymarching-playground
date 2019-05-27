@@ -49,9 +49,16 @@ function fileExists(filename) {
   return (filename in files)
 }
 
+function deleteFile(filename) {
+  let files = JSON.parse(localStorage.savedFiles)
+  delete files[filename]
+  localStorage.savedFiles = JSON.stringify(files)
+}
+
 export default {
   loadFileState,
   saveFileState,
   getFileList,
-  fileExists
+  fileExists,
+  deleteFile
 }

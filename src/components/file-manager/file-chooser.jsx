@@ -6,6 +6,10 @@ import FILE_TYPE_ICONS from './file-type-icons.jsx'
 import FileTypePicker from './file-type-picker.jsx'
 import NewFilenameInput from './new-filename-input.jsx'
 
+const TRASH_FILE_ICON = (
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 640 640" width="32" height="32"><defs><path d="M220 80L420 80L420 120L220 120L220 80Z" id="h3wwWXwEw"></path><path d="M160 170.48L480 170.48L480 555.58L160 555.58L160 170.48Z" id="e9WLmcLjj"></path><path d="M420.02 209.42L420 519.39L380 519.39L380.02 209.42L420.02 209.42Z" id="ciJFh8MEn"></path><path d="M540 150.3L100 150.3L100 190.3L540 190.3L540 150.3Z" id="ao2jbibKX"></path><path d="M260 109.09L260 181.31L220 181.31L220 109.09L260 109.09Z" id="bzN86h8p5"></path><path d="M420 110.1L420 182.32L380 182.32L380 110.1L420 110.1Z" id="a3HaxrttM"></path><path d="M340.02 209.42L340 519.39L300 519.39L300.02 209.42L340.02 209.42Z" id="c1eSbNZzSI"></path><path d="M260 209.42L259.98 519.39L219.98 519.39L220 209.42L260 209.42Z" id="b8CdUn4N0"></path></defs><g><g><g><use xlinkHref="#h3wwWXwEw" opacity="1" fill="#99b2b8" fillOpacity="1"></use></g><g><use xlinkHref="#e9WLmcLjj" opacity="1" fill="#99b2b8" fillOpacity="0"></use><g><use xlinkHref="#e9WLmcLjj" opacity="1" fillOpacity="0" stroke="#99b2b8" strokeWidth="40" strokeOpacity="1"></use></g></g><g><use xlinkHref="#ciJFh8MEn" opacity="1" fill="#99b2b8" fillOpacity="1"></use></g><g><use xlinkHref="#ao2jbibKX" opacity="1" fill="#99b2b8" fillOpacity="1"></use></g><g><use xlinkHref="#bzN86h8p5" opacity="1" fill="#99b2b8" fillOpacity="1"></use></g><g><use xlinkHref="#a3HaxrttM" opacity="1" fill="#99b2b8" fillOpacity="1"></use></g><g><use xlinkHref="#c1eSbNZzSI" opacity="1" fill="#99b2b8" fillOpacity="1"></use></g><g><use xlinkHref="#b8CdUn4N0" opacity="1" fill="#99b2b8" fillOpacity="1"></use></g></g></g></svg>
+)
+
 const SELECT_FILE = 0
 const NEW_FILE = 1
 
@@ -39,6 +43,11 @@ export default class FileChooser extends React.Component {
     closePopup()
   }
 
+  deleteFile(file) {
+    FileManager.deleteFile(file.name)
+    this.forceUpdate()
+  }
+
   openNewFileDialog() {
     this.setState({
       contentType: NEW_FILE
@@ -60,9 +69,11 @@ export default class FileChooser extends React.Component {
             <div className="file-chooser-new-file" onClick={this.openNewFileDialog.bind(this)}>+</div>
             <div className="file-list-container">
               {FileManager.getFileList().map(file => (
-                <div key={file.name} className="file-list-element" onClick={() => this.openFile(file, close)}>
+                <div key={file.name} className="file-list-element"
+                    onClick={() => this.openFile(file, close)}>
                   <div className="file-list-element-icon">{FILE_TYPE_ICONS[file.type]}</div>
                   <div className="file-list-element-filename">{file.name}</div>
+                  <div className="file-list-element-trash" onClick={() => this.deleteFile(file)}>{TRASH_FILE_ICON}</div>
                 </div>
               ))}
             </div>
