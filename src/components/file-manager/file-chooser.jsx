@@ -34,6 +34,11 @@ export default class FileChooser extends React.Component {
     return FILE_TYPE_ICONS[editorType]
   }
 
+  openFile(file, closePopup) {
+    this.props.app.openFile(file.name, file.type)
+    closePopup()
+  }
+
   render() {
     return (
       <Popup
@@ -42,17 +47,19 @@ export default class FileChooser extends React.Component {
         contentStyle={STYLES.content}
         modal
         closeOnDocumentClick >
-        <div className="file-chooser-container">
-          <div className="file-chooser-title">Select a File</div>
-          <div className="file-list-container">
-            {FILES.map(file => (
-              <div key={file.name} className="file-list-element" onClick={() => this.props.app.openFile(file.name, file.type)}>
-                <div className="file-list-element-icon">{this.getFileTypeIcon(file.type)}</div>
-                <div className="file-list-element-filename">{file.name}</div>
-              </div>
-            ))}
+        {close => (
+          <div className="file-chooser-container">
+            <div className="file-chooser-title">Select a File</div>
+            <div className="file-list-container">
+              {FILES.map(file => (
+                <div key={file.name} className="file-list-element" onClick={() => this.openFile(file, close)}>
+                  <div className="file-list-element-icon">{this.getFileTypeIcon(file.type)}</div>
+                  <div className="file-list-element-filename">{file.name}</div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </Popup>
     )
   }
