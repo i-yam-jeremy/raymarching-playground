@@ -15,7 +15,8 @@ export default class NewFilenameInput extends React.Component {
     super(props)
 
     this.state = {
-      valid: false
+      valid: false,
+      hasStartedTyping: false
     }
   }
 
@@ -35,6 +36,9 @@ export default class NewFilenameInput extends React.Component {
   }
 
   onChange(e) {
+    this.setState({
+      hasStartedTyping: true
+    })
     this.updateValidity(this.props)
   }
 
@@ -76,7 +80,7 @@ export default class NewFilenameInput extends React.Component {
 
   render() {
     let classes = classNames('new-filename-input', {
-      'new-filename-input-invalid': !this.state.valid
+      'new-filename-input-invalid': !this.state.valid && this.state.hasStartedTyping
     })
     return (
       <input ref="value" type="text" className={classes}
