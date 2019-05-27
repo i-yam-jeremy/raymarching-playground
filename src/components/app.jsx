@@ -1,5 +1,6 @@
 import React from 'react'
 import Tabs from 'react-draggable-tabs'
+import Modifier from 'modifier-keys'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
@@ -49,21 +50,19 @@ export default class App extends React.Component {
       ]
     }
 
-    this.sdfNodeEditor = null
-    this.shaderNodeEditor = null
+    this.editors = {} // editors by filename
     this.renderComponent = null
+
+    window.addEventListener('keydown', Modifier((e) => {
+      if (e.primaryKey && e.key == 's') {
+        e.preventDefault()
+        this.save()
+      }
+    }))
   }
 
   componentDidMount() {
     //this.load()
-  }
-
-  setSDFNodeEditor(component) {
-    this.sdfNodeEditor = component
-  }
-
-  setShaderNodeEditor(component) {
-    this.shaderNodeEditor = component
   }
 
   setRenderComponent(component) {
@@ -79,7 +78,7 @@ export default class App extends React.Component {
   }
 
   save() {
-    localStorage.savedState = JSON.stringify(this.getSaveState())
+    console.log(this.editors)
   }
 
   load() {
@@ -96,19 +95,21 @@ export default class App extends React.Component {
     }
     else {
       let editorState = FileManager.loadFileState(filename)
-
-      let editor = null
-
       this.addTab({
         content: filename,
         active: true,
         display: (
           <div className="tab-content-container">
-            <NodeEditorPanel ref={() => editor = this} editorType={editorType} editorId={filename.replace('.','_')} />
+            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} editorType={editorType} editorId={filename.replace('.','_')} />
           </div>
         )
       })
     }
+  }
+
+  setEditor(filename, editor, editorState) {
+    this.editors[filename] = editor
+    editor.loadState(editorState)
   }
 
   findTabByFilename(filename) {
