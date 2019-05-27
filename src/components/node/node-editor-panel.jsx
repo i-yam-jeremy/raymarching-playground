@@ -15,7 +15,6 @@ export default class NodeEditorPanel extends React.Component {
 
     this.nodeComponents = []
     this.currentNodeDataId = 0
-    this.changesSaved = true
   }
 
   getNextNodeDataId() {
@@ -30,11 +29,7 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   onContentChanged() {
-    this.changesSaved = false
-  }
-
-  setSaved() {
-    this.changesSaved = true
+    this.props.app.save()
   }
 
   contextMenuClick(e, data) {

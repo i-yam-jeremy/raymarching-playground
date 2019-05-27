@@ -46,7 +46,6 @@ export default class App extends React.Component {
     // Save all files open
     for (let filename in this.editors) {
       FileManager.saveFileState(filename, this.editors[filename].getSaveState())
-      this.editors[filename].setSaved()
     }
   }
 
@@ -63,7 +62,7 @@ export default class App extends React.Component {
         active: true,
         display: (
           <div className="tab-content-container">
-            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} editorType={editorType} editorId={filename.replace('.','_')} />
+            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} editorType={editorType} editorId={filename.replace('.','_')} />
           </div>
         )
       })
