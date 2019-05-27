@@ -16,38 +16,7 @@ export default class App extends React.Component {
     super(props)
 
     this.state = {
-      tabs: [
-        /*{
-          id: 1,
-          content: "SDF",
-          active: true,
-          display: (
-            <div className="tab-content-container">
-              <NodeEditorPanel ref={this.setSDFNodeEditor.bind(this)} editorType={NodeEditorType.SDF} editorId="SDF-1" />
-            </div>
-          )
-        },
-        {
-          id: 2,
-          content: "Shader",
-          active: false,
-          display: (
-            <div className="tab-content-container">
-              <NodeEditorPanel ref={this.setShaderNodeEditor.bind(this)} editorType={NodeEditorType.SHADER} editorId="SHADER-1" />
-            </div>
-          )
-        },
-        {
-          id: 3,
-          content: "Render",
-          active: false,
-          display: (
-            <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
-                <Render ref={this.setRenderComponent.bind(this)} />
-            </div>
-          )
-        }*/
-      ]
+      tabs: []
     }
 
     this.editors = {} // editors by filename
@@ -59,10 +28,6 @@ export default class App extends React.Component {
         this.save()
       }
     }))
-  }
-
-  componentDidMount() {
-    //this.load()
   }
 
   setRenderComponent(component) {
@@ -82,12 +47,6 @@ export default class App extends React.Component {
     for (let filename in this.editors) {
       FileManager.saveFileState(filename, this.editors[filename].getSaveState())
       this.editors[filename].setSaved()
-    }
-  }
-
-  load() {
-    if (localStorage.savedState) {
-      this.loadState(JSON.parse(localStorage.savedState))
     }
   }
 
@@ -134,19 +93,6 @@ export default class App extends React.Component {
         active: tab.id == tabId
       }))
     })
-  }
-
-  getSaveState() {
-    return {
-    //  tabs: this.state.tabs,
-      sdfEditor: this.sdfNodeEditor.getSaveState(),
-      shaderEditor: this.shaderNodeEditor.getSaveState()
-    }
-  }
-
-  loadState(state) {
-    this.sdfNodeEditor.loadState(state.sdfEditor)
-    this.shaderNodeEditor.loadState(state.shaderEditor)
   }
 
   addTab(tab) {
