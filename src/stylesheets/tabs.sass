@@ -1,7 +1,22 @@
 $tab-height: 39px
+$tab-font-color: rgba(153, 178, 184, 0.6)
+$tab-bg-color: #001F27
+$tab-highlight-color: #002B36
 
 .react-tabs-container
   height: $tab-height
+
+  button
+    color: $tab-font-color
+    background-color: $tab-bg-color
+    border: none
+    height: 100%
+    margin: 0px
+    font-weight: bold
+
+    &:hover
+      color: white
+      background-color: $tab-highlight-color
 
 .tab-content-container
   width: 100%

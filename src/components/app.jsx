@@ -4,6 +4,8 @@ import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
 import compile from './node/compiler/compiler.js'
+import FileChooser from './file-manager/file-chooser.jsx'
+import FileManager from './file-manager/file-manager.js'
 
 import '../stylesheets/main.sass'
 
@@ -13,55 +15,11 @@ export default class App extends React.Component {
     super(props)
 
     this.state = {
-      tabs: [
-        {
-          id: 1,
-          content: "SDF",
-          active: true,
-          display: (
-            <div className="tab-content-container">
-              <NodeEditorPanel ref={this.setSDFNodeEditor.bind(this)} editorType={NodeEditorType.SDF} editorId="SDF-1" />
-            </div>
-          )
-        },
-        {
-          id: 2,
-          content: "Shader",
-          active: false,
-          display: (
-            <div className="tab-content-container">
-              <NodeEditorPanel ref={this.setShaderNodeEditor.bind(this)} editorType={NodeEditorType.SHADER} editorId="SHADER-1" />
-            </div>
-          )
-        },
-        {
-          id: 3,
-          content: "Render",
-          active: false,
-          display: (
-            <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
-                <Render ref={this.setRenderComponent.bind(this)} />
-            </div>
-          )
-        }
-      ]
+      tabs: []
     }
 
-    this.sdfNodeEditor = null
-    this.shaderNodeEditor = null
+    this.editors = {} // editors by filename
     this.renderComponent = null
-  }
-
-  componentDidMount() {
-    this.load()
-  }
-
-  setSDFNodeEditor(component) {
-    this.sdfNodeEditor = component
-  }
-
-  setShaderNodeEditor(component) {
-    this.shaderNodeEditor = component
   }
 
   setRenderComponent(component) {
@@ -77,26 +35,69 @@ export default class App extends React.Component {
   }
 
   save() {
-    localStorage.savedState = JSON.stringify(this.getSaveState())
-  }
-
-  load() {
-    if (localStorage.savedState) {
-      this.loadState(JSON.parse(localStorage.savedState))
+    // Save all files open
+    for (let filename in this.editors) {
+      FileManager.saveFileState(filename, this.editors[filename].getSaveState())
     }
   }
 
-  getSaveState() {
-    return {
-    //  tabs: this.state.tabs,
-      sdfEditor: this.sdfNodeEditor.getSaveState(),
-      shaderEditor: this.shaderNodeEditor.getSaveState()
+  openFile(filename, editorType) {
+    let openTab = this.findTabByFilename(filename)
+
+    if (openTab) {
+      this.setTabActive(openTab.id)
+    }
+    else {
+      let editorState = FileManager.loadFileState(filename)
+      this.addTab({
+        content: filename,
+        active: true,
+        display: (
+          <div className="tab-content-container">
+            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} editorType={editorType} editorId={filename.replace('.','_')} />
+          </div>
+        )
+      })
     }
   }
 
-  loadState(state) {
-    this.sdfNodeEditor.loadState(state.sdfEditor)
-    this.shaderNodeEditor.loadState(state.shaderEditor)
+  setEditor(filename, editor, editorState) {
+    if (editor) {
+      this.editors[filename] = editor
+      editor.loadState(editorState)
+    }
+  }
+
+  findTabByFilename(filename) {
+    for (let tab of this.state.tabs) {
+      if (tab.content == filename) {
+        return tab
+      }
+    }
+    return null
+  }
+
+  setTabActive(tabId) {
+    this.setState({
+      tabs: this.state.tabs.map(tab => ({
+        ...tab,
+        active: tab.id == tabId
+      }))
+    })
+  }
+
+  addTab(tab) {
+    let maxTabId = this.state.tabs
+                              .map(tab => tab.id)
+                              .reduce((a,b) => Math.max(a,b), 0)
+    tab.id = maxTabId+1
+    this.setState({
+      tabs: this.state.tabs.concat([tab])
+    }, () => {
+      if (tab.active) {
+        this.setTabActive(tab.id)
+      }
+    })
   }
 
   // From react-draggable-tabs documentation example
@@ -144,10 +145,6 @@ export default class App extends React.Component {
     });
   }
 
-  addTab() {
-    alert("ERROR not implemented")
-  }
-
   render() {
     return (
       <div style={{overflow: 'hidden'}}>
@@ -157,7 +154,7 @@ export default class App extends React.Component {
           closeTab={this.closedTab.bind(this)}
           tabs={this.state.tabs}
         >
-          <button onClick={this.addTab.bind(this)}>+</button>
+          <FileChooser app={this} trigger={<button>+</button>}/>
         </Tabs>
         {this.state.tabs.map(tab =>
           <div key={'tab-content-' + tab.id} style={{display: (tab.active ? 'inline': 'none')}}>
