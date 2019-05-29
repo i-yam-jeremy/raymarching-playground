@@ -33,4 +33,4 @@ jobs:
 
       # push to GitHub docs branch for built web app
       - run: yarn build
-      - run: git commit -m 'CircleCI: Updated dist/main.js' dist/main.js
+      - run: git commit -m "CircleCI: Updated dist/main.js" dist/main.js
