@@ -11,6 +11,8 @@ export default class FileTypePicker extends React.Component {
       selectedType: NodeEditorType.SDF,
       dropdownOpen: false
     }
+
+    this.mousedOverDropdown = false
   }
 
   getSelectedType() {
@@ -19,9 +21,9 @@ export default class FileTypePicker extends React.Component {
 
   selectedType(type) {
     this.setState({
-      selectedType: type,
-      dropdownOpen: false
+      selectedType: type
     }, () => {
+      this.closeDropdown()
       if (typeof this.props.onChange == 'function') {
         this.props.onChange(type)
       }
@@ -38,11 +40,18 @@ export default class FileTypePicker extends React.Component {
     this.setState({
       dropdownOpen: false
     })
+    this.mousedOverDropdown = false
+  }
+
+  onMouseLeaveContainer() {
+    if (!this.mousedOverDropdown) {
+      this.closeDropdown()
+    }
   }
 
   render() {
     return (
-      <div className="file-type-picker-container">
+      <div className="file-type-picker-container" onMouseLeave={this.onMouseLeaveContainer.bind(this)}>
         <div className="file-type-picker-button" onClick={this.openDropdown.bind(this)}>
           <div className="file-type-picker-icon">
             {FILE_TYPE_ICONS[this.getSelectedType()]}
@@ -54,7 +63,7 @@ export default class FileTypePicker extends React.Component {
           </div>
         </div>
         {this.state.dropdownOpen ?
-          <div className="file-type-picker-dropdown" onMouseLeave={this.closeDropdown.bind(this)}>
+          <div className="file-type-picker-dropdown" onMouseEnter={() => this.mousedOverDropdown = true} onMouseLeave={this.closeDropdown.bind(this)}>
             {Object.keys(NodeEditorType).map(typeName => (
               <div className="file-type-picker-dropdown-item" key={typeName} onClick={() => this.selectedType(NodeEditorType[typeName])}>
                 {FILE_TYPE_ICONS[NodeEditorType[typeName]]}

@@ -53,8 +53,26 @@ export default class App extends React.Component {
         content: filename,
         active: true,
         display: (
+          <div>
+          <div className="node-editor-panel-type-signature-container">
+            {'('}
+            {editorState.inputs.length == 0 ?
+              <div className="node-editor-panel-no-inputs-padding"></div>
+            : null}
+            {editorState.inputs.map((input, i) => (
+              <span>
+                {i > 0 ?
+                  ', '
+                : null}
+                <div className={'node-editor-panel-data-type-' + input.type}></div>
+              </span>
+            ))}
+            {') →'}
+            <div className={'node-editor-panel-data-type-' + editorState.outputType}></div>
+          </div>
           <div className="tab-content-container">
-            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} editorType={editorType} editorId={filename.replace('.','_')} />
+            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />
+          </div>
           </div>
         )
       })
