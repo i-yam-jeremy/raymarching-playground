@@ -6,7 +6,8 @@
   "author": "i-yam-jeremy <i-yam-jeremy@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "webpack"
   },
   "dependencies": {
     "@babel/core": "^7.4.4",

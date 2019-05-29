@@ -31,5 +31,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: echo "Hello"
+      # push to GitHub docs branch for built web app
+      - run: yarn build
+      - run: git commit -m 'CircleCI: Updated dist/main.js' dist/main.js
