@@ -95,8 +95,36 @@ export default class InputOutputPicker extends React.Component {
     return {
       inputs: this.state.inputs,
       outputType: this.outputType,
-      valid: this.allInputsValid()
+      valid: this.allInputsValid(),
+      component: this
     }
+  }
+
+  shake() {
+    let t = 0.0
+    let amplitude = 10
+    let frequency = 5
+    let step = 0.02
+    let duration = 0.5
+
+    let that = this
+    function update() {
+      let decay = 1/(1+20*t)
+      let x = decay*amplitude*Math.sin(frequency*t*2*Math.PI)
+      for (let input of that.state.inputs) {
+        if (!that.isValidInput(input.id)) {
+          that.refs['input-' + input.id].style.transform = `translateX(${x}px)`
+        }
+      }
+
+      t += step
+
+      if (t < duration) {
+        window.requestAnimationFrame(update)
+      }
+    }
+
+    update()
   }
 
   callOnChangeCallback() {
@@ -123,7 +151,7 @@ export default class InputOutputPicker extends React.Component {
                 <div className="data-type">
                   <DataTypePicker onChange={type => this.setInputType(input.id, type)} />
                 </div>
-                <input className={classNames('name', {'name-invalid': !this.isValidInput(input.id)})}
+                <input ref={'input-' + input.id} className={classNames('name', {'name-invalid': !this.isValidInput(input.id)})}
                        type="text" value={input.name}
                        onChange={(e) => this.onNameChange(input.id, e.target.value)} />
               </div>

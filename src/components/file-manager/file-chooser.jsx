@@ -23,6 +23,8 @@ export default class FileChooser extends React.Component {
       contentType: SELECT_FILE,
       newFileType: NodeEditorType.SDF
     }
+
+    this.newFileInputOutputData = null
   }
 
   getPopupStyle(contentType) {
@@ -61,6 +63,17 @@ export default class FileChooser extends React.Component {
     this.props.app.openFile(filename, filetype)
   }
 
+  tryCreateNewFile(filename, filetype, closePopup) {
+    if (this.newFileInputOutputData && this.newFileInputOutputData.valid) {
+      this.createNewFile(filename, filetype, closePopup)
+    }
+    else {
+      if (this.newFileInputOutputData) {
+        this.newFileInputOutputData.component.shake()
+      }
+    }
+  }
+
   getContent(contentType, close) {
     switch (contentType) {
       case SELECT_FILE:
@@ -85,13 +98,15 @@ export default class FileChooser extends React.Component {
           <div className="file-chooser-container">
             <div className="file-chooser-title">New File</div>
             <div className="new-file-input-container">
-              <NewFilenameInput type={this.state.newFileType} onEnter={filename => this.createNewFile(filename, this.state.newFileType, close)} />
+              <NewFilenameInput type={this.state.newFileType}
+                onEnter={filename => this.tryCreateNewFile(filename, this.state.newFileType, close)}
+                onInvalidEnter={() => this.newFileInputOutputData && this.newFileInputOutputData.component.shake()} />
             </div>
             <div className="new-file-file-type-container">
               <FileTypePicker type={this.state.newFileType} onChange={newType => this.setState({newFileType: newType})}/>
             </div>
             <div className="new-file-input-output-types-container">
-              <InputOutputPicker onChange={data => console.log(data)} />
+              <InputOutputPicker onChange={data => this.newFileInputOutputData = data} />
             </div>
           </div>
         )
