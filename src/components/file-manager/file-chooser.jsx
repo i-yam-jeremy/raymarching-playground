@@ -57,15 +57,19 @@ export default class FileChooser extends React.Component {
     })
   }
 
-  createNewFile(filename, filetype, closePopup) {
+  createNewFile(filename, filetype, inputs, outputType, closePopup) {
     closePopup()
-    FileManager.saveFileState(filename, {nodes: []})
+    FileManager.saveFileState(filename, {
+      nodes: [],
+      inputs: inputs,
+      outputType: outputType
+    })
     this.props.app.openFile(filename, filetype)
   }
 
   tryCreateNewFile(filename, filetype, closePopup) {
     if (this.newFileInputOutputData && this.newFileInputOutputData.valid) {
-      this.createNewFile(filename, filetype, closePopup)
+      this.createNewFile(filename, filetype, newFileType.inputs, newFileType.outputType, closePopup)
     }
     else {
       if (this.newFileInputOutputData) {

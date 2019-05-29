@@ -92,8 +92,13 @@ export default class InputOutputPicker extends React.Component {
   }
 
   getData() {
+    let inputsWithoutIdField = this.state.inputs.map(input => {
+      let newObj = Object.assign({}, input)
+      delete newObj.id
+      return newObj
+    })
     return {
-      inputs: this.state.inputs,
+      inputs: inputsWithoutIdField,
       outputType: this.outputType,
       valid: this.allInputsValid(),
       component: this
