@@ -34,14 +34,14 @@ export default class Time extends React.Component {
 
   render() {
     return (
-      <div className="render-hud-time-container">
-        <div className="render-hud-time-control" onClick={this.props.restartTime}>
+      <div className="time-container">
+        <div className="control" onClick={this.props.restartTime}>
           {this.getRestartButton()}
         </div>
-        <div className="render-hud-time-control" onClick={this.props.toggleTimePlaying}>
+        <div className="control" onClick={this.props.toggleTimePlaying}>
           {this.props.timePlaying ? this.getPauseButton() : this.getPlayButton()}
         </div>
-        <div className="render-hud-time-number">
+        <div className="number">
           {roundNumber(this.props.time, 1)}
         </div>
       </div>

@@ -89,8 +89,8 @@ export default class NewFilenameInput extends React.Component {
   }
 
   render() {
-    let classes = classNames('new-filename-input', {
-      'new-filename-input-invalid': !this.state.valid && this.state.hasStartedTyping
+    let classes = classNames('input', {
+      'input-invalid': !this.state.valid && this.state.hasStartedTyping
     })
     return (
       <input ref="value" type="text" className={classes}

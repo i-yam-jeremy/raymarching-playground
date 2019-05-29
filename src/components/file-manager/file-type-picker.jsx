@@ -52,20 +52,20 @@ export default class FileTypePicker extends React.Component {
   render() {
     return (
       <div className="file-type-picker-container" onMouseLeave={this.onMouseLeaveContainer.bind(this)}>
-        <div className="file-type-picker-button" onClick={this.openDropdown.bind(this)}>
-          <div className="file-type-picker-icon">
+        <div className="button" onClick={this.openDropdown.bind(this)}>
+          <div className="icon">
             {FILE_TYPE_ICONS[this.getSelectedType()]}
           </div>
-          <div className="file-type-picker-more-arrow">
+          <div className="more-arrow">
             <svg width={8} height={6} xmlns="http://www.w3.org/2000/svg">
               <polygon points="0,0 8,0 4,6" fill="#99b2b8" />
             </svg>
           </div>
         </div>
         {this.state.dropdownOpen ?
-          <div className="file-type-picker-dropdown" onMouseEnter={() => this.mousedOverDropdown = true} onMouseLeave={this.closeDropdown.bind(this)}>
+          <div className="dropdown" onMouseEnter={() => this.mousedOverDropdown = true} onMouseLeave={this.closeDropdown.bind(this)}>
             {Object.keys(NodeEditorType).map(typeName => (
-              <div className="file-type-picker-dropdown-item" key={typeName} onClick={() => this.selectedType(NodeEditorType[typeName])}>
+              <div className="dropdown-item" key={typeName} onClick={() => this.selectedType(NodeEditorType[typeName])}>
                 {FILE_TYPE_ICONS[NodeEditorType[typeName]]}
               </div>
             ))}

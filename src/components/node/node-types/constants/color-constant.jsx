@@ -55,12 +55,12 @@ class ColorConstant extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="colorpicker-swatch" onClick={ this.handleClick.bind(this) }>
-          <div className="colorpicker-color" style={{background: `rgba(${ this.state.color.r }, ${ this.state.color.g }, ${ this.state.color.b }, ${ this.state.color.a })`}} />
+      <div className="colorpicker-node">
+        <div className="swatch" onClick={ this.handleClick.bind(this) }>
+          <div className="color" style={{background: `rgba(${ this.state.color.r }, ${ this.state.color.g }, ${ this.state.color.b }, ${ this.state.color.a })`}} />
         </div>
-        { this.state.displayColorPicker ? <div className="colorpicker-popover">
-          <div className="colorpicker-cover" onClick={ this.handleClose.bind(this) }/>
+        { this.state.displayColorPicker ? <div className="popover">
+          <div className="cover" onClick={ this.handleClose.bind(this) }/>
           <ChromePicker color={ this.state.color } onChange={ this.handleChange.bind(this) } />
         </div> : null }
       </div>

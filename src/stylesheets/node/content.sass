@@ -1,21 +1,23 @@
-.node-content
-  display: inline-block
-  padding: 10px
+.node
+  
+  .content
+    display: inline-block
+    padding: 10px
 
-.node-content-field
-    -moz-appearance: textfield
-    appearance: textfield
-    &::-webkit-inner-spin-button, ::-webkit-outer-spin-button
-      -webkit-appearance: none
-    margin: 0px
-    background-color: $content-base-color
-    border: 2px solid $content-border-color
-    border-radius: 4px
-    width: 50px
-    color: $font-color
-    &::selection
-      background-color: $dim-highlight-color
-    &:focus
-      outline: none
-      border-color: #df9eed
-      border-color: $dim-highlight-color
+    .field
+        -moz-appearance: textfield
+        appearance: textfield
+        &::-webkit-inner-spin-button, ::-webkit-outer-spin-button
+          -webkit-appearance: none
+        margin: 0px
+        background-color: $content-base-color
+        border: 2px solid $content-border-color
+        border-radius: 4px
+        width: 50px
+        color: $font-color
+        &::selection
+          background-color: $dim-highlight-color
+        &:focus
+          outline: none
+          border-color: #df9eed
+          border-color: $dim-highlight-color

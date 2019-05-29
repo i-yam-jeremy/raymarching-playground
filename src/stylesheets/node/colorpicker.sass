@@ -1,26 +1,28 @@
 @import theme
 
-.colorpicker-swatch
-  padding: 5px
-  background-color: $content-base-color
-  border: 2px solid $content-border-color
-  border-radius: 4px
-  box-shadow: 0 0 0 1px rgba(0,0,0,.1)
-  display: inline-block
-  cursor: pointer
+.colorpicker-node
 
-.colorpicker-color
-  width: 36px
-  height: 14px
-  border-radius: 2px
+  .swatch
+    padding: 5px
+    background-color: $content-base-color
+    border: 2px solid $content-border-color
+    border-radius: 4px
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1)
+    display: inline-block
+    cursor: pointer
 
-.colorpicker-popover
-  position: absolute
-  z-index: 2
+  .color
+    width: 36px
+    height: 14px
+    border-radius: 2px
 
-.colorpicker-cover
-  position: fixed
-  top: 0px
-  right: 0px
-  bottom: 0px
-  left: 0px
+  .popover
+    position: absolute
+    z-index: 2
+
+  .cover
+    position: fixed
+    top: 0px
+    right: 0px
+    bottom: 0px
+    left: 0px

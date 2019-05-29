@@ -58,23 +58,23 @@ export default class FileTypePicker extends React.Component {
   render() {
     return (
       <div className="data-type-picker-container" onMouseLeave={this.onMouseLeaveContainer.bind(this)}>
-        <div className="data-type-picker-button" onClick={this.openDropdown.bind(this)}>
-          <div className={'data-type-picker-circle-' + this.state.selectedType}></div>
-          <div className="data-type-picker-label">
+        <div className="button" onClick={this.openDropdown.bind(this)}>
+          <div className={'circle-' + this.state.selectedType}></div>
+          <div className="type-label">
             {this.state.selectedType}
           </div>
-          <div className="data-type-picker-more-arrow">
+          <div className="more-arrow">
             <svg width={8} height={6} xmlns="http://www.w3.org/2000/svg">
               <polygon points="0,0 8,0 4,6" fill="#99b2b8" />
             </svg>
           </div>
         </div>
         {this.state.dropdownOpen ?
-          <div className="data-type-picker-dropdown" onMouseEnter={() => this.mousedOverDropdown = true} onMouseLeave={this.closeDropdown.bind(this)}>
+          <div className="dropdown" onMouseEnter={() => this.mousedOverDropdown = true} onMouseLeave={this.closeDropdown.bind(this)}>
             {DATA_TYPES.map(typeName => (
-              <div className="data-type-picker-dropdown-item" key={typeName} onClick={() => this.selectedType(typeName)}>
-                <div className={'data-type-picker-circle-' + typeName}></div>
-                <div className="data-type-picker-label">
+              <div className="dropdown-item" key={typeName} onClick={() => this.selectedType(typeName)}>
+                <div className={'circle-' + typeName}></div>
+                <div className="type-label">
                   {typeName}
                 </div>
               </div>

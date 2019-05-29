@@ -1,23 +1,25 @@
 @import generic
 @import ../../noselect
 
-.node-input-label-container
-  display: inline-block
-  vertical-align: top
-  padding: 5px
-  margin: 0px
+.node
 
-.node-input-circle-container
-  position: absolute
-  left: -16px
-  top: 33px
+  .input-label-container
+    display: inline-block
+    vertical-align: top
+    padding: 5px
+    margin: 0px
 
-.node-input-circle
-  @extend %node-input-output-circle
-  position: relative
-  margin: 5px
+    .label
+      @extend %noselect
+      margin: 0px
+      padding: 6px
 
-.node-input-label
-  @extend %noselect
-  margin: 0px
-  padding: 6px
+  .input-circle-container
+    position: absolute
+    left: -16px
+    top: 33px
+
+    .circle
+      @extend %input-output-circle
+      position: relative
+      margin: 5px
