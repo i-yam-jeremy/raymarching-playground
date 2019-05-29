@@ -56,7 +56,7 @@ export default class Node extends React.Component {
 
       for (let inputConnection of this.inputConnections) {
         let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
-        inputConnection.onConnectedOutputMoved(deltaX, deltaY/2) // deltaY/2 because output.topOffset = parentHeight/2 + constant
+        inputConnection.onConnectedOutputMoved(deltaX, deltaY/4) // deltaY/2 because output.topOffset = parentHeight/2 + constant
       }
 
       this.previousWidth = width
@@ -130,19 +130,19 @@ export default class Node extends React.Component {
     const NodeContent = this.props.nodeContent
     return (
       <Draggable
-        handle=".node-handle"
+        handle=".handle"
         defaultPosition={{x: this.props.initialX, y: this.props.initialY}}
         position={null}
         onDrag={this.onDrag.bind(this)}>
         <div className="node">
-          <div className="node-handle">{this.props.title}</div>
-          <div className="node-input-label-container">
-            {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="node-input-label">{input.name}</p>)}
+          <div className="handle">{this.props.title}</div>
+          <div className="input-label-container">
+            {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="label">{input.name}</p>)}
           </div>
-          <div className="node-content">
+          <div className="content">
             <NodeContent ref={this.setNodeContent.bind(this)} />
           </div>
-          <div className="node-input-circle-container">
+          <div className="input-circle-container">
             {this.props.inputs.map((input, i) => <Input parent={this} key={'input-circle-' + input.name} index={i} inputName={input.name} inputType={input.type} />)}
           </div>
           {this.props.outputType ? <Output parent={this} outputType={this.props.outputType} /> : ''}
