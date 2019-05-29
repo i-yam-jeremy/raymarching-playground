@@ -1,0 +1,39 @@
+@import ../tabs
+
+.file-list-container
+  position: relative
+  width: 376px
+  margin: 10px
+  margin-top: 25px
+  border: 2px solid $tab-highlight-color
+  max-height: 250px
+  overflow: scroll
+
+.file-list-element
+  background-color: $tab-bg-color
+  &:hover
+    background-color: $tab-highlight-color
+    .file-list-element-trash
+      visibility: visible
+
+.file-list-element-icon
+  display: inline-block
+  vertical-align: middle
+
+.file-list-element-filename
+  display: inline-block
+  text-align: right
+  vertical-align: middle
+  margin-left: 8px
+  font-size: 14px
+
+.file-list-element-trash
+  visibility: hidden
+  display: inline-block
+  transform: scale(0.75)
+  position: relative
+  float: right
+  right: 12px
+
+  &:hover
+    transform: scale(0.875)
