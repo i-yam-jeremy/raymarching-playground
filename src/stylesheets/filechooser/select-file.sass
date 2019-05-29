@@ -27,11 +27,43 @@
   margin-left: 8px
   font-size: 14px
 
+.file-list-element-type-signature-container
+  display: inline-block
+  vertical-align: middle
+  font-size: 12px
+  font-weight: bold
+  position: relative
+  float: right
+  right: 55px
+  top: 7px
+
+.file-list-element-no-inputs-padding
+  display: inline-block
+  vertical-align: middle
+  width: 6px
+
+%file-list-element-data-type
+  $size: 8px
+  width: $size
+  height: $size
+  border-radius: $size
+  display: inline-block
+  vertical-align: middle
+  margin: 5px
+
+.file-list-element-data-type-float
+  @extend %file-list-element-data-type
+  background-color: #489E4F
+
+.file-list-element-data-type-vec3
+  @extend %file-list-element-data-type
+  background-color: #BCB63E
+
 .file-list-element-trash
   visibility: hidden
   display: inline-block
   transform: scale(0.75)
-  position: relative
+  position: absolute
   float: right
   right: 12px
 

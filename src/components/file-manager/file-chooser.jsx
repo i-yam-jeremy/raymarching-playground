@@ -69,7 +69,8 @@ export default class FileChooser extends React.Component {
 
   tryCreateNewFile(filename, filetype, closePopup) {
     if (this.newFileInputOutputData && this.newFileInputOutputData.valid) {
-      this.createNewFile(filename, filetype, newFileType.inputs, newFileType.outputType, closePopup)
+      let {inputs, outputType} = this.newFileInputOutputData
+      this.createNewFile(filename, filetype, inputs, outputType, closePopup)
     }
     else {
       if (this.newFileInputOutputData) {
@@ -91,6 +92,23 @@ export default class FileChooser extends React.Component {
                     onClick={() => this.openFile(file, close)}>
                   <div className="file-list-element-icon">{FILE_TYPE_ICONS[file.type]}</div>
                   <div className="file-list-element-filename">{file.name}</div>
+                  <div className="file-list-element-type-signature-container">
+                    {'('}
+                    {file.state.inputs.length == 0 ?
+                      <div className="file-list-element-no-inputs-padding"></div>
+                    : null}
+                    {file.state.inputs.map((input, i) => (
+                      <span>
+                        {i > 0 ?
+                          ', '
+                        : null}
+                        <div className={'file-list-element-data-type-' + input.type}></div>
+                      </span>
+                      // TODO add () before and after and commas in between and arrow, so resulting format with output type is (x,x,x) -> x where x is a data type color circle
+                    ))}
+                    {') →'}
+                    <div className={'file-list-element-data-type-' + file.state.outputType}></div>
+                  </div>
                   <div className="file-list-element-trash" onClick={() => this.deleteFile(file)}>{TRASH_FILE_ICON}</div>
                 </div>
               ))}

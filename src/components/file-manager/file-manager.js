@@ -40,7 +40,8 @@ function getFileList() {
   let files = JSON.parse(localStorage.savedFiles)
   return Object.keys(files).map(filename => ({
     name: filename,
-    type: getFileTypeFromFilename(filename)
+    type: getFileTypeFromFilename(filename),
+    state: files[filename]
   }))
 }
 
