@@ -15,16 +15,7 @@ export default class App extends React.Component {
     super(props)
 
     this.state = {
-      tabs: [{
-          id: 0,
-          content: "Render",
-          active: false,
-          display: (
-            <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
-                <Render />
-            </div>
-          )
-        }]
+      tabs: []
     }
 
     this.editors = {} // editors by filename

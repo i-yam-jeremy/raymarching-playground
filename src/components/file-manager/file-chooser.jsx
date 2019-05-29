@@ -84,31 +84,31 @@ export default class FileChooser extends React.Component {
       case SELECT_FILE:
         return (
           <div className="file-chooser-container">
-            <div className="file-chooser-title">Select a File</div>
-            <div className="file-chooser-new-file" onClick={this.openNewFileDialog.bind(this)}>+</div>
+            <div className="title">Select a File</div>
+            <div className="new-file-button" onClick={this.openNewFileDialog.bind(this)}>+</div>
             <div className="file-list-container">
               {FileManager.getFileList().map(file => (
-                <div key={file.name} className="file-list-element"
+                <div key={file.name} className="element"
                     onClick={() => this.openFile(file, close)}>
-                  <div className="file-list-element-icon">{FILE_TYPE_ICONS[file.type]}</div>
-                  <div className="file-list-element-filename">{file.name}</div>
-                  <div className="file-list-element-type-signature-container">
+                  <div className="icon">{FILE_TYPE_ICONS[file.type]}</div>
+                  <div className="filename">{file.name}</div>
+                  <div className="type-signature-container">
                     {'('}
                     {file.state.inputs.length == 0 ?
-                      <div className="file-list-element-no-inputs-padding"></div>
+                      <div className="no-inputs-padding"></div>
                     : null}
                     {file.state.inputs.map((input, i) => (
                       <span>
                         {i > 0 ?
                           ', '
                         : null}
-                        <div className={'file-list-element-data-type-' + input.type}></div>
+                        <div className={'data-type-' + input.type}></div>
                       </span>
                     ))}
                     {') →'}
-                    <div className={'file-list-element-data-type-' + file.state.outputType}></div>
+                    <div className={'data-type-' + file.state.outputType}></div>
                   </div>
-                  <div className="file-list-element-trash" onClick={() => this.deleteFile(file)}>{TRASH_FILE_ICON}</div>
+                  <div className="trash" onClick={() => this.deleteFile(file)}>{TRASH_FILE_ICON}</div>
                 </div>
               ))}
             </div>
@@ -117,16 +117,16 @@ export default class FileChooser extends React.Component {
       case NEW_FILE:
         return (
           <div className="file-chooser-container">
-            <div className="file-chooser-title">New File</div>
-            <div className="new-file-input-container">
-              <NewFilenameInput type={this.state.newFileType}
-                onEnter={filename => this.tryCreateNewFile(filename, this.state.newFileType, close)}
-                onInvalidEnter={() => this.newFileInputOutputData && this.newFileInputOutputData.component.shake()} />
-            </div>
-            <div className="new-file-file-type-container">
-              <FileTypePicker type={this.state.newFileType} onChange={newType => this.setState({newFileType: newType})}/>
-            </div>
-            <div className="new-file-input-output-types-container">
+            <div className="title">New File</div>
+            <div className="new-file">
+              <div className="filename-input-container">
+                <NewFilenameInput type={this.state.newFileType}
+                  onEnter={filename => this.tryCreateNewFile(filename, this.state.newFileType, close)}
+                  onInvalidEnter={() => this.newFileInputOutputData && this.newFileInputOutputData.component.shake()} />
+              </div>
+              <div className="file-type-container">
+                <FileTypePicker type={this.state.newFileType} onChange={newType => this.setState({newFileType: newType})}/>
+              </div>
               <InputOutputPicker onChange={data => this.newFileInputOutputData = data} />
             </div>
           </div>
