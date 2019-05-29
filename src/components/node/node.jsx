@@ -24,7 +24,9 @@ export default class Node extends React.Component {
   }
 
   onOutputConnectedToInput(input) {
-    this.inputConnections.push(input)
+    if (this.inputConnections.indexOf(input) == -1) {
+      this.inputConnections.push(input)
+    }
   }
 
   onDrag(e, data) {
