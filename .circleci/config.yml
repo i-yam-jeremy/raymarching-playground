@@ -40,4 +40,4 @@ jobs:
       - run: git add --force -- dist/main.js
       - run: git commit -m "dist/main.js"
       # Push quietly to prevent showing the token in log
-      - run: git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/i-yam-jeremy/raymarching-playground.git master
+      - run: git push -q https://${GITHUB_PERSONAL_TOKEN}@github.com/i-yam-jeremy/raymarching-playground.git gh-pages
