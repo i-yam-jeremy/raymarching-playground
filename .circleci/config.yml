@@ -33,4 +33,6 @@ jobs:
 
       # push to GitHub docs branch for built web app
       - run: yarn build
-      - run: git commit -m "dist/main.js" dist/main.js
+      - run: git add --force -- dist/main.js
+      - run: git commit -m "dist/main.js"
+      - run: git push
