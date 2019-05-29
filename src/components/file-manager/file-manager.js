@@ -2,8 +2,8 @@ import NodeEditorType from '../node/node-editor-type.js'
 
 if (!localStorage.savedFiles) {
   let savedFiles = {}
-  savedFiles['main.sdf'] = {nodes: []}
-  savedFiles['main.shader'] = {nodes: []}
+  savedFiles['main.sdf'] = {nodes: [], inputs: [], outputType: 'float'}
+  savedFiles['main.shader'] = {nodes: [], inputs: [], outputType: 'vec3'}
   localStorage.savedFiles = JSON.stringify(savedFiles)
 }
 
