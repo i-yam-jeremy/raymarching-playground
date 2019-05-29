@@ -1,4 +1,5 @@
 @import ../theme
+@import ../noselect
 
 .node-editor-panel
   $grid-color: #333333
@@ -11,3 +12,39 @@
   background-size: $grid-square-size $grid-square-size
   background-image: linear-gradient(to right, $grid-color $grid-line-size, transparent $grid-line-size), linear-gradient(to bottom, $grid-color $grid-line-size, transparent $grid-line-size)
   background-color: $bg-color
+
+.node-editor-panel-type-signature-container
+  @extend %noselect
+  z-index: 2
+  color: $font-color
+  font: $font
+  display: inline-block
+  vertical-align: middle
+  font-size: 36px
+  font-weight: bold
+  position: relative
+  float: right
+  right: 15px
+  top: 7px
+
+.node-editor-panel-no-inputs-padding
+  display: inline-block
+  vertical-align: middle
+  width: 14px
+
+%node-editor-panel-data-type
+  $size: 16px
+  width: $size
+  height: $size
+  border-radius: $size
+  display: inline-block
+  vertical-align: middle
+  margin: 5px
+
+.node-editor-panel-data-type-float
+  @extend %node-editor-panel-data-type
+  background-color: #489E4F
+
+.node-editor-panel-data-type-vec3
+  @extend %node-editor-panel-data-type
+  background-color: #BCB63E
