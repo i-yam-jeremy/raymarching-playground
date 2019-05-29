@@ -48,12 +48,18 @@ export default class NewFilenameInput extends React.Component {
 
   onKeypress(e) {
     if (e.key == 'Enter') {
+      this.setState({
+        hasStartedTyping: true
+      })
       if (this.state.valid) {
         if (typeof this.props.onEnter == 'function') {
           this.props.onEnter(this.refs.value.value)
         }
       }
       else {
+        if (typeof this.props.onInvalidEnter == 'function') {
+          this.props.onInvalidEnter()
+        }
         this.shake()
       }
     }
