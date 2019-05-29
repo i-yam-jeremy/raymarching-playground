@@ -85,13 +85,13 @@ export default class FileChooser extends React.Component {
           <div className="file-chooser-container">
             <div className="file-chooser-title">New File</div>
             <div className="new-file-input-container">
-              <NewFilenameInput type={this.state.newFileType} onEnter={(filename) => this.createNewFile(filename, this.state.newFileType, close)} />
+              <NewFilenameInput type={this.state.newFileType} onEnter={filename => this.createNewFile(filename, this.state.newFileType, close)} />
             </div>
             <div className="new-file-file-type-container">
-              <FileTypePicker type={this.state.newFileType} onChange={(newType) => this.setState({newFileType: newType})}/>
+              <FileTypePicker type={this.state.newFileType} onChange={newType => this.setState({newFileType: newType})}/>
             </div>
             <div className="new-file-input-output-types-container">
-              <InputOutputPicker />
+              <InputOutputPicker onChange={data => console.log(data)} />
             </div>
           </div>
         )

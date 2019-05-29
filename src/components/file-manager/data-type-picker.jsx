@@ -15,6 +15,12 @@ export default class FileTypePicker extends React.Component {
     this.mousedOverDropdown = false
   }
 
+  componentDidMount() {
+    if (typeof this.props.onChange == 'function') {
+      this.props.onChange(this.state.selectedType) // Send default type selected
+    }
+  }
+
   getSelectedType() {
     return this.state.selectedType
   }

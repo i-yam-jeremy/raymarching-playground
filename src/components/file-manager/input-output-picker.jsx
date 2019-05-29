@@ -13,23 +13,37 @@ export default class InputOutputPicker extends React.Component {
     }
 
     this.currentInputId = 0
+    this.outputType = null
+  }
+
+  componentDidMount() {
+    this.callOnChangeCallback()
   }
 
   addInput() {
     let newInput = {
-      // TODO
       name: '',
+      type: null,
       id: this.currentInputId++
     }
     this.setState({
       inputs: this.state.inputs.concat([newInput])
-    })
+    }, this.callOnChangeCallback.bind(this))
   }
 
   deleteInput(id) {
     this.setState({
       inputs: this.state.inputs.filter(input => input.id != id)
-    })
+    }, this.callOnChangeCallback.bind(this))
+  }
+
+  setInputType(id, newType) {
+    this.setState({
+      inputs: this.state.inputs.map(input => ({
+        ...input,
+        type: (input.id == id) ? newType : input.type
+      }))
+    }, this.callOnChangeCallback.bind(this))
   }
 
   getInputById(id) {
@@ -63,13 +77,32 @@ export default class InputOutputPicker extends React.Component {
         ...input,
         name: (input.id == id) ? newName : input.name
       }))
-    })
+    }, this.callOnChangeCallback.bind(this))
+  }
+
+  setOutputType(type) {
+    this.outputType = type
+    this.callOnChangeCallback()
   }
 
   allInputsValid() {
     return this.state.inputs
             .map(input => this.isValidInput(input.id))
-            .reduce((a,b) => a && b)
+            .reduce((a,b) => a && b, true)
+  }
+
+  getData() {
+    return {
+      inputs: this.state.inputs,
+      outputType: this.outputType,
+      valid: this.allInputsValid()
+    }
+  }
+
+  callOnChangeCallback() {
+    if (typeof this.props.onChange == 'function') {
+      this.props.onChange(this.getData())
+    }
   }
 
   render() {
@@ -88,7 +121,7 @@ export default class InputOutputPicker extends React.Component {
               <div key={'input-' + input.id} className="input">
                 <div className="delete" onClick={() => this.deleteInput(input.id)}>×</div>
                 <div className="data-type">
-                  <DataTypePicker />
+                  <DataTypePicker onChange={type => this.setInputType(input.id, type)} />
                 </div>
                 <input className={classNames('name', {'name-invalid': !this.isValidInput(input.id)})}
                        type="text" value={input.name}
@@ -102,7 +135,7 @@ export default class InputOutputPicker extends React.Component {
             Output
           </div>
           <div className="io-data-type-picker">
-            <DataTypePicker />
+            <DataTypePicker onChange={this.setOutputType.bind(this)} />
           </div>
         </div>
       </div>
