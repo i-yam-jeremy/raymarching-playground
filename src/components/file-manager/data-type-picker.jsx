@@ -1,10 +1,6 @@
 import React from 'react'
 
 const DATA_TYPES = ['float', 'vec3']
-const DATA_TYPE_COLORS = {
-  'float': '#489E4F',
-  'vec3': '#BCB63E'
-}
 
 export default class FileTypePicker extends React.Component {
 
@@ -15,6 +11,8 @@ export default class FileTypePicker extends React.Component {
       selectedType: DATA_TYPES[0],
       dropdownOpen: false
     }
+
+    this.mousedOverDropdown = false
   }
 
   getSelectedType() {
@@ -42,29 +40,34 @@ export default class FileTypePicker extends React.Component {
     this.setState({
       dropdownOpen: false
     })
+    this.mousedOverDropdown = false
+  }
+
+  onMouseLeaveContainer() {
+    if (!this.mousedOverDropdown) {
+      this.closeDropdown()
+    }
   }
 
   render() {
     return (
-      <div className="file-type-picker-container">
-        <div className="file-type-picker-button" onClick={this.openDropdown.bind(this)}>
-          <div className="file-type-picker-icon">
-            <div style={{width: '16px', height: '16px', borderRadius: '16px', borderWidth: '2px', borderStyle: 'solid', borderColor: DATA_TYPE_COLORS[this.state.selectedType]}}></div>
-            <div className="data-type-picker-label">
-              {this.state.selectedType}
-            </div>
+      <div className="data-type-picker-container" onMouseLeave={this.onMouseLeaveContainer.bind(this)}>
+        <div className="data-type-picker-button" onClick={this.openDropdown.bind(this)}>
+          <div className={'data-type-picker-circle-' + this.state.selectedType}></div>
+          <div className="data-type-picker-label">
+            {this.state.selectedType}
           </div>
-          <div className="file-type-picker-more-arrow">
+          <div className="data-type-picker-more-arrow">
             <svg width={8} height={6} xmlns="http://www.w3.org/2000/svg">
               <polygon points="0,0 8,0 4,6" fill="#99b2b8" />
             </svg>
           </div>
         </div>
         {this.state.dropdownOpen ?
-          <div className="file-type-picker-dropdown" onMouseLeave={this.closeDropdown.bind(this)}>
+          <div className="data-type-picker-dropdown" onMouseEnter={() => this.mousedOverDropdown = true} onMouseLeave={this.closeDropdown.bind(this)}>
             {DATA_TYPES.map(typeName => (
-              <div className="file-type-picker-dropdown-item" key={typeName} onClick={() => this.selectedType(typeName)}>
-                <div style={{width: '16px', height: '16px', borderRadius: '16px', borderWidth: '2px', borderStyle: 'solid', borderColor: DATA_TYPE_COLORS[typeName]}}></div>
+              <div className="data-type-picker-dropdown-item" key={typeName} onClick={() => this.selectedType(typeName)}>
+                <div className={'data-type-picker-circle-' + typeName}></div>
                 <div className="data-type-picker-label">
                   {typeName}
                 </div>

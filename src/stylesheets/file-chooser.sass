@@ -130,3 +130,64 @@ $file-type-picker-height: $file-type-icon-height + 4px
   display: inline-block
   padding: 5px
   vertical-align: middle
+
+
+$data-type-picker-circle-width: 16px
+$data-type-picker-height: $data-type-picker-circle-width + 10px
+.data-type-picker-container
+  width: 65px
+  height: $data-type-picker-height
+  border: 2px solid $tab-highlight-color
+  border-radius: 5px
+  &:hover
+    background-color: $tab-highlight-color
+
+.data-type-picker-button
+  width: 100%
+  height: 100%
+
+.data-type-picker-more-arrow
+  display: inline-block
+  position: relative
+  float: right
+  right: 2px
+  top: $data-type-picker-height/2 - 3px
+
+.data-type-picker-dropdown
+  position: relative
+  left: 12px
+  padding: 0px
+  background-color: $tab-bg-color
+  border: 2px solid $tab-highlight-color
+  border-top: none
+  border-radius: 5px
+
+.data-type-picker-dropdown-item
+  padding: 5px
+  border-top: 2px solid $tab-highlight-color
+  &:hover
+    background-color: $tab-highlight-color
+
+%data-type-picker-circle
+  width: $data-type-picker-circle-width
+  height: $data-type-picker-circle-width
+  display: inline-block
+  border-width: 2px
+  border-radius: $data-type-picker-circle-width
+  border-style: solid
+  margin-top: 3px
+
+.data-type-picker-circle-float
+  @extend %data-type-picker-circle
+  border-color: #489E4F
+
+.data-type-picker-circle-vec3
+  @extend %data-type-picker-circle
+  border-color: #BCB63E
+
+.data-type-picker-label
+  position: relative
+  left: 5px
+  top: -5px
+  vertical-align: middle
+  display: inline-block
