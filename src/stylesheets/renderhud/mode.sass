@@ -1,38 +1,40 @@
 @import ../theme
 @import ../noselect
 
-.render-hud-mode-option-container
-  @extend %noselect
-  position: relative
-  padding: 10px
+.render-hud
 
-.render-hud-mode-option
-  position: relative
-  margin: 3px
+  .mode-option-container
+    @extend %noselect
+    position: relative
+    padding: 10px
 
-.render-hud-mode-option-label
-  position: relative
-  left: 28px
-  top: -10px
+    .option
+      position: relative
+      margin: 3px
 
-%render-hud-mode-option-radio
-  position: relative
-  top: 0px
-  left: 0px
-  $size: 12px
-  width: $size
-  height: $size
-  border-radius: $size
-  background-color: rgba(0,0,0,0)
+    .option-label
+      position: relative
+      left: 28px
+      top: -10px
 
-.render-hud-mode-option-radio-unselected
-  @extend %render-hud-mode-option-radio
-  border: 3px solid #666666
-  &:hover
-    border: 3px solid darken($highlight-color, 20%)
+    %mode-option-radio
+      position: relative
+      top: 0px
+      left: 0px
+      $size: 12px
+      width: $size
+      height: $size
+      border-radius: $size
+      background-color: rgba(0,0,0,0)
 
-.render-hud-mode-option-radio-selected
-  @extend %render-hud-mode-option-radio
-  border: 3px solid $highlight-color
-  &:hover
-    border: 3px solid darken($highlight-color, 20%)
+    .option-radio-unselected
+      @extend %mode-option-radio
+      border: 3px solid #666666
+      &:hover
+        border: 3px solid darken($highlight-color, 20%)
+
+    .option-radio-selected
+      @extend %mode-option-radio
+      border: 3px solid $highlight-color
+      &:hover
+        border: 3px solid darken($highlight-color, 20%)

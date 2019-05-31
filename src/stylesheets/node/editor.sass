@@ -27,24 +27,24 @@
   right: 15px
   top: 7px
 
-.node-editor-panel-no-inputs-padding
-  display: inline-block
-  vertical-align: middle
-  width: 14px
+  .no-inputs-padding
+    display: inline-block
+    vertical-align: middle
+    width: 14px
 
-%node-editor-panel-data-type
-  $size: 16px
-  width: $size
-  height: $size
-  border-radius: $size
-  display: inline-block
-  vertical-align: middle
-  margin: 5px
+  %data-type
+    $size: 16px
+    width: $size
+    height: $size
+    border-radius: $size
+    display: inline-block
+    vertical-align: middle
+    margin: 5px
 
-.node-editor-panel-data-type-float
-  @extend %node-editor-panel-data-type
-  background-color: #489E4F
+  .data-type-float
+    @extend %data-type
+    background-color: #489E4F
 
-.node-editor-panel-data-type-vec3
-  @extend %node-editor-panel-data-type
-  background-color: #BCB63E
+  .data-type-vec3
+    @extend %data-type
+    background-color: #BCB63E

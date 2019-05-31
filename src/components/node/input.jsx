@@ -96,13 +96,13 @@ class PreClickDragInput extends React.Component {
   }
 
   render() {
-    const circleClassNames = classnames('node-input-circle', 'node-input-output-circle-' + this.props.inputType)
+    const circleClassNames = classnames('circle', 'input-output-circle-' + this.props.inputType)
     return (
         <div className="noselect" style={{position: 'relative'}}>
           <div className={circleClassNames}>
             <span className="tooltip">{this.props.inputType}</span>
           </div>
-          <div className="svg-connecting-curve-container" style={{top: (Math.min(0, this.state.y) + 8) + 'px', left: (Math.min(0, this.state.x) + 8) + 'px'}}>
+          <div className="curve-container" style={{top: (Math.min(0, this.state.y) + 8) + 'px', left: (Math.min(0, this.state.x) + 8) + 'px'}}>
             <svg xmlns="http://www.w3.org/2000/svg" width={Math.abs(this.state.x)+6} height={Math.abs(this.state.y)+6} preserveAspectRatio="xMidYMid meet">
               <path d={this.getConnectingLinePath()} stroke="#666666" strokeWidth={3} fill="none"/>
             </svg>

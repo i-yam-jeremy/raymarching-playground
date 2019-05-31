@@ -38,8 +38,8 @@ export default class MaxStepInput extends React.Component {
 
   render() {
     return (
-      <div className="render-hud-max-step-input-container">
-        <div className="render-hud-max-step-input-control">
+      <div className="max-step-input-container">
+        <div className="control">
           {(MAX_STEP_VALUES.indexOf(this.props.currentMaxSteps) > 0) ?
             <div onClick={this.prev.bind(this)}>
               {this.getPrevButton()}
@@ -47,10 +47,10 @@ export default class MaxStepInput extends React.Component {
             : null
           }
         </div>
-        <div className="render-hud-max-step-input-value">
+        <div className="value">
           {this.props.currentMaxSteps}
         </div>
-        <div className="render-hud-max-step-input-control">
+        <div className="control">
           {(MAX_STEP_VALUES.indexOf(this.props.currentMaxSteps) < MAX_STEP_VALUES.length-1) ?
             <div onClick={this.next.bind(this)}>
               {this.getNextButton()}

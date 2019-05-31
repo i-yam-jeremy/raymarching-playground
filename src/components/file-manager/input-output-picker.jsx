@@ -167,7 +167,7 @@ export default class InputOutputPicker extends React.Component {
           <div className="label">
             Output
           </div>
-          <div className="io-data-type-picker">
+          <div className="data-type-picker">
             <DataTypePicker onChange={this.setOutputType.bind(this)} />
           </div>
         </div>

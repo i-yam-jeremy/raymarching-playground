@@ -24,11 +24,11 @@ export default class Mode extends React.Component {
 
   render() {
     return (
-      <div className="render-hud-mode-option-container">
+      <div className="mode-option-container">
           {Object.keys(RenderModes).map(mode =>
-            <div key={mode} className="render-hud-mode-option" onClick={() => this.setMode(mode)}>
-              <div className={'render-hud-mode-option-radio-' + (this.state.selectedMode == RenderModes[mode] ? 'selected' : 'unselected')} />
-              <div className="render-hud-mode-option-label">{capitalize(mode)}</div>
+            <div key={mode} className="option" onClick={() => this.setMode(mode)}>
+              <div className={'option-radio-' + (this.state.selectedMode == RenderModes[mode] ? 'selected' : 'unselected')} />
+              <div className="option-label">{capitalize(mode)}</div>
             </div>
           )}
       </div>

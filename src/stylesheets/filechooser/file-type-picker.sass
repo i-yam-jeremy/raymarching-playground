@@ -1,47 +1,47 @@
 @import ../tabs
 
-$file-type-icon-width: 32px
-$file-type-icon-height: 32px
-$file-type-picker-width: $file-type-icon-width + 14px
-$file-type-picker-height: $file-type-icon-height + 4px
 .file-type-picker-container
-  width: $file-type-picker-width
-  height: $file-type-icon-height
+  $icon-width: 32px
+  $icon-height: 32px
+  $width: $icon-width + 14px
+  $height: $icon-height + 4px
+  width: $width
+  height: $height
   border: 2px solid $tab-highlight-color
   border-radius: 5px
   &:hover
     background-color: $tab-highlight-color
 
-.file-type-picker-button
-  width: 100%
-  height: 100%
+  .button
+    width: 100%
+    height: 100%
 
-.file-type-picker-icon
-  display: inline-block
-  position: relative
-  left: 0px
-  width: $file-type-icon-width
-  height: $file-type-icon-height
+  .icon
+    display: inline-block
+    position: relative
+    left: 0px
+    width: $icon-width
+    height: $icon-height
 
-.file-type-picker-more-arrow
-  display: inline-block
-  position: relative
-  float: right
-  right: 2px
-  top: $file-type-picker-height/2 - 3px
+  .more-arrow
+    display: inline-block
+    position: relative
+    float: right
+    right: 2px
+    top: $height/2 - 3px
 
-.file-type-picker-dropdown
-  position: relative
-  z-index: 2
-  left: 12px
-  padding: 0px
-  background-color: $tab-bg-color
-  border: 2px solid $tab-highlight-color
-  border-top: none
-  border-radius: 5px
+  .dropdown
+    position: relative
+    z-index: 2
+    left: 12px
+    padding: 0px
+    background-color: $tab-bg-color
+    border: 2px solid $tab-highlight-color
+    border-top: none
+    border-radius: 5px
 
-.file-type-picker-dropdown-item
-  padding: 5px
-  border-top: 2px solid $tab-highlight-color
-  &:hover
-    background-color: $tab-highlight-color
+  .dropdown-item
+    padding: 5px
+    border-top: 2px solid $tab-highlight-color
+    &:hover
+      background-color: $tab-highlight-color

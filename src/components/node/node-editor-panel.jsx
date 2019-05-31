@@ -89,7 +89,9 @@ export default class NodeEditorPanel extends React.Component {
 
   getSaveState() {
     return {
-      nodes: this.nodeComponents.map(nodeComponent => nodeComponent.getSaveState())
+      nodes: this.nodeComponents.map(nodeComponent => nodeComponent.getSaveState()),
+      inputs: this.props.inputs,
+      outputType: this.props.outputType
     }
   }
 

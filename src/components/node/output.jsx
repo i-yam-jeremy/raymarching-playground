@@ -22,7 +22,7 @@ export default class Output extends React.Component {
   }
 
   render() {
-    const circleClassNames = classnames('node-output-circle', 'node-input-output-circle-' + this.props.outputType)
+    const circleClassNames = classnames('output-circle', 'input-output-circle-' + this.props.outputType)
     return (
         <div className={circleClassNames} onMouseUp={this.onMouseUp.bind(this)}>
           <span className="tooltip">{this.props.outputType}</span>
