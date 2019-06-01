@@ -1,5 +1,8 @@
 import NodeEditorType from '../node/node-editor-type.js'
 
+console.log('hey', localStorage.savedFiles)
+//localStorage.clear()
+
 if (!localStorage.savedFiles) {
   let savedFiles = {}
   savedFiles['main.sdf'] = {nodes: [], inputs: [], outputType: 'float'}
@@ -59,6 +62,7 @@ function deleteFile(filename) {
 export default {
   loadFileState,
   saveFileState,
+  getFileTypeFromFilename,
   getFileList,
   fileExists,
   deleteFile

@@ -71,7 +71,7 @@ export default class App extends React.Component {
             <div className={'data-type-' + editorState.outputType}></div>
           </div>
           <div className="tab-content-container">
-            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />
+            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} filename={filename} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />
           </div>
           </div>
         )

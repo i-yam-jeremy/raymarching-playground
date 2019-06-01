@@ -113,7 +113,8 @@ export default class Node extends React.Component {
       y: y,
       inputs: inputs,
       type: this.props.nodeContent.name,
-      content: (typeof this.nodeContent.getSaveState == 'function' ? this.nodeContent.getSaveState() : null)
+      filename: (this.props.nodeContent.name == 'CustomNode') ? this.props.nodeContent.title : null,
+      content: (typeof this.nodeContent.getSaveState == 'function') ? this.nodeContent.getSaveState() : null
     }
   }
 

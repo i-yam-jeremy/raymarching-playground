@@ -98,11 +98,25 @@ export default class NodeEditorPanel extends React.Component {
   loadState(state) {
     let nodeData = state.nodes.map(node => {
       let nodeType
-      let nodeTypes = getNodeTypes(this.props.editorType)
-      for (let category in nodeTypes) {
-        for (let type of nodeTypes[category]) {
-          if (type.name == node.type) {
-            nodeType = type
+      let nodeTypes = getNodeTypes(this.props.filename, this.props.editorType)
+      if (node.type == 'CustomNode') {
+        let customNodes = nodeTypes['Custom']
+        for (let customNode of customNodes) {
+          if (customNode.title == node.filename) {
+            nodeType = customNode
+            break
+          }
+        }
+        if (!nodeType) {
+          throw 'Custom node for ' + node.filename + ' not found'
+        }
+      }
+      else {
+        for (let category in nodeTypes) {
+          for (let type of nodeTypes[category]) {
+            if (type.name == node.type) {
+              nodeType = type
+            }
           }
         }
       }
@@ -156,9 +170,9 @@ export default class NodeEditorPanel extends React.Component {
 
         <ContextMenu id={'node-editor-panel-contextmenu-' + this.props.editorId} ltr>
           <div>
-            {Object.keys(getNodeTypes(this.props.editorType)).map(category =>
+            {Object.keys(getNodeTypes(this.props.filename, this.props.editorType)).map(category =>
               <SubMenu key={'contextmenu-' + category} title={category} ltr>
-               {getNodeTypes(this.props.editorType)[category].map(nodeType =>
+               {getNodeTypes(this.props.filename, this.props.editorType)[category].map(nodeType =>
                   <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
                     <div>{nodeType.title}</div>
                   </MenuItem>
