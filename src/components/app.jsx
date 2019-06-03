@@ -34,13 +34,6 @@ export default class App extends React.Component {
     }
   }
 
-  save() {
-    // Save all files open
-    for (let filename in this.editors) {
-      FileManager.saveFileState(filename, this.editors[filename].getSaveState())
-    }
-  }
-
   openFile(filename, editorType) {
     let openTab = this.findTabByFilename(filename)
 

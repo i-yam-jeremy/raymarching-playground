@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { ContextMenu, SubMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
+import FileManager from '../file-manager/file-manager.js'
 
 export default class NodeEditorPanel extends React.Component {
 
@@ -29,11 +30,13 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   onContentChanged() {
-    this.props.app.save()
+    let saveState = this.getSaveState()
+    console.log(saveState)
+    console.trace()
+    FileManager.saveFileState(this.props.filename, saveState)
   }
 
   contextMenuClick(e, data) {
-    this.onContentChanged()
     const menuBounds = e.target.getBoundingClientRect()
     const nodeEditorPanelBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
     const x = menuBounds.left - nodeEditorPanelBounds.left
@@ -45,7 +48,7 @@ export default class NodeEditorPanel extends React.Component {
         y: y,
         id: this.getNextNodeDataId()
       }])
-    })
+    },this.onContentChanged.bind(this))
   }
 
   deleteNode(e, data) {

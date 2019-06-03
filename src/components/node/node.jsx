@@ -30,7 +30,6 @@ export default class Node extends React.Component {
   }
 
   onDrag(e, data) {
-    this.props.editor.onContentChanged()
     for (let inputConnection of this.inputConnections) {
       let bounds = ReactDOM.findDOMNode(this.outputComponent).getBoundingClientRect()
       inputConnection.onConnectedOutputMoved(data.deltaX, data.deltaY)
@@ -39,15 +38,15 @@ export default class Node extends React.Component {
     for (let input of this.props.inputs) {
       this.inputComponents[input.name].updateLineConnectionPosition(data.deltaX, data.deltaY)
     }
+
+    this.props.editor.onContentChanged()
   }
 
   setInputComponent(inputName, node) {
-    this.props.editor.onContentChanged()
     this.inputComponents[inputName] = node
   }
 
   setOutputComponent(outputComponent) {
-    this.props.editor.onContentChanged()
     this.outputComponent = outputComponent
   }
 
@@ -67,7 +66,6 @@ export default class Node extends React.Component {
   }
 
   clearConnections() {
-    this.props.editor.onContentChanged()
     for (let inputConnection of this.inputConnections) {
       let inputName = inputConnection.props.inputName
       inputConnection.props.parent.inputComponents[inputName].connectedOutput = null
@@ -82,6 +80,7 @@ export default class Node extends React.Component {
         inputComponent.connectedOutput = null
       }
     }
+    this.props.editor.onContentChanged()
   }
 
   setNodeContent(nodeContent) {
@@ -119,14 +118,13 @@ export default class Node extends React.Component {
   }
 
   connectInput(inputName, nodeComponent, x, y) {
-    this.props.editor.onContentChanged()
     let inputComponent = this.inputComponents[inputName]
     inputComponent.connectedOutput = nodeComponent.outputComponent
     nodeComponent.onOutputConnectedToInput(inputComponent)
     inputComponent.setState({
       x: x,
       y: y
-    })
+    }, () => this.props.editor.onContentChanged())
   }
 
   render() {

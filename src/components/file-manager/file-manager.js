@@ -1,7 +1,6 @@
 import LocalStorage from 'localstorage'
 import NodeEditorType from '../node/node-editor-type.js'
 
-localStorage.clear()
 const savedFiles = new LocalStorage('savedFiles')
 
 if (savedFiles.has('main.sdf')[0] != null) {

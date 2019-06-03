@@ -75,6 +75,7 @@ class PreClickDragInput extends React.Component {
       y: outputBounds.y - thisBounds.y,
     })
     this.connectedOutput = output
+    this.props.parent.props.editor.onContentChanged()
   }
 
   getConnectingLinePath() {
