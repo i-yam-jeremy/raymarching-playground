@@ -34,6 +34,19 @@ export default class App extends React.Component {
     }
   }
 
+  openRenderTab() {
+    this.addTab({
+      id: 0,
+      content: "Render",
+      active: true,
+      display: (
+        <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
+            <Render ref={this.setRenderComponent.bind(this)} />
+        </div>
+      )
+    })
+  }
+
   openFile(filename, editorType) {
     let openTab = this.findTabByFilename(filename)
 
