@@ -87,6 +87,10 @@ export default class FileChooser extends React.Component {
             <div className="title">Select a File</div>
             <div className="new-file-button" onClick={this.openNewFileDialog.bind(this)}>+</div>
             <div className="file-list-container">
+              <div className="element">
+                <div className="icon">{'RENDER_ICON'}</div>
+                <div className="filename">Render</div>
+              </div>
               {FileManager.getFileList().map(file => (
                 <div key={file.name} className="element"
                     onClick={() => this.openFile(file, close)}>
