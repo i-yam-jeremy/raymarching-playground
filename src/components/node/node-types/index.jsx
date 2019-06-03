@@ -4,9 +4,9 @@ import SHADING from './shading'
 import VECTOR from './vector'
 import CONSTANTS from './constants'
 import SPECIAL from './special'
-import OUTPUT from './output'
 import createCustomNode from './custom/custom-node.jsx'
 import createFileInput from './custom/file-input.jsx'
+import getFileOutputNode from './custom/file-output.jsx'
 import FileManager from '../../file-manager/file-manager.js'
 
 const NODE_TYPES = {
@@ -15,8 +15,7 @@ const NODE_TYPES = {
   Shading: SHADING,
   Vector: VECTOR,
   Constants: CONSTANTS,
-  Special: SPECIAL,
-  Output: OUTPUT
+  Special: SPECIAL
 }
 
 export default function getNodeTypes(filename, editorType) {
@@ -36,10 +35,12 @@ export default function getNodeTypes(filename, editorType) {
   }
 
   let fileData = FileManager.loadFileState(filename)
+
   if (fileData.inputs.length > 0) {
-    obj['File Inputs'] = fileData.inputs
-                                 .map(input => createFileInput(input))
+    obj['Inputs'] = fileData.inputs.map(createFileInput)
   }
+
+  obj['Output'] = [getFileOutputNode(fileData.outputType)]
 
   return obj
 }
