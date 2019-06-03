@@ -1,5 +1,5 @@
 import React from 'react'
-import FileManager from '../../file-manager/file-manager.js'
+import FileManager from '../../../file-manager/file-manager.js'
 
 function createCustomNode(filename) {
   let file = FileManager.loadFileState(filename)

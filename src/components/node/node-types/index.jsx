@@ -5,7 +5,8 @@ import VECTOR from './vector'
 import CONSTANTS from './constants'
 import SPECIAL from './special'
 import OUTPUT from './output'
-import createCustomNode from './custom-node.jsx'
+import createCustomNode from './custom/custom-node.jsx'
+import createFileInput from './custom/file-input.jsx'
 import FileManager from '../../file-manager/file-manager.js'
 
 const NODE_TYPES = {
@@ -15,8 +16,7 @@ const NODE_TYPES = {
   Vector: VECTOR,
   Constants: CONSTANTS,
   Special: SPECIAL,
-  Output: OUTPUT,
-  Custom: []
+  Output: OUTPUT
 }
 
 export default function getNodeTypes(filename, editorType) {
@@ -34,5 +34,12 @@ export default function getNodeTypes(filename, editorType) {
   if (customNodes.length > 0) {
     obj['Custom'] = customNodes
   }
+
+  let fileData = FileManager.loadFileState(filename)
+  if (fileData.inputs.length > 0) {
+    obj['File Inputs'] = fileData.inputs
+                                 .map(input => createFileInput(input))
+  }
+
   return obj
 }

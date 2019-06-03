@@ -31,8 +31,6 @@ export default class NodeEditorPanel extends React.Component {
 
   onContentChanged() {
     let saveState = this.getSaveState()
-    console.log(saveState)
-    console.trace()
     FileManager.saveFileState(this.props.filename, saveState)
   }
 
