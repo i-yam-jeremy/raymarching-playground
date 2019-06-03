@@ -53,7 +53,7 @@ export default class App extends React.Component {
               <div className="no-inputs-padding"></div>
             : null}
             {editorState.inputs.map((input, i) => (
-              <span>
+              <span key={input.name}>
                 {i > 0 ?
                   ', '
                 : null}

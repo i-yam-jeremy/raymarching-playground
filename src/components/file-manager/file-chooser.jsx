@@ -98,7 +98,7 @@ export default class FileChooser extends React.Component {
                       <div className="no-inputs-padding"></div>
                     : null}
                     {file.state.inputs.map((input, i) => (
-                      <span>
+                      <span key={input.name}>
                         {i > 0 ?
                           ', '
                         : null}
