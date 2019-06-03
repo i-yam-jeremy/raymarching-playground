@@ -4,9 +4,7 @@ import SHADING from './shading'
 import VECTOR from './vector'
 import CONSTANTS from './constants'
 import SPECIAL from './special'
-import createCustomNode from './custom/custom-node.jsx'
-import createFileInput from './custom/file-input.jsx'
-import getFileOutputNode from './custom/file-output.jsx'
+import {createCustomNode, createFileInput, getFileOutputNode} from './custom'
 import FileManager from '../../file-manager/file-manager.js'
 
 const NODE_TYPES = {
