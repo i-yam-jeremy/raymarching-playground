@@ -44,7 +44,7 @@ jobs:
       - run: git config user.email "i-yam-jeremy@users.noreply.github.com"
       - run: git config user.name "i-yam-jeremy"
       - run: git checkout -b gh-pages
-      - run: git pull origin other-branch
+      - run: git pull origin gh-pages
       - run: git add --force -- dist/main.js
       - run: git commit -m "dist/main.js"
       # Push quietly to prevent showing the token in log
