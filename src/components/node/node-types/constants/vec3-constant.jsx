@@ -3,35 +3,43 @@ import NodeEditorType from '../../node-editor-type.js'
 
 class Vec3Constant extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.x = 0
+    this.y = 0
+    this.z = 0
+  }
+
   compile(methodName) {
     return `
       vec3 ${methodName}() {
-        return vec3(${this.refs.x.value}, ${this.refs.y.value}, ${this.refs.z.value});
+        return vec3(${this.x}, ${this.y}, ${this.z});
       }`
   }
 
   render() {
     return (
         <div>
-          <p>X: <input ref="x" type="number" step="any" className="field" /></p>
-          <p>Y: <input ref="y" type="number" step="any" className="field" /></p>
-          <p>Z: <input ref="z" type="number" step="any" className="field" /></p>
+          <p>X: <input type="number" step="any" className="field" onChange={(e) => this.x = e.target.value} /></p>
+          <p>Y: <input type="number" step="any" className="field" onChange={(e) => this.y = e.target.value} /></p>
+          <p>Z: <input type="number" step="any" className="field" onChange={(e) => this.z = e.target.value} /></p>
         </div>
     )
   }
 
   getSaveState() {
     return {
-      x: this.refs.x.value,
-      y: this.refs.y.value,
-      z: this.refs.z.value
+      x: this.x,
+      y: this.y,
+      z: this.z
     }
   }
 
   loadState(state) {
-    this.refs.x.value = state.x
-    this.refs.y.value = state.y
-    this.refs.z.value = state.z
+    this.x = state.x
+    this.y = state.y
+    this.z = state.z
   }
 }
 

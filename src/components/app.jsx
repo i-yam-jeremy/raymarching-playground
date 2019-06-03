@@ -3,7 +3,7 @@ import Tabs from 'react-draggable-tabs'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
-import compile from './node/compiler/compiler.js'
+import compile from './node/compiler/compiler.jsx'
 import FileChooser from './file-manager/file-chooser.jsx'
 import FileManager from './file-manager/file-manager.js'
 
@@ -27,11 +27,9 @@ export default class App extends React.Component {
   }
 
   compile() {
-    this.save()
-    if (this.sdfNodeEditor && this.shaderNodeEditor && this.renderComponent) {
-      let source = compile(this.sdfNodeEditor.getOutputNode(), this.shaderNodeEditor.getOutputNode())
-      this.renderComponent.setShaderSource(source)
-    }
+    // TODO compile main.sdf, and main.shader
+    let source = compile()
+    this.renderComponent.setShaderSource(source)
   }
 
   openRenderTab() {
