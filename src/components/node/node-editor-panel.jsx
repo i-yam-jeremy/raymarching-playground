@@ -52,7 +52,6 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   deleteNode(e, data) {
-    this.onContentChanged()
     let index = -1;
     this.state.nodeData.forEach((nodeData, i) => {
       if (nodeData.id == data.nodeId) {
@@ -68,7 +67,7 @@ export default class NodeEditorPanel extends React.Component {
       this.state.nodeData.splice(index, 1)
       this.setState({
         nodeData: this.state.nodeData
-      })
+      }, this.onContentChanged.bind(this))
     }
   }
 
