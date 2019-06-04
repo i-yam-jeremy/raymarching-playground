@@ -101,8 +101,6 @@ function combineCompiledNodes(compiledNodes, nodeFunctionPrefix) {
   let nodeFunctions = ''
   let mainFunctionBody = ''
 
-  console.log(compiledNodes)
-
   for (let node of compiledNodes) {
     if (node.source) {
       nodeFunctions += node.source + '\n'
@@ -184,4 +182,4 @@ function compile() {
     .replace("$$SHADER_MAIN_FUNCTION_BODY$$", shader.mainFunctionBody)
 }
 
-export default compile
+export {compile, compileFile}

@@ -3,7 +3,7 @@ import Tabs from 'react-draggable-tabs'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
-import compile from './node/compiler/compiler.jsx'
+import {compile} from './node/compiler/compiler.js'
 import FileChooser from './file-manager/file-chooser.jsx'
 import FileManager from './file-manager/file-manager.js'
 
