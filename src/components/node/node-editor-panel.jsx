@@ -148,7 +148,7 @@ export default class NodeEditorPanel extends React.Component {
       <div>
         <ContextMenuTrigger id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-panel">
-            <SelectablePanel />
+            <SelectablePanel onSelection={(region) => console.log(region)} />
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
                 <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
@@ -211,17 +211,49 @@ class PreClickDragSelectablePanel extends React.Component {
       })
     }
     else {
+      if (typeof this.props.onSelection == 'function') {
+        let region = {
+          x: this.getX(),
+          y: this.getY(),
+          width: this.getWidth(),
+          height: this.getHeight()
+        }
+        if (!isNaN(region.x)) {
+          this.props.onSelection(region)
+        }
+      }
       this.setState({
         selecting: false
       })
     }
   }
 
+  getX() {
+    return this.state.selectionX - (this.state.selectionWidth < 0 ? Math.abs(this.state.selectionWidth) : 0)
+  }
+
+  getY() {
+    return this.state.selectionY - (this.state.selectionHeight < 0 ? Math.abs(this.state.selectionHeight) : 0)
+  }
+
+  getWidth() {
+    return Math.abs(this.state.selectionWidth)
+  }
+
+  getHeight() {
+    return Math.abs(this.state.selectionHeight)
+  }
+
   render() {
     return (
       <div className="selecting-box-container">
         {this.state.selecting ?
-          <div className="box" style={{left: this.state.selectionX - (this.state.selectionWidth < 0 ? Math.abs(this.state.selectionWidth) : 0), top: this.state.selectionY - (this.state.selectionHeight < 0 ? Math.abs(this.state.selectionHeight) : 0), width: Math.abs(this.state.selectionWidth), height: Math.abs(this.state.selectionHeight)}}></div>
+          <div className="box" style={{
+            left: this.getX(),
+            top: this.getY(),
+            width: this.getWidth(),
+            height: this.getHeight()
+          }}></div>
         : null}
       </div>
     )
