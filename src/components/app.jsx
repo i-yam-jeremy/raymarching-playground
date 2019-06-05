@@ -6,6 +6,7 @@ import Render from './render/render.jsx'
 import {compile} from './node/compiler/compiler.js'
 import FileChooser from './file-manager/file-chooser.jsx'
 import FileManager from './file-manager/file-manager.js'
+import ErrorManager from './error/error-manager.jsx'
 
 import '../stylesheets/main.sass'
 
@@ -14,12 +15,21 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
 
+    ErrorManager.init(this)
+
     this.state = {
       tabs: []
     }
 
     this.editors = {} // editors by filename
     this.renderComponent = null
+  }
+
+  rerenderNodeErrorHighlights() {
+    for (let filename in this.editors) {
+      let fileData = FileManager.loadFileState(filename)
+      this.editors[filename].loadState(fileData)
+    }
   }
 
   setRenderComponent(component) {

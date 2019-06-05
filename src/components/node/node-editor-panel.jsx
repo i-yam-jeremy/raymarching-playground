@@ -106,7 +106,8 @@ export default class NodeEditorPanel extends React.Component {
         nodeType: nodeType,
         x: node.x,
         y: node.y,
-        id: node.id
+        id: node.id,
+        errorHighlighted: node.errorHighlighted
       }
     })
     let maxNodeId = state.nodes
@@ -144,7 +145,7 @@ export default class NodeEditorPanel extends React.Component {
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} />
+                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
               </ContextMenuTrigger>
             )}
           </div>

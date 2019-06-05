@@ -76,6 +76,10 @@ function convertToCompiledNodeTree(node, nodeIndex, nodeFunctionPrefix, nodesByI
   let inputs = []
   for (let inputName in node.inputs) {
     let input = node.inputs[inputName]
+    if (input == null) {
+      ErrorManager.highlightNode(filename, node.id)
+      ErrorManager.error(`${filename}: input '${inputName}' of node ${node.type} is not connected`)
+    }
     let inputNode = nodesById[input.id]
     let compiledInputNode = convertToCompiledNodeTree(inputNode, nodeIndex, nodeFunctionPrefix, nodesById, filename, editorType)
     nodeIndex = compiledInputNode.index+1
@@ -172,6 +176,7 @@ function compileFile(filename, nodeFunctionPrefix) {
 }
 
 function compile() {
+  ErrorManager.clearHighlightedNodes()
   let sdf = compileFile('main.sdf', 'main_sdf')
   let shader = compileFile('main.shader', 'main_shader')
 
