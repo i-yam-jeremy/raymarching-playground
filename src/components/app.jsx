@@ -55,6 +55,7 @@ export default class App extends React.Component {
       let editorState = FileManager.loadFileState(filename)
       this.addTab({
         content: filename,
+        filename: filename,
         active: true,
         display: (
           <div>
@@ -79,6 +80,23 @@ export default class App extends React.Component {
           </div>
           </div>
         )
+      })
+    }
+  }
+
+  closeFileTabIfOpen(filename) {
+    let foundTabIndex = -1
+    for (let i = 0; i < this.state.tabs.length; i++) {
+      if (this.state.tabs[i].filename == filename) {
+        foundTabIndex = i
+        break
+      }
+    }
+
+    if (foundTabIndex != -1) {
+      this.state.tabs.splice(foundTabIndex, 1)
+      this.setState({
+        tabs: this.state.tabs
       })
     }
   }
@@ -156,6 +174,7 @@ export default class App extends React.Component {
     this.setState((state, props) => {
       let newTabs = [...state.tabs];
       newTabs.splice(removedIndex, 1);
+      console.log('hi')
 
       if (state.tabs[removedIndex].active && newTabs.length !== 0) {
         // automatically select another tab if needed

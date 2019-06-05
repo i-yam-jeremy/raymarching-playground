@@ -56,6 +56,7 @@ export default class FileChooser extends React.Component {
 
   deleteFile(file) {
     FileManager.deleteFile(file.name)
+    this.props.app.closeFileTabIfOpen(file.name)
     this.forceUpdate()
   }
 
