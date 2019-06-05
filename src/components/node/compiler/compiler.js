@@ -1,4 +1,5 @@
 import React from 'react'
+import ErrorManager from '../../error/error-manager.jsx'
 import FileManager from '../../file-manager/file-manager.js'
 import getNodeTypes from '../node-types/index.jsx'
 import GLSL_BOILERPLATE_SOURCE from './glsl-boilerplate.glsl'
@@ -137,7 +138,7 @@ function getFileOutputNode(filename) {
         outputNode = node
       }
       else {
-        throw 'Multiple output nodes in ' + filename
+        ErrorManager.error('Multiple output nodes in ' + filename)
       }
     }
   }
@@ -145,7 +146,7 @@ function getFileOutputNode(filename) {
     return outputNode
   }
   else {
-    throw 'No output node in ' + filename
+    ErrorManager.error('No output node in ' + filename)
   }
 }
 

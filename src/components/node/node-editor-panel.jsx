@@ -69,24 +69,6 @@ export default class NodeEditorPanel extends React.Component {
     }
   }
 
-  getOutputNode() {
-    let outputNode = null
-    for (let node of this.nodeComponents) {
-      if (node.props.nodeContent.outputType == null) {
-        if (outputNode != null) {
-          throw 'Multiple output nodes' // TODO better error messages (display to user)
-        }
-        outputNode = node
-      }
-    }
-
-    if (outputNode == null) {
-      throw 'No output node' // TODO better error messages (display to user)
-    }
-
-    return outputNode
-  }
-
   getSaveState() {
     return {
       nodes: this.nodeComponents.map(nodeComponent => nodeComponent.getSaveState()),
