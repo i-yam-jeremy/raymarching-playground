@@ -120,7 +120,9 @@ export default class FileChooser extends React.Component {
                     {') →'}
                     <div className={'data-type-' + file.state.outputType}></div>
                   </div>
-                  <div className="trash" onClick={() => this.deleteFile(file)}>{TRASH_FILE_ICON}</div>
+                  {!FileManager.isMainFile(file.name) ?
+                    <div className="trash" onClick={() => this.deleteFile(file)}>{TRASH_FILE_ICON}</div>
+                  : null}
                 </div>
               ))}
             </div>

@@ -61,11 +61,16 @@ function deleteFile(filename) {
   savedFiles.put('file-list', files)
 }
 
+function isMainFile(filename) {
+  return filename == 'main.sdf' || filename == 'main.shader'
+}
+
 export default {
   loadFileState,
   saveFileState,
   getFileTypeFromFilename,
   getFileList,
   fileExists,
-  deleteFile
+  deleteFile,
+  isMainFile
 }
