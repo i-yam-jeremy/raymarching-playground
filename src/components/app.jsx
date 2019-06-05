@@ -6,6 +6,7 @@ import Render from './render/render.jsx'
 import {compile} from './node/compiler/compiler.js'
 import FileChooser from './file-manager/file-chooser.jsx'
 import FileManager from './file-manager/file-manager.js'
+import ErrorManager from './error/error-manager.jsx'
 
 import '../stylesheets/main.sass'
 
@@ -13,6 +14,8 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props)
+
+    ErrorManager.init(this)
 
     this.state = {
       tabs: []
@@ -22,14 +25,24 @@ export default class App extends React.Component {
     this.renderComponent = null
   }
 
+  rerenderNodeErrorHighlights() {
+    for (let filename in this.editors) {
+      let fileData = FileManager.loadFileState(filename)
+      this.editors[filename].loadState(fileData)
+    }
+  }
+
   setRenderComponent(component) {
     this.renderComponent = component
   }
 
   compile() {
-    // TODO compile main.sdf, and main.shader
-    let source = compile()
-    this.renderComponent.setShaderSource(source)
+    try {
+      let source = compile()
+      this.renderComponent.setShaderSource(source)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   openRenderTab() {
@@ -174,7 +187,6 @@ export default class App extends React.Component {
     this.setState((state, props) => {
       let newTabs = [...state.tabs];
       newTabs.splice(removedIndex, 1);
-      console.log('hi')
 
       if (state.tabs[removedIndex].active && newTabs.length !== 0) {
         // automatically select another tab if needed

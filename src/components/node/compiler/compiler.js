@@ -1,4 +1,5 @@
 import React from 'react'
+import ErrorManager from '../../error/error-manager.jsx'
 import FileManager from '../../file-manager/file-manager.js'
 import getNodeTypes from '../node-types/index.jsx'
 import GLSL_BOILERPLATE_SOURCE from './glsl-boilerplate.glsl'
@@ -75,6 +76,10 @@ function convertToCompiledNodeTree(node, nodeIndex, nodeFunctionPrefix, nodesByI
   let inputs = []
   for (let inputName in node.inputs) {
     let input = node.inputs[inputName]
+    if (input == null) {
+      ErrorManager.highlightNode(filename, node.id)
+      ErrorManager.error(`${filename}: input '${inputName}' of node ${node.type} is not connected`)
+    }
     let inputNode = nodesById[input.id]
     let compiledInputNode = convertToCompiledNodeTree(inputNode, nodeIndex, nodeFunctionPrefix, nodesById, filename, editorType)
     nodeIndex = compiledInputNode.index+1
@@ -137,7 +142,7 @@ function getFileOutputNode(filename) {
         outputNode = node
       }
       else {
-        throw 'Multiple output nodes in ' + filename
+        ErrorManager.error('Multiple output nodes in ' + filename)
       }
     }
   }
@@ -145,7 +150,7 @@ function getFileOutputNode(filename) {
     return outputNode
   }
   else {
-    throw 'No output node in ' + filename
+    ErrorManager.error('No output node in ' + filename)
   }
 }
 
@@ -171,6 +176,8 @@ function compileFile(filename, nodeFunctionPrefix) {
 }
 
 function compile() {
+  ErrorManager.clearErrorMessages()
+  ErrorManager.clearHighlightedNodes()
   let sdf = compileFile('main.sdf', 'main_sdf')
   let shader = compileFile('main.shader', 'main_shader')
 

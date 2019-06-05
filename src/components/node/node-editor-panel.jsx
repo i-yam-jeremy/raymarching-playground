@@ -69,24 +69,6 @@ export default class NodeEditorPanel extends React.Component {
     }
   }
 
-  getOutputNode() {
-    let outputNode = null
-    for (let node of this.nodeComponents) {
-      if (node.props.nodeContent.outputType == null) {
-        if (outputNode != null) {
-          throw 'Multiple output nodes' // TODO better error messages (display to user)
-        }
-        outputNode = node
-      }
-    }
-
-    if (outputNode == null) {
-      throw 'No output node' // TODO better error messages (display to user)
-    }
-
-    return outputNode
-  }
-
   getSaveState() {
     return {
       nodes: this.nodeComponents.map(nodeComponent => nodeComponent.getSaveState()),
@@ -124,7 +106,8 @@ export default class NodeEditorPanel extends React.Component {
         nodeType: nodeType,
         x: node.x,
         y: node.y,
-        id: node.id
+        id: node.id,
+        errorHighlighted: node.errorHighlighted
       }
     })
     let maxNodeId = state.nodes
@@ -162,7 +145,7 @@ export default class NodeEditorPanel extends React.Component {
           <div className="node-editor-panel">
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
-                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} />
+                <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
               </ContextMenuTrigger>
             )}
           </div>

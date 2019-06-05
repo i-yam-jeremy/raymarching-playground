@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Draggable from 'react-draggable'
+import classNames from 'classnames'
 import ReactResizeDetector from 'react-resize-detector'
 import Input from './input.jsx'
 import Output from './output.jsx'
@@ -135,7 +136,7 @@ export default class Node extends React.Component {
         defaultPosition={{x: this.props.initialX, y: this.props.initialY}}
         position={null}
         onDrag={this.onDrag.bind(this)}>
-        <div className="node">
+        <div className={classNames('node', {'node-error-highlighted': this.props.errorHighlighted})}>
           <div className="handle">{this.props.title}</div>
           <div className="input-label-container">
             {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="label">{input.name}</p>)}
