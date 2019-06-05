@@ -27,9 +27,12 @@ export default class App extends React.Component {
   }
 
   compile() {
-    // TODO compile main.sdf, and main.shader
-    let source = compile()
-    this.renderComponent.setShaderSource(source)
+    try {
+      let source = compile()
+      this.renderComponent.setShaderSource(source)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   openRenderTab() {
@@ -174,7 +177,6 @@ export default class App extends React.Component {
     this.setState((state, props) => {
       let newTabs = [...state.tabs];
       newTabs.splice(removedIndex, 1);
-      console.log('hi')
 
       if (state.tabs[removedIndex].active && newTabs.length !== 0) {
         // automatically select another tab if needed
