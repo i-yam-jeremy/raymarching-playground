@@ -3,7 +3,7 @@ import React from 'react'
 export default class TabContent extends React.Component {
 
   componentDidMount() {
-    this.mainDiv.addEventListener('scroll', this.content.onScroll || (() => {}))
+    this.mainDiv.addEventListener('scroll', this.content.onScroll.bind(this.content) || (() => {}))
   }
 
   setTabContent(content) {

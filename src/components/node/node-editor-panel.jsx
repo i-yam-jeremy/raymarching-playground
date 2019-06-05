@@ -17,6 +17,9 @@ export default class NodeEditorPanel extends React.Component {
 
     this.nodeComponents = []
     this.currentNodeDataId = 0
+
+    this.previousScrollX = 0
+    this.previousScrollY = 0
   }
 
   componentDidMount() {
@@ -25,7 +28,15 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   onScroll(e) {
-    console.log('nep', e)
+    let newScrollX = e.target.scrollLeft
+    let newScrollY = e.target.scrollTop
+
+    let deltaX = newScrollX - this.previousScrollX
+    let deltaY = newScrollY - this.previousScrollY
+    this.selectablePanel.onScroll(deltaX, deltaY)
+
+    this.previousScrollX = newScrollX
+    this.previousScrollY = newScrollY
   }
 
   getNextNodeDataId() {
@@ -153,7 +164,7 @@ export default class NodeEditorPanel extends React.Component {
       <div>
         <ContextMenuTrigger id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-panel">
-            <SelectablePanel onSelection={(region) => console.log(region)} />
+            <SelectablePanel setSelectablePanel={component => this.selectablePanel = component} onSelection={(region) => console.log(region)} />
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
                 <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
@@ -198,6 +209,14 @@ class PreClickDragSelectablePanel extends React.Component {
     this.state = {
       selecting: false
     }
+  }
+
+  componentDidMount() {
+    this.props.setSelectablePanel(this)
+  }
+
+  onScroll(deltaX, deltaY) {
+    console.log(deltaX, deltaY)
   }
 
   componentWillReceiveProps(nextProps) { // for clickdrag
