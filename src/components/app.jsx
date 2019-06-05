@@ -7,6 +7,7 @@ import {compile} from './node/compiler/compiler.js'
 import FileChooser from './file-manager/file-chooser.jsx'
 import FileManager from './file-manager/file-manager.js'
 import ErrorManager from './error/error-manager.jsx'
+import TabContent from './tab-content.jsx'
 
 import '../stylesheets/main.sass'
 
@@ -51,9 +52,9 @@ export default class App extends React.Component {
       content: "Render",
       active: true,
       display: (
-        <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
-            <Render ref={this.setRenderComponent.bind(this)} />
-        </div>
+        <TabContent>
+          <Render ref={this.setRenderComponent.bind(this)} />
+        </TabContent>
       )
     })
   }
@@ -88,9 +89,9 @@ export default class App extends React.Component {
             {') →'}
             <div className={'data-type-' + editorState.outputType}></div>
           </div>
-          <div className="tab-content-container">
-            <NodeEditorPanel setEditor={(editor) => this.setEditor(filename, editor, editorState)} app={this} filename={filename} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />
-          </div>
+          <TabContent onScroll={(e) => nodeEditorPanel.onScroll(e)}>
+            {(setTabContent) => <NodeEditorPanel tabContentRef={setTabContent} setEditor={(editor) => this.setEditor(filename, editor, editorState)} app={this} filename={filename} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />}
+          </TabContent>
           </div>
         )
       })

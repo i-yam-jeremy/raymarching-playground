@@ -21,6 +21,11 @@ export default class NodeEditorPanel extends React.Component {
 
   componentDidMount() {
     this.props.setEditor(this)
+    this.props.tabContentRef(this)
+  }
+
+  onScroll(e) {
+    console.log('nep', e)
   }
 
   getNextNodeDataId() {
