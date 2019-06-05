@@ -53,6 +53,12 @@ function fileExists(filename) {
 
 function deleteFile(filename) {
   savedFiles.del(filename)
+  let files = savedFiles.get('file-list')[1]
+  let index = files.indexOf(filename)
+  if (index != -1) {
+    files.splice(index, 1)
+  }
+  savedFiles.put('file-list', files)
 }
 
 export default {
