@@ -35,7 +35,7 @@ class ErrorManager {
         onClose()
       }
       return (<ErrorMessage message={message} onClose={newOnClose} />)
-    })
+    }, {duration: null})
     throw message
   }
 
