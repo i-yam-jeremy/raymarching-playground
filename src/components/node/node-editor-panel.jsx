@@ -1,21 +1,49 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ContextMenu, SubMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
+import { ContextMenu, SubMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
+import clickDrag from 'react-clickdrag'
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
 import FileManager from '../file-manager/file-manager.js'
 
-export default class NodeEditorPanel extends React.Component {
+class NodeEditorPanel extends React.Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
-      nodeData: []
+      nodeData: [],
+      selecting: false
     }
 
     this.nodeComponents = []
     this.currentNodeDataId = 0
+  }
+
+  componentDidMount() {
+    this.props.setEditor(this)
+  }
+
+  componentWillReceiveProps(nextProps) { // for clickdrag
+    const TAB_HEIGHT = 39
+    if (nextProps.dataDrag.isMouseDown) {
+      if (!this.state.selecting) {
+        this.setState({
+          selecting: true,
+          selectionX: nextProps.dataDrag.mouseDownPositionX,
+          selectionY: nextProps.dataDrag.mouseDownPositionY - TAB_HEIGHT
+        })
+      }
+      this.setState({
+        selectionWidth: nextProps.dataDrag.moveDeltaX,
+        selectionHeight: nextProps.dataDrag.moveDeltaY
+      })
+    }
+    else {
+      this.setState({
+        selecting: false
+      })
+    }
   }
 
   getNextNodeDataId() {
@@ -148,6 +176,9 @@ export default class NodeEditorPanel extends React.Component {
                 <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
               </ContextMenuTrigger>
             )}
+            {this.state.selecting ?
+              <div className="selecting-box" style={{left: this.state.selectionX - (this.state.selectionWidth < 0 ? Math.abs(this.state.selectionWidth) : 0), top: this.state.selectionY - (this.state.selectionHeight < 0 ? Math.abs(this.state.selectionHeight) : 0), width: Math.abs(this.state.selectionWidth), height: Math.abs(this.state.selectionHeight)}}></div>
+            : null}
           </div>
         </ContextMenuTrigger>
 
@@ -178,3 +209,5 @@ export default class NodeEditorPanel extends React.Component {
     )
   }
 }
+
+export default clickDrag(NodeEditorPanel)

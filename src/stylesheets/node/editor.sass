@@ -13,6 +13,12 @@
   background-image: linear-gradient(to right, $grid-color $grid-line-size, transparent $grid-line-size), linear-gradient(to bottom, $grid-color $grid-line-size, transparent $grid-line-size)
   background-color: $bg-color
 
+
+  .selecting-box
+    position: absolute
+    background-color: rgba($highlight-color, 0.5)
+    border: 2px solid rgba(lighten($highlight-color, 7%), 0.5)
+
 .node-editor-panel-type-signature-container
   @extend %noselect
   z-index: 2
