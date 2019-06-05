@@ -1,0 +1,26 @@
+@import theme
+
+.error-message-container
+  @extend %noselect
+  padding: 20px
+  padding-left: 20px
+  padding-right: 40px
+  background-color: #DDDDDD
+  border-radius: 10px
+  background-color: #7C0A02
+  box-shadow: 1px 1px 3px 3px rgba(#111111, 0.35)
+  font-family: $font
+  font-size: 16px
+  color: #DDDDDD
+
+  .message
+    display: inline-block
+    vertical-align: middle
+
+  .close
+    position: relative
+    display: inline-block
+    vertical-align: middle
+    left: 20px
+    &:hover
+      transform: scale(1.5)
