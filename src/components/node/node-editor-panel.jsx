@@ -6,14 +6,13 @@ import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
 import FileManager from '../file-manager/file-manager.js'
 
-class NodeEditorPanel extends React.Component {
+export default class NodeEditorPanel extends React.Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
-      nodeData: [],
-      selecting: false
+      nodeData: []
     }
 
     this.nodeComponents = []
@@ -22,28 +21,6 @@ class NodeEditorPanel extends React.Component {
 
   componentDidMount() {
     this.props.setEditor(this)
-  }
-
-  componentWillReceiveProps(nextProps) { // for clickdrag
-    const TAB_HEIGHT = 39
-    if (nextProps.dataDrag.isMouseDown) {
-      if (!this.state.selecting) {
-        this.setState({
-          selecting: true,
-          selectionX: nextProps.dataDrag.mouseDownPositionX,
-          selectionY: nextProps.dataDrag.mouseDownPositionY - TAB_HEIGHT
-        })
-      }
-      this.setState({
-        selectionWidth: nextProps.dataDrag.moveDeltaX,
-        selectionHeight: nextProps.dataDrag.moveDeltaY
-      })
-    }
-    else {
-      this.setState({
-        selecting: false
-      })
-    }
   }
 
   getNextNodeDataId() {
@@ -171,14 +148,12 @@ class NodeEditorPanel extends React.Component {
       <div>
         <ContextMenuTrigger id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-panel">
+            <SelectablePanel />
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
                 <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
               </ContextMenuTrigger>
             )}
-            {this.state.selecting ?
-              <div className="selecting-box" style={{left: this.state.selectionX - (this.state.selectionWidth < 0 ? Math.abs(this.state.selectionWidth) : 0), top: this.state.selectionY - (this.state.selectionHeight < 0 ? Math.abs(this.state.selectionHeight) : 0), width: Math.abs(this.state.selectionWidth), height: Math.abs(this.state.selectionHeight)}}></div>
-            : null}
           </div>
         </ContextMenuTrigger>
 
@@ -210,4 +185,49 @@ class NodeEditorPanel extends React.Component {
   }
 }
 
-export default clickDrag(NodeEditorPanel)
+class PreClickDragSelectablePanel extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      selecting: false
+    }
+  }
+
+  componentWillReceiveProps(nextProps) { // for clickdrag
+    const TAB_HEIGHT = 39
+    if (nextProps.dataDrag.isMouseDown) {
+      if (!this.state.selecting) {
+        this.setState({
+          selecting: true,
+          selectionX: nextProps.dataDrag.mouseDownPositionX,
+          selectionY: nextProps.dataDrag.mouseDownPositionY - TAB_HEIGHT
+        })
+      }
+      this.setState({
+        selectionWidth: nextProps.dataDrag.moveDeltaX,
+        selectionHeight: nextProps.dataDrag.moveDeltaY
+      })
+    }
+    else {
+      this.setState({
+        selecting: false
+      })
+    }
+  }
+
+  render() {
+    return (
+      <div className="selecting-box-container">
+        {this.state.selecting ?
+          <div className="box" style={{left: this.state.selectionX - (this.state.selectionWidth < 0 ? Math.abs(this.state.selectionWidth) : 0), top: this.state.selectionY - (this.state.selectionHeight < 0 ? Math.abs(this.state.selectionHeight) : 0), width: Math.abs(this.state.selectionWidth), height: Math.abs(this.state.selectionHeight)}}></div>
+        : null}
+      </div>
+    )
+  }
+
+}
+
+
+const SelectablePanel = clickDrag(PreClickDragSelectablePanel)
