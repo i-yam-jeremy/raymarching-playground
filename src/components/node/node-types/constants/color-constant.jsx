@@ -39,6 +39,7 @@ class ColorConstant extends React.Component {
 
   handleChange(color) {
     this.setState({ color: color.rgb })
+    this.props.onContentChanged()
   }
 
   getSaveState() {
@@ -48,6 +49,7 @@ class ColorConstant extends React.Component {
   }
 
   loadState(state) {
+    this.state.color = state.color // for loading when unmounted for GLSL compiler
     this.setState({
       color: state.color
     })

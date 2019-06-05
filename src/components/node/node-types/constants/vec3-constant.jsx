@@ -21,9 +21,9 @@ class Vec3Constant extends React.Component {
   render() {
     return (
         <div>
-          <p>X: <input type="number" step="any" className="field" onChange={(e) => this.x = e.target.value} /></p>
-          <p>Y: <input type="number" step="any" className="field" onChange={(e) => this.y = e.target.value} /></p>
-          <p>Z: <input type="number" step="any" className="field" onChange={(e) => this.z = e.target.value} /></p>
+          <p>X: <input ref="x" type="number" step="any" className="field" onChange={(e) => this.x = e.target.value, this.props.onContentChanged()} /></p>
+          <p>Y: <input ref="y" type="number" step="any" className="field" onChange={(e) => this.y = e.target.value, this.props.onContentChanged()} /></p>
+          <p>Z: <input ref="z" type="number" step="any" className="field" onChange={(e) => this.z = e.target.value, this.props.onContentChanged()} /></p>
         </div>
     )
   }
@@ -40,6 +40,15 @@ class Vec3Constant extends React.Component {
     this.x = state.x
     this.y = state.y
     this.z = state.z
+    if (this.refs.x) {
+      this.refs.x.value = state.x
+    }
+    if (this.refs.y) {
+      this.refs.y.value = state.y
+    }
+    if (this.refs.z) {
+      this.refs.z.value = state.z
+    }
   }
 }
 

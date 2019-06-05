@@ -6,7 +6,9 @@ class FloatConstant extends React.Component {
   constructor(props) {
     super(props)
 
-    this.value = 0
+    this.state = {
+      value: 0
+    }
   }
 
   compile(methodName) {
@@ -16,10 +18,15 @@ class FloatConstant extends React.Component {
       }`
   }
 
+  handleChange(e) {
+    this.value = e.target.value
+    this.props.onContentChanged()
+  }
+
   render() {
     return (
         <div>
-          <input type="number" step="any" className="field" onChange={(e) => this.value = e.target.value} />
+          <input ref="value" type="number" step="any" className="field" onChange={this.handleChange.bind(this)} />
         </div>
     )
   }
@@ -32,6 +39,9 @@ class FloatConstant extends React.Component {
 
   loadState(state) {
     this.value = state.value
+    if (this.refs.value) {
+      this.refs.value.value = state.value
+    }
   }
 }
 

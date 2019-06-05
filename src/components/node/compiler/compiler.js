@@ -167,7 +167,6 @@ function compileFile(filename, nodeFunctionPrefix) {
   let compiledNodeTree = convertToCompiledNodeTree(outputNode, 0, nodeFunctionPrefix, nodesById, filename, editorType)
   let compiledNodes = compiledNodeTree.flatten()
   let source = combineCompiledNodes(compiledNodes, nodeFunctionPrefix)
-  console.log(source)
   return source
 }
 
