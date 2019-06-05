@@ -3,29 +3,45 @@ import NodeEditorType from '../../node-editor-type.js'
 
 class FloatConstant extends React.Component {
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      value: 0
+    }
+  }
+
   compile(methodName) {
     return `
       float ${methodName}() {
-        return float(${this.refs.value.value});
+        return float(${this.value});
       }`
+  }
+
+  handleChange(e) {
+    this.value = e.target.value
+    this.props.onContentChanged()
   }
 
   render() {
     return (
         <div>
-          <input ref="value" type="number" step="any" className="field" />
+          <input ref="value" type="number" step="any" className="field" onChange={this.handleChange.bind(this)} />
         </div>
     )
   }
 
   getSaveState() {
     return {
-      value: this.refs.value.value
+      value: this.value
     }
   }
 
   loadState(state) {
-    this.refs.value.value = state.value
+    this.value = state.value
+    if (this.refs.value) {
+      this.refs.value.value = state.value
+    }
   }
 }
 

@@ -3,7 +3,7 @@ import Tabs from 'react-draggable-tabs'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
-import compile from './node/compiler/compiler.js'
+import {compile} from './node/compiler/compiler.js'
 import FileChooser from './file-manager/file-chooser.jsx'
 import FileManager from './file-manager/file-manager.js'
 
@@ -27,18 +27,22 @@ export default class App extends React.Component {
   }
 
   compile() {
-    this.save()
-    if (this.sdfNodeEditor && this.shaderNodeEditor && this.renderComponent) {
-      let source = compile(this.sdfNodeEditor.getOutputNode(), this.shaderNodeEditor.getOutputNode())
-      this.renderComponent.setShaderSource(source)
-    }
+    // TODO compile main.sdf, and main.shader
+    let source = compile()
+    this.renderComponent.setShaderSource(source)
   }
 
-  save() {
-    // Save all files open
-    for (let filename in this.editors) {
-      FileManager.saveFileState(filename, this.editors[filename].getSaveState())
-    }
+  openRenderTab() {
+    this.addTab({
+      id: 0,
+      content: "Render",
+      active: true,
+      display: (
+        <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
+            <Render ref={this.setRenderComponent.bind(this)} />
+        </div>
+      )
+    })
   }
 
   openFile(filename, editorType) {
@@ -51,6 +55,7 @@ export default class App extends React.Component {
       let editorState = FileManager.loadFileState(filename)
       this.addTab({
         content: filename,
+        filename: filename,
         active: true,
         display: (
           <div>
@@ -60,7 +65,7 @@ export default class App extends React.Component {
               <div className="no-inputs-padding"></div>
             : null}
             {editorState.inputs.map((input, i) => (
-              <span>
+              <span key={input.name}>
                 {i > 0 ?
                   ', '
                 : null}
@@ -71,10 +76,27 @@ export default class App extends React.Component {
             <div className={'data-type-' + editorState.outputType}></div>
           </div>
           <div className="tab-content-container">
-            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />
+            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} filename={filename} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />
           </div>
           </div>
         )
+      })
+    }
+  }
+
+  closeFileTabIfOpen(filename) {
+    let foundTabIndex = -1
+    for (let i = 0; i < this.state.tabs.length; i++) {
+      if (this.state.tabs[i].filename == filename) {
+        foundTabIndex = i
+        break
+      }
+    }
+
+    if (foundTabIndex != -1) {
+      this.state.tabs.splice(foundTabIndex, 1)
+      this.setState({
+        tabs: this.state.tabs
       })
     }
   }
@@ -152,6 +174,7 @@ export default class App extends React.Component {
     this.setState((state, props) => {
       let newTabs = [...state.tabs];
       newTabs.splice(removedIndex, 1);
+      console.log('hi')
 
       if (state.tabs[removedIndex].active && newTabs.length !== 0) {
         // automatically select another tab if needed

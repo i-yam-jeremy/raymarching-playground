@@ -1,3 +1,6 @@
+import React from 'react'
+import FileManager from '../../file-manager/file-manager.js'
+import getNodeTypes from '../node-types/index.jsx'
 import GLSL_BOILERPLATE_SOURCE from './glsl-boilerplate.glsl'
 
 class CompiledNode {
@@ -26,20 +29,63 @@ function getNodeVariableName(nodeIndex) {
   return 'node_value_' + nodeIndex
 }
 
-function compileNodeComponent(nodeComponent, methodName) {
-  return nodeComponent.nodeContent.compile(methodName)
+function compileNodeComponent(node, filename, editorType, methodName) {
+  return getNodeContent(node, filename, editorType).compile(methodName)
 }
 
-function convertToCompiledNodeTree(nodeComponent, nodeIndex, nodeFunctionPrefix) {
-  let inputs = []
-  for (let input of nodeComponent.props.inputs) {
-    let inputNodeComponent = nodeComponent.inputComponents[input.name].connectedOutput.props.parent
-    let inputNode = convertToCompiledNodeTree(inputNodeComponent, nodeIndex, nodeFunctionPrefix)
-    nodeIndex = inputNode.index+1
-    inputs.push(inputNode)
+function getNodeContentClass(node, filename, editorType) {
+  let nodeType
+  let nodeTypes = getNodeTypes(filename, editorType)
+  if (node.type == 'CustomNode') {
+    let customNodes = nodeTypes['Custom']
+    for (let customNode of customNodes) {
+      if (customNode.title == node.filename) {
+        nodeType = customNode
+        break
+      }
+    }
+    if (!nodeType) {
+      throw 'Custom node for ' + node.filename + ' not found'
+    }
+  }
+  else {
+    for (let category in nodeTypes) {
+      for (let type of nodeTypes[category]) {
+        if (type.name == node.type) {
+          nodeType = type
+        }
+      }
+    }
   }
 
-  return new CompiledNode(nodeIndex, compileNodeComponent(nodeComponent, getNodeMethodName(nodeIndex, nodeFunctionPrefix)), nodeComponent.props.nodeContent, inputs)
+  return nodeType
+}
+
+function getNodeContent(node, filename, editorType) {
+  let nodeType = getNodeContentClass(node, filename, editorType)
+  let content = new (nodeType)()
+  if (node.content) {
+    content.loadState(node.content)
+  }
+
+  return content
+}
+
+function convertToCompiledNodeTree(node, nodeIndex, nodeFunctionPrefix, nodesById, filename, editorType) {
+  let inputs = []
+  for (let inputName in node.inputs) {
+    let input = node.inputs[inputName]
+    let inputNode = nodesById[input.id]
+    let compiledInputNode = convertToCompiledNodeTree(inputNode, nodeIndex, nodeFunctionPrefix, nodesById, filename, editorType)
+    nodeIndex = compiledInputNode.index+1
+    inputs.push(compiledInputNode)
+  }
+
+  return new CompiledNode(
+    nodeIndex,
+    compileNodeComponent(node, filename, editorType, getNodeMethodName(nodeIndex, nodeFunctionPrefix)),
+    getNodeContentClass(node, filename, editorType),
+    inputs)
 }
 
 class SourcePair {
@@ -75,16 +121,58 @@ function combineCompiledNodes(compiledNodes, nodeFunctionPrefix) {
 }
 
 
-function compileNode(nodeComponent, nodeFunctionPrefix) {
-  let compiledNodeTree = convertToCompiledNodeTree(nodeComponent, 0, nodeFunctionPrefix)
+function compileNode(node, nodeFunctionPrefix, nodesById, filename, editorType) {
+  let compiledNodeTree = convertToCompiledNodeTree(node, 0, nodeFunctionPrefix, nodesById, filename, editorType)
   let compiledNodes = compiledNodeTree.flatten()
   let source = combineCompiledNodes(compiledNodes, nodeFunctionPrefix)
   return source
 }
 
-function compile(sdfOutputNode, shaderOutputNode) {
-  let sdf = compileNode(sdfOutputNode, 'sdf')
-  let shader = compileNode(shaderOutputNode, 'shader')
+function getFileOutputNode(filename) {
+  let fileData = FileManager.loadFileState(filename)
+  let outputNode = null
+  for (let node of fileData.nodes) {
+    if (node.type.endsWith('Output')) {
+      if (outputNode == null) {
+        outputNode = node
+      }
+      else {
+        throw 'Multiple output nodes in ' + filename
+      }
+    }
+  }
+  if (outputNode) {
+    return outputNode
+  }
+  else {
+    throw 'No output node in ' + filename
+  }
+}
+
+function getNodesById(filename) {
+  let fileData = FileManager.loadFileState(filename)
+  let nodesById = {}
+
+  for (let node of fileData.nodes) {
+    nodesById[node.id] = node
+  }
+
+  return nodesById
+}
+
+function compileFile(filename, nodeFunctionPrefix) {
+  let editorType = FileManager.getFileTypeFromFilename(filename)
+  let outputNode = getFileOutputNode(filename)
+  let nodesById = getNodesById(filename)
+  let compiledNodeTree = convertToCompiledNodeTree(outputNode, 0, nodeFunctionPrefix, nodesById, filename, editorType)
+  let compiledNodes = compiledNodeTree.flatten()
+  let source = combineCompiledNodes(compiledNodes, nodeFunctionPrefix)
+  return source
+}
+
+function compile() {
+  let sdf = compileFile('main.sdf', 'main_sdf')
+  let shader = compileFile('main.shader', 'main_shader')
 
   return GLSL_BOILERPLATE_SOURCE
     .replace("$$SDF_NODE_FUNCTIONS$$", sdf.nodeFunctions)
@@ -93,4 +181,4 @@ function compile(sdfOutputNode, shaderOutputNode) {
     .replace("$$SHADER_MAIN_FUNCTION_BODY$$", shader.mainFunctionBody)
 }
 
-export default compile
+export {compile, compileFile}

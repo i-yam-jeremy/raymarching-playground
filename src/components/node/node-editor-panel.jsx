@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { ContextMenu, SubMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
+import FileManager from '../file-manager/file-manager.js'
 
 export default class NodeEditorPanel extends React.Component {
 
@@ -29,11 +30,11 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   onContentChanged() {
-    this.props.app.save()
+    let saveState = this.getSaveState()
+    FileManager.saveFileState(this.props.filename, saveState)
   }
 
   contextMenuClick(e, data) {
-    this.onContentChanged()
     const menuBounds = e.target.getBoundingClientRect()
     const nodeEditorPanelBounds = ReactDOM.findDOMNode(this).getBoundingClientRect()
     const x = menuBounds.left - nodeEditorPanelBounds.left
@@ -45,11 +46,10 @@ export default class NodeEditorPanel extends React.Component {
         y: y,
         id: this.getNextNodeDataId()
       }])
-    })
+    },this.onContentChanged.bind(this))
   }
 
   deleteNode(e, data) {
-    this.onContentChanged()
     let index = -1;
     this.state.nodeData.forEach((nodeData, i) => {
       if (nodeData.id == data.nodeId) {
@@ -65,7 +65,7 @@ export default class NodeEditorPanel extends React.Component {
       this.state.nodeData.splice(index, 1)
       this.setState({
         nodeData: this.state.nodeData
-      })
+      }, this.onContentChanged.bind(this))
     }
   }
 
@@ -98,11 +98,25 @@ export default class NodeEditorPanel extends React.Component {
   loadState(state) {
     let nodeData = state.nodes.map(node => {
       let nodeType
-      let nodeTypes = getNodeTypes(this.props.editorType)
-      for (let category in nodeTypes) {
-        for (let type of nodeTypes[category]) {
-          if (type.name == node.type) {
-            nodeType = type
+      let nodeTypes = getNodeTypes(this.props.filename, this.props.editorType)
+      if (node.type == 'CustomNode') {
+        let customNodes = nodeTypes['Custom']
+        for (let customNode of customNodes) {
+          if (customNode.title == node.filename) {
+            nodeType = customNode
+            break
+          }
+        }
+        if (!nodeType) {
+          throw 'Custom node for ' + node.filename + ' not found'
+        }
+      }
+      else {
+        for (let category in nodeTypes) {
+          for (let type of nodeTypes[category]) {
+            if (type.name == node.type) {
+              nodeType = type
+            }
           }
         }
       }
@@ -156,9 +170,9 @@ export default class NodeEditorPanel extends React.Component {
 
         <ContextMenu id={'node-editor-panel-contextmenu-' + this.props.editorId} ltr>
           <div>
-            {Object.keys(getNodeTypes(this.props.editorType)).map(category =>
+            {Object.keys(getNodeTypes(this.props.filename, this.props.editorType)).map(category =>
               <SubMenu key={'contextmenu-' + category} title={category} ltr>
-               {getNodeTypes(this.props.editorType)[category].map(nodeType =>
+               {getNodeTypes(this.props.filename, this.props.editorType)[category].map(nodeType =>
                   <MenuItem key={'contextmenu-' + nodeType.title} data={{nodeType: nodeType}} onClick={this.contextMenuClick.bind(this)}>
                     <div>{nodeType.title}</div>
                   </MenuItem>
