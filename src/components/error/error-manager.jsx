@@ -18,6 +18,8 @@ class ErrorMessage extends React.Component {
 
 }
 
+let errorMessageCloseFunctions = []
+
 class ErrorManager {
 
   static init(appInstance) {
@@ -25,9 +27,15 @@ class ErrorManager {
   }
 
   static error(message) {
-    toast.notify(({ onClose }) => (
-      <ErrorMessage message={message} onClose={onClose} />
-    ))
+    toast.notify(({ onClose }) => {
+      errorMessageCloseFunctions.push(onClose)
+      let newOnClose = () => {
+        let index = errorMessageCloseFunctions.indexOf(onClose)
+        errorMessageCloseFunctions.splice(index, 1)
+        onClose()
+      }
+      return (<ErrorMessage message={message} onClose={newOnClose} />)
+    })
     throw message
   }
 
@@ -53,6 +61,11 @@ class ErrorManager {
       FileManager.saveFileState(file.name, fileData)
     }
     app.rerenderNodeErrorHighlights()
+  }
+
+  static clearErrorMessages() {
+    errorMessageCloseFunctions.forEach(onClose => onClose())
+    errorMessageCloseFunctions = []
   }
 
 }

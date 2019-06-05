@@ -176,6 +176,7 @@ function compileFile(filename, nodeFunctionPrefix) {
 }
 
 function compile() {
+  ErrorManager.clearErrorMessages()
   ErrorManager.clearHighlightedNodes()
   let sdf = compileFile('main.sdf', 'main_sdf')
   let shader = compileFile('main.shader', 'main_shader')
