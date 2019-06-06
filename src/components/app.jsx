@@ -1,5 +1,6 @@
 import React from 'react'
 import Tabs from 'react-draggable-tabs'
+import Mousetrap from 'mousetrap'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
@@ -24,6 +25,23 @@ export default class App extends React.Component {
 
     this.editors = {} // editors by filename
     this.renderComponent = null
+  }
+
+  componentDidMount() {
+    Mousetrap.bind(['command+c', 'ctrl+c'], (e) => {
+        let activeTab = this.getActiveTab()
+        if (activeTab && activeTab.filename) {
+          this.editors[activeTab.filename].copySelectionToClipboard()
+        }
+        return false
+    })
+    Mousetrap.bind(['command+v', 'ctrl+v'], (e) => {
+        let activeTab = this.getActiveTab()
+        if (activeTab && activeTab.filename) {
+          this.editors[activeTab.filename].pasteFromClipboard()
+        }
+        return false
+    })
   }
 
   rerenderNodeErrorHighlights() {
@@ -125,6 +143,15 @@ export default class App extends React.Component {
   findTabByFilename(filename) {
     for (let tab of this.state.tabs) {
       if (tab.content == filename) {
+        return tab
+      }
+    }
+    return null
+  }
+
+  getActiveTab() {
+    for (let tab of this.state.tabs) {
+      if (tab.active) {
         return tab
       }
     }

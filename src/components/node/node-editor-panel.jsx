@@ -22,6 +22,8 @@ export default class NodeEditorPanel extends React.Component {
 
     this.previousScrollX = 0
     this.previousScrollY = 0
+
+    this.clipboard = [] // nodes on clipboard
   }
 
   componentDidMount() {
@@ -38,6 +40,30 @@ export default class NodeEditorPanel extends React.Component {
         nodeComponent.select()
       }
     }
+  }
+
+  getSelectedNodeComponents() {
+    return this.nodeComponents.filter(nodeComponent => nodeComponent.isSelected())
+  }
+
+  copySelectionToClipboard() {
+    this.clipboard = this.getSelectedNodeComponents()
+  }
+
+  pasteFromClipboard() {
+    this.nodeComponents.forEach(nodeComponent => nodeComponent.deselect()) // deselect all nodes
+    let copiedNodesData = this.clipboard
+                          .map(nodeComponent => nodeComponent.nodeData)
+                          .map(nodeData => ({
+                            ...nodeData,
+                            id: this.getNextNodeDataId(),
+                            startSelected: true,
+                            x: nodeData.x + 10,
+                            y: nodeData.y + 10
+                          }))
+    this.setState({
+      nodeData: this.state.nodeData.concat(copiedNodesData)
+    })
   }
 
   onScroll(e) {
@@ -59,6 +85,9 @@ export default class NodeEditorPanel extends React.Component {
   addNode(node, nodeData) {
     if (node) {
       node.nodeData = nodeData
+      if (nodeData.startSelected) {
+        node.select()
+      }
       this.nodeComponents.push(node)
     }
   }
