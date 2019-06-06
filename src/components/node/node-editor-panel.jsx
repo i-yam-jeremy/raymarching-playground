@@ -225,12 +225,17 @@ class Region {
     this.height = height
   }
 
+  contains(x, y) {
+    return (this.x <= x && this.y <= y &&
+            x <= this.x + this.width && y <= this.y + this.height)
+  }
+
   overlapsWith(other){
     return (
-      (this.x <= other.x && other.x <= this.x + this.width &&
-        this.y <= other.y && other.y <= this.y + this.height) ||
-      (other.x <= this.x && this.x <= other.x + other.width &&
-        other.y <= this.y && this.y <= other.y + other.height)
+      this.contains(other.x, other.y) ||
+      this.contains(other.x + other.width, other.y) ||
+      this.contains(other.x + other.width, other.y + other.height) ||
+      this.contains(other.x, other.y + other.height)
     )
   }
 
