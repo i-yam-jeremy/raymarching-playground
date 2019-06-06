@@ -207,8 +207,15 @@ class PreClickDragSelectablePanel extends React.Component {
     super(props)
 
     this.state = {
-      selecting: false
+      selecting: false,
+      selectionWidth: 0,
+      selectionHeight: 0
     }
+
+    this.baseScrollPositionX = 0
+    this.baseScrollPositionY = 0
+    this.lastMoveDeltaX = 0
+    this.lastMoveDeltaY = 0
   }
 
   componentDidMount() {
@@ -216,7 +223,14 @@ class PreClickDragSelectablePanel extends React.Component {
   }
 
   onScroll(deltaX, deltaY) {
-    console.log(deltaX, deltaY)
+    this.baseScrollPositionX += deltaX
+    this.baseScrollPositionY += deltaY
+    if (this.state.selecting) {
+      this.setState({
+        selectionWidth: this.state.selectionWidth + deltaX,
+        selectionHeight: this.state.selectionHeight + deltaY
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps) { // for clickdrag
@@ -225,14 +239,16 @@ class PreClickDragSelectablePanel extends React.Component {
       if (!this.state.selecting) {
         this.setState({
           selecting: true,
-          selectionX: nextProps.dataDrag.mouseDownPositionX,
-          selectionY: nextProps.dataDrag.mouseDownPositionY - TAB_HEIGHT
+          selectionX: this.baseScrollPositionX + nextProps.dataDrag.mouseDownPositionX,
+          selectionY: this.baseScrollPositionY + nextProps.dataDrag.mouseDownPositionY - TAB_HEIGHT
         })
       }
       this.setState({
-        selectionWidth: nextProps.dataDrag.moveDeltaX,
-        selectionHeight: nextProps.dataDrag.moveDeltaY
+        selectionWidth: this.state.selectionWidth + (nextProps.dataDrag.moveDeltaX - this.lastMoveDeltaX),
+        selectionHeight: this.state.selectionHeight + (nextProps.dataDrag.moveDeltaY - this.lastMoveDeltaY)
       })
+      this.lastMoveDeltaX = nextProps.dataDrag.moveDeltaX
+      this.lastMoveDeltaY = nextProps.dataDrag.moveDeltaY
     }
     else {
       if (typeof this.props.onSelection == 'function') {
@@ -247,8 +263,12 @@ class PreClickDragSelectablePanel extends React.Component {
         }
       }
       this.setState({
-        selecting: false
+        selecting: false,
+        selectionWidth: 0,
+        selectionHeight: 0
       })
+      this.lastMoveDeltaX = 0
+      this.lastMoveDeltaY = 0
     }
   }
 
