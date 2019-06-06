@@ -6,6 +6,8 @@ import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
 import FileManager from '../file-manager/file-manager.js'
 
+const TAB_HEIGHT = 39;
+
 export default class NodeEditorPanel extends React.Component {
 
   constructor(props) {
@@ -25,6 +27,20 @@ export default class NodeEditorPanel extends React.Component {
   componentDidMount() {
     this.props.setEditor(this)
     this.props.tabContentRef(this)
+  }
+
+  onSelection(selectedRegion) {
+    // TODO clear previously selected components
+    let selectedNodeComponents = []
+    for (let nodeComponent of this.nodeComponents) {
+      let {x, y, width, height} = ReactDOM.findDOMNode(nodeComponent).getBoundingClientRect()
+      let componentRegion = new Region(x, y - TAB_HEIGHT, width, height)
+      if (selectedRegion.overlapsWith(componentRegion)) {
+        selectedNodeComponents.push(nodeComponent)
+      }
+    }
+    console.log(selectedNodeComponents)
+    // TODO apply selection to selectedNodeComponents
   }
 
   onScroll(e) {
@@ -164,7 +180,9 @@ export default class NodeEditorPanel extends React.Component {
       <div>
         <ContextMenuTrigger id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-panel">
-            <SelectablePanel setSelectablePanel={component => this.selectablePanel = component} onSelection={(region) => console.log(region)} />
+            <SelectablePanel
+              setSelectablePanel={component => this.selectablePanel = component}
+              onSelection={this.onSelection.bind(this)} />
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
                 <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
@@ -199,6 +217,26 @@ export default class NodeEditorPanel extends React.Component {
       </div>
     )
   }
+}
+
+class Region {
+
+  constructor(x, y, width, height) {
+    this.x = x
+    this.y = y
+    this.width = width
+    this.height = height
+  }
+
+  overlapsWith(other){
+    return (
+      (this.x <= other.x && other.x <= this.x + this.width &&
+        this.y <= other.y && other.y <= this.y + this.height) ||
+      (other.x <= this.x && this.x <= other.x + other.width &&
+        other.y <= this.y && this.y <= other.y + other.height)
+    )
+  }
+
 }
 
 class PreClickDragSelectablePanel extends React.Component {
@@ -252,12 +290,10 @@ class PreClickDragSelectablePanel extends React.Component {
     }
     else {
       if (typeof this.props.onSelection == 'function') {
-        let region = {
-          x: this.getX(),
-          y: this.getY(),
-          width: this.getWidth(),
-          height: this.getHeight()
-        }
+        let region = new Region(
+          this.getX(), this.getY(),
+          this.getWidth(), this.getHeight()
+        )
         if (!isNaN(region.x)) {
           this.props.onSelection(region)
         }
