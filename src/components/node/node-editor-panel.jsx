@@ -30,17 +30,14 @@ export default class NodeEditorPanel extends React.Component {
   }
 
   onSelection(selectedRegion) {
-    // TODO clear previously selected components
-    let selectedNodeComponents = []
     for (let nodeComponent of this.nodeComponents) {
+      nodeComponent.deselect()
       let {x, y, width, height} = ReactDOM.findDOMNode(nodeComponent).getBoundingClientRect()
       let componentRegion = new Region(x, y - TAB_HEIGHT, width, height)
       if (selectedRegion.overlapsWith(componentRegion)) {
-        selectedNodeComponents.push(nodeComponent)
+        nodeComponent.select()
       }
     }
-    console.log(selectedNodeComponents)
-    // TODO apply selection to selectedNodeComponents
   }
 
   onScroll(e) {

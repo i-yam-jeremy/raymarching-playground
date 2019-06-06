@@ -22,6 +22,23 @@ export default class Node extends React.Component {
     this.previousWidth = 0
     this.previousHeight = 0
     this.nodeContent = null
+    this.selected = false
+  }
+
+  isSelected() {
+    return this.state.selected
+  }
+
+  deselect() {
+    this.setState({
+      selected: false
+    })
+  }
+
+  select() {
+    this.setState({
+      selected: true
+    })
   }
 
   onOutputConnectedToInput(input) {
@@ -136,7 +153,7 @@ export default class Node extends React.Component {
         defaultPosition={{x: this.props.initialX, y: this.props.initialY}}
         position={null}
         onDrag={this.onDrag.bind(this)}>
-        <div className={classNames('node', {'node-error-highlighted': this.props.errorHighlighted})}>
+        <div className={classNames('node', {'node-error-highlighted': this.props.errorHighlighted}, {'node-selected-highlight': this.state.selected})}>
           <div className="handle">{this.props.title}</div>
           <div className="input-label-container">
             {this.props.inputs.map((input, i) => <p key={'input-label-' + input.name} className="label">{input.name}</p>)}
