@@ -52,7 +52,6 @@ class ErrorManager {
   }
 
   static clearHighlightedNodes() {
-    console.log('cleared highlighting')
     for (let file of FileManager.getFileList()) {
       let fileData = file.state
       for (let node of fileData.nodes) {
