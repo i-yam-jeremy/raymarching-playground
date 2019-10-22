@@ -1,17 +1,37 @@
 @import ../theme
 @import ../noselect
 
+$node-editor-panel-width: 3000px
+$node-editor-panel-height: 1500px
+
 .node-editor-panel
   $grid-color: #333333
   $grid-line-size: 1px
   $grid-square-size: 80px
   margin: 0px
   padding: 0px
-  width: 3000px
-  height: 1500px
+  width: $node-editor-panel-width
+  height: $node-editor-panel-height
   background-size: $grid-square-size $grid-square-size
   background-image: linear-gradient(to right, $grid-color $grid-line-size, transparent $grid-line-size), linear-gradient(to bottom, $grid-color $grid-line-size, transparent $grid-line-size)
   background-color: $bg-color
+
+
+  .selecting-box-container
+    position: absolute
+    overflow: hidden
+    left: 0px
+    top: 0px
+    width: $node-editor-panel-width
+    height: $node-editor-panel-height
+    padding: 0px
+    margin: 0px
+
+    .box
+      z-index: 1
+      position: absolute
+      background-color: rgba($highlight-color, 0.5)
+      border: 2px solid rgba(lighten($highlight-color, 7%), 0.5)
 
 .node-editor-panel-type-signature-container
   @extend %noselect

@@ -1,9 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ContextMenu, SubMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu"
+import { ContextMenu, SubMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
+import clickDrag from 'react-clickdrag'
 import Node from './node.jsx'
 import getNodeTypes from './node-types/index.jsx'
 import FileManager from '../file-manager/file-manager.js'
+
+const TAB_HEIGHT = 39;
 
 export default class NodeEditorPanel extends React.Component {
 
@@ -16,6 +19,63 @@ export default class NodeEditorPanel extends React.Component {
 
     this.nodeComponents = []
     this.currentNodeDataId = 0
+
+    this.previousScrollX = 0
+    this.previousScrollY = 0
+
+    this.clipboard = [] // nodes on clipboard
+  }
+
+  componentDidMount() {
+    this.props.setEditor(this)
+    this.props.tabContentRef(this)
+  }
+
+  onSelection(selectedRegion) {
+    for (let nodeComponent of this.nodeComponents) {
+      nodeComponent.deselect()
+      let {x, y, width, height} = ReactDOM.findDOMNode(nodeComponent).getBoundingClientRect()
+      let componentRegion = new Region(x, y - TAB_HEIGHT, width, height)
+      if (selectedRegion.overlapsWith(componentRegion)) {
+        nodeComponent.select()
+      }
+    }
+  }
+
+  getSelectedNodeComponents() {
+    return this.nodeComponents.filter(nodeComponent => nodeComponent.isSelected())
+  }
+
+  copySelectionToClipboard() {
+    this.clipboard = this.getSelectedNodeComponents()
+  }
+
+  pasteFromClipboard() {
+    this.nodeComponents.forEach(nodeComponent => nodeComponent.deselect()) // deselect all nodes
+    let copiedNodesData = this.clipboard
+                          .map(nodeComponent => nodeComponent.nodeData)
+                          .map(nodeData => ({
+                            ...nodeData,
+                            id: this.getNextNodeDataId(),
+                            startSelected: true,
+                            x: nodeData.x + 10,
+                            y: nodeData.y + 10
+                          }))
+    this.setState({
+      nodeData: this.state.nodeData.concat(copiedNodesData)
+    })
+  }
+
+  onScroll(e) {
+    let newScrollX = e.target.scrollLeft
+    let newScrollY = e.target.scrollTop
+
+    let deltaX = newScrollX - this.previousScrollX
+    let deltaY = newScrollY - this.previousScrollY
+    this.selectablePanel.onScroll(deltaX, deltaY)
+
+    this.previousScrollX = newScrollX
+    this.previousScrollY = newScrollY
   }
 
   getNextNodeDataId() {
@@ -25,6 +85,9 @@ export default class NodeEditorPanel extends React.Component {
   addNode(node, nodeData) {
     if (node) {
       node.nodeData = nodeData
+      if (nodeData.startSelected) {
+        node.select()
+      }
       this.nodeComponents.push(node)
     }
   }
@@ -143,6 +206,9 @@ export default class NodeEditorPanel extends React.Component {
       <div>
         <ContextMenuTrigger id={'node-editor-panel-contextmenu-' + this.props.editorId}>
           <div className="node-editor-panel">
+            <SelectablePanel
+              setSelectablePanel={component => this.selectablePanel = component}
+              onSelection={this.onSelection.bind(this)} />
             {this.state.nodeData.map(nodeData =>
               <ContextMenuTrigger key={'contextmenu-trigger-node-' + nodeData.id} id={'contextmenu-node-' + this.props.editorId + '-' + nodeData.id}>
                 <Node ref={nodeComponent => this.addNode(nodeComponent, nodeData)} key={'node-' + nodeData.id} editor={this} title={nodeData.nodeType.title} inputs={nodeData.nodeType.inputs} outputType={nodeData.nodeType.outputType} nodeContent={nodeData.nodeType} initialX={nodeData.x} initialY={nodeData.y} nodeId={nodeData.id} errorHighlighted={nodeData.errorHighlighted} />
@@ -178,3 +244,131 @@ export default class NodeEditorPanel extends React.Component {
     )
   }
 }
+
+class Region {
+
+  constructor(x, y, width, height) {
+    this.x = x
+    this.y = y
+    this.width = width
+    this.height = height
+  }
+
+  contains(x, y) {
+    return (this.x <= x && this.y <= y &&
+            x <= this.x + this.width && y <= this.y + this.height)
+  }
+
+  overlapsWith(other){
+    return (
+      this.x <= other.x+other.width && other.x <= this.x+this.width &&
+      this.y <= other.y+other.height && other.y <= this.y+this.height
+    )
+  }
+
+}
+
+class PreClickDragSelectablePanel extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      selecting: false,
+      selectionWidth: 0,
+      selectionHeight: 0
+    }
+
+    this.baseScrollPositionX = 0
+    this.baseScrollPositionY = 0
+    this.lastMoveDeltaX = 0
+    this.lastMoveDeltaY = 0
+  }
+
+  componentDidMount() {
+    this.props.setSelectablePanel(this)
+  }
+
+  onScroll(deltaX, deltaY) {
+    this.baseScrollPositionX += deltaX
+    this.baseScrollPositionY += deltaY
+    if (this.state.selecting) {
+      this.setState({
+        selectionWidth: this.state.selectionWidth + deltaX,
+        selectionHeight: this.state.selectionHeight + deltaY
+      })
+    }
+  }
+
+  componentWillReceiveProps(nextProps) { // for clickdrag
+    const TAB_HEIGHT = 39
+    if (nextProps.dataDrag.isMouseDown) {
+      if (!this.state.selecting) {
+        this.setState({
+          selecting: true,
+          selectionX: this.baseScrollPositionX + nextProps.dataDrag.mouseDownPositionX,
+          selectionY: this.baseScrollPositionY + nextProps.dataDrag.mouseDownPositionY - TAB_HEIGHT
+        })
+      }
+      this.setState({
+        selectionWidth: this.state.selectionWidth + (nextProps.dataDrag.moveDeltaX - this.lastMoveDeltaX),
+        selectionHeight: this.state.selectionHeight + (nextProps.dataDrag.moveDeltaY - this.lastMoveDeltaY)
+      })
+      this.lastMoveDeltaX = nextProps.dataDrag.moveDeltaX
+      this.lastMoveDeltaY = nextProps.dataDrag.moveDeltaY
+    }
+    else {
+      if (typeof this.props.onSelection == 'function') {
+        let region = new Region(
+          this.getX(), this.getY(),
+          this.getWidth(), this.getHeight()
+        )
+        if (!isNaN(region.x)) {
+          this.props.onSelection(region)
+        }
+      }
+      this.setState({
+        selecting: false,
+        selectionWidth: 0,
+        selectionHeight: 0
+      })
+      this.lastMoveDeltaX = 0
+      this.lastMoveDeltaY = 0
+    }
+  }
+
+  getX() {
+    return this.state.selectionX - (this.state.selectionWidth < 0 ? Math.abs(this.state.selectionWidth) : 0)
+  }
+
+  getY() {
+    return this.state.selectionY - (this.state.selectionHeight < 0 ? Math.abs(this.state.selectionHeight) : 0)
+  }
+
+  getWidth() {
+    return Math.abs(this.state.selectionWidth)
+  }
+
+  getHeight() {
+    return Math.abs(this.state.selectionHeight)
+  }
+
+  render() {
+    return (
+      <div className="selecting-box-container">
+        {this.state.selecting ?
+          <div className="box" style={{
+            left: this.getX(),
+            top: this.getY(),
+            width: this.getWidth(),
+            height: this.getHeight()
+          }}></div>
+        : null}
+      </div>
+    )
+  }
+
+}
+
+
+const SelectablePanel = clickDrag(PreClickDragSelectablePanel)

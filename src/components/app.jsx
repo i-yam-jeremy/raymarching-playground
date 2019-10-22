@@ -1,5 +1,6 @@
 import React from 'react'
 import Tabs from 'react-draggable-tabs'
+import Mousetrap from 'mousetrap'
 import NodeEditorPanel from './node/node-editor-panel.jsx'
 import NodeEditorType from './node/node-editor-type.js'
 import Render from './render/render.jsx'
@@ -7,6 +8,7 @@ import {compile} from './node/compiler/compiler.js'
 import FileChooser from './file-manager/file-chooser.jsx'
 import FileManager from './file-manager/file-manager.js'
 import ErrorManager from './error/error-manager.jsx'
+import TabContent from './tab-content.jsx'
 
 import '../stylesheets/main.sass'
 
@@ -23,6 +25,23 @@ export default class App extends React.Component {
 
     this.editors = {} // editors by filename
     this.renderComponent = null
+  }
+
+  componentDidMount() {
+    Mousetrap.bind(['command+c', 'ctrl+c'], (e) => {
+        let activeTab = this.getActiveTab()
+        if (activeTab && activeTab.filename) {
+          this.editors[activeTab.filename].copySelectionToClipboard()
+        }
+        return false
+    })
+    Mousetrap.bind(['command+v', 'ctrl+v'], (e) => {
+        let activeTab = this.getActiveTab()
+        if (activeTab && activeTab.filename) {
+          this.editors[activeTab.filename].pasteFromClipboard()
+        }
+        return false
+    })
   }
 
   rerenderNodeErrorHighlights() {
@@ -51,9 +70,9 @@ export default class App extends React.Component {
       content: "Render",
       active: true,
       display: (
-        <div className="tab-content-container" style={{float: 'right', right: '0px', backgroundColor: 'green'}}>
-            <Render ref={this.setRenderComponent.bind(this)} />
-        </div>
+        <TabContent>
+          <Render ref={this.setRenderComponent.bind(this)} />
+        </TabContent>
       )
     })
   }
@@ -88,9 +107,9 @@ export default class App extends React.Component {
             {') →'}
             <div className={'data-type-' + editorState.outputType}></div>
           </div>
-          <div className="tab-content-container">
-            <NodeEditorPanel ref={(editor) => this.setEditor(filename, editor, editorState)} app={this} filename={filename} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />
-          </div>
+          <TabContent onScroll={(e) => nodeEditorPanel.onScroll(e)}>
+            {(setTabContent) => <NodeEditorPanel tabContentRef={setTabContent} setEditor={(editor) => this.setEditor(filename, editor, editorState)} app={this} filename={filename} editorType={editorType} inputs={editorState.inputs} outputType={editorState.outputType} editorId={filename.replace('.','_')} />}
+          </TabContent>
           </div>
         )
       })
@@ -124,6 +143,15 @@ export default class App extends React.Component {
   findTabByFilename(filename) {
     for (let tab of this.state.tabs) {
       if (tab.content == filename) {
+        return tab
+      }
+    }
+    return null
+  }
+
+  getActiveTab() {
+    for (let tab of this.state.tabs) {
+      if (tab.active) {
         return tab
       }
     }
